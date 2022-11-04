@@ -1,0 +1,37 @@
+@use "../abstracts/abstracts" as *;
+
+
+@import '../../bootstrap/scss/_functions.scss';
+@import '../../bootstrap/scss/_variables.scss';
+
+
+$link-color: $secondary;
+$link-decoration: none;
+$body-bg: $dark;
+$body-color: white;
+
+// pagination variables
+//$pagination-color: white;
+//$pagination-bg: $dark;
+//$pagination-border-color: $dark;
+//$pagination-focus-color: $secondary;
+//$pagination-focus-bg: $dark;
+//$pagination-focus-box-shadow: none;
+//$pagination-focus-outline: 0;
+//$pagination-hover-color: $secondary;
+//$pagination-hover-bg: $dark;
+//$pagination-hover-border-color: $dark;
+//$pagination-active-color: $secondary;
+//$pagination-active-bg: tint-color($dark, 5%);
+//$pagination-active-border-color: tint-color($dark, 5%);
+//$pagination-disabled-color: $secondary;
+//$pagination-disabled-bg: $dark;
+//$pagination-disabled-border-color: $dark;
+// table
+//$table-color: white;
+//$table-bg: tint-color($dark, 10%);
+//$table-accent-bg: tint-color($dark, 5%);
+//$table-striped-color: white;
+//$table-striped-bg-factor: 1;
+// import bootsrap
+@import '../../bootstrap/scss/bootstrap.scss';

@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <title>Login</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="panel-left col vh-100 d-flex justify-content-center align-items-center">
+                <div class="text-center" style="min-width: 344px">
+                    <img src="~/images/schoolager.svg" alt="" />
+                    <h1 class="login-title">Schoolager</h1>
+                </div>
+            </div>
+            <div class="panel-right col vh-100 d-flex justify-content-center align-items-center" id="loginForm">
+                <div style="min-width: 344px">
+                    <form>
+                        <div class="mb-4">
+                            <label>Username</label>
+                            <input type="text" value="" class="form-control" />
+                        </div>
+                        <div class="mb-4">
+                            <label>Password</label>
+                            <input type="password" value="" class="form-control" />
+                        </div>
+                        <div class="mb-4 text-center">
+                            <button type="submit" class="btn btn-primary text-light w-100 mb-2">Login</button>
+                            <a href="#" class="fw-normal">Forgot your password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
