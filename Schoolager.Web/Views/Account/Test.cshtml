@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Logged in as @User.Identity.Name</h1>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

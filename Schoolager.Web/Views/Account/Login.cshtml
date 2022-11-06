@@ -1,4 +1,4 @@
-﻿
+﻿@model Schoolager.Web.Models.Account.LoginViewModel
 @{
     Layout = null;
 }
@@ -22,17 +22,20 @@
             </div>
             <div class="panel-right col vh-100 d-flex justify-content-center align-items-center" id="loginForm">
                 <div style="min-width: 344px">
-                    <form>
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly"></div>
                         <div class="mb-4">
-                            <label>Username</label>
-                            <input type="text" value="" class="form-control" />
+                            <label asp-for="Username">Username</label>
+                            <input asp-for="Username" class="form-control"/>
+                            <span asp-validation-for="Username" class="text-warning"></span>
                         </div>
                         <div class="mb-4">
-                            <label>Password</label>
-                            <input type="password" value="" class="form-control" />
+                            <label asp-for="Password">Password</label>
+                            <input asp-for="Password" class="form-control"/>
+                            <span asp-validation-for="Password" class="text-warning"></span>
                         </div>
                         <div class="mb-4 text-center">
-                            <button type="submit" class="btn btn-primary text-light w-100 mb-2">Login</button>
+                            <button asp-action="Login" asp-controller="Account" type="submit" class="btn btn-primary text-light w-100 mb-2">Login</button>
                             <a href="#" class="fw-normal">Forgot your password?</a>
                         </div>
                     </form>
@@ -41,6 +44,6 @@
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
