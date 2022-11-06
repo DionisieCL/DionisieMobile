@@ -51,6 +51,13 @@ namespace Schoolager.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await _userHelper.LogoutAsync();
+
+            return RedirectToAction(nameof(Login));
+        }
+
         public IActionResult Test()
         {
             return View();
