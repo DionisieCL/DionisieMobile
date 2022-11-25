@@ -51,6 +51,10 @@ namespace Schoolager.Web
 
             // Helper services
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
+            services.AddScoped<ITurmaRepository, TurmaRepository>();
 
             services.AddControllersWithViews();
         }
