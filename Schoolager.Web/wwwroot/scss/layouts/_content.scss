@@ -1,0 +1,11 @@
+@use "../abstracts/abstracts" as *;
+
+.content {
+    margin-top: 80px;
+    min-height: 90vh;
+    margin-left: 250px;
+
+    &.closed {
+        margin-left: 0;
+    }
+}

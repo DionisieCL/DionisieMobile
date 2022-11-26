@@ -78,6 +78,135 @@ button.accept-policy {
   font-weight: 400;
 }
 
+.sidebar-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 200px;
+}
+.sidebar-container .sidebar {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
+  overflow-y: hidden;
+}
+.sidebar-container .sidebar.closed {
+  transform: translateX(-250px);
+}
+.sidebar-container .sidebar.open {
+  width: 250px;
+}
+.sidebar-container .sidebar .brand-container {
+  height: 80px;
+}
+.sidebar-container .sidebar .brand-container .brand-name-container .brand-name {
+  font-size: 1.75rem;
+}
+.sidebar-container .sidebar .brand-container .brand-image-container .brand-image {
+  width: 40px;
+  height: 40px;
+}
+
+.sidebar-item {
+  min-height: 70px;
+  color: #aaa;
+}
+.sidebar-item:hover {
+  color: #d83788;
+}
+.sidebar-item:hover p {
+  color: #d83788;
+}
+.sidebar-item.active {
+  color: #d83788;
+}
+.sidebar-item.active p {
+  color: #d83788;
+}
+.sidebar-item p {
+  color: #aaa;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.menu-burger-container {
+  width: 70px;
+}
+.menu-burger-container.closed {
+  width: 70px;
+}
+.menu-burger-container.open {
+  width: 200px;
+}
+
+.navbar {
+  z-index: 1000;
+}
+
+.nav-link {
+  padding: 8px 20px;
+}
+
+.navbar {
+  height: 80px;
+  z-index: 10 !important;
+  position: fixed;
+  top: 0;
+  left: 250px !important;
+}
+.navbar.closed {
+  left: 0 !important;
+}
+.navbar .nav-item {
+  transition: all 0.05s ease-in;
+}
+.navbar .nav-item.active {
+  font-weight: 700;
+}
+.navbar .nav-item.active a {
+  color: #d83788 !important;
+}
+.navbar .nav-item:hover {
+  font-weight: 700;
+}
+.navbar .nav-item:hover a {
+  color: #d83788 !important;
+}
+
+.content {
+  margin-top: 80px;
+  min-height: 90vh;
+  margin-left: 250px;
+}
+.content.closed {
+  margin-left: 0;
+}
+
+.bg-light-gray {
+  background-color: #f7f9fC;
+}
+
+.frame {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.frame.frame-nav {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+/*$body-bg: $dark;
+$body-color: white;*/
 /*!
  * Bootstrap  v5.2.0 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -126,8 +255,8 @@ button.accept-policy {
   --bs-dark-rgb: 41, 48, 66;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
-  --bs-body-color-rgb: 255, 255, 255;
-  --bs-body-bg-rgb: 41, 48, 66;
+  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
@@ -135,8 +264,8 @@ button.accept-policy {
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: white;
-  --bs-body-bg: #293042;
+  --bs-body-color: #212529;
+  --bs-body-bg: #fff;
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -3033,7 +3162,7 @@ textarea.form-control-lg {
   --bs-btn-font-size: 1rem;
   --bs-btn-font-weight: 400;
   --bs-btn-line-height: 1.5;
-  --bs-btn-color: white;
+  --bs-btn-color: #212529;
   --bs-btn-bg: transparent;
   --bs-btn-border-width: 1px;
   --bs-btn-border-color: transparent;

@@ -7,8 +7,9 @@
 
 $link-color: $secondary;
 $link-decoration: none;
-$body-bg: $dark;
-$body-color: white;
+
+/*$body-bg: $dark;
+$body-color: white;*/
 
 // pagination variables
 //$pagination-color: white;
@@ -34,4 +35,5 @@ $body-color: white;
 //$table-striped-color: white;
 //$table-striped-bg-factor: 1;
 // import bootsrap
+
 @import '../../bootstrap/scss/bootstrap.scss';
