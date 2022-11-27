@@ -11,8 +11,8 @@
     AllStudents.Add(new Student { Id=2, Name="Tiago Machado", Birthday=new DateTime(1996, 2, 10)});
     AllStudents.Add(new Student { Id=3, Name="João Pereira", Birthday=new DateTime(1996, 8, 5)});
 
-    TurmaStudents.Add(new Student { Id=2, Name="Miguel Antunes", Birthday=new DateTime(1996, 3, 1)});
-    TurmaStudents.Add(new Student { Id=3, Name="Rodrigo Coutinho", Birthday=new DateTime(1996, 7, 17)});
+    TurmaStudents.Add(new Student { Id=4, Name="Miguel Antunes", Birthday=new DateTime(1996, 3, 1)});
+    TurmaStudents.Add(new Student { Id=5, Name="Rodrigo Coutinho", Birthday=new DateTime(1996, 7, 17)});
 }
 
 <div class="container-fluid px-5">
@@ -81,25 +81,32 @@
             let tableAll = $("#tableAll").DataTable();
             let studentsToAdd = [];
             let studentsToRemove = [];
-            let row;
+            //let rowAdd, rowRemove;
             let rowsToRemove, rowsToAdd = [];
 
             let data;
 
             $("#addBtn").click(function() {
-                $("input:checkbox[name=addSelected]:checked").each(function(){
-                    row = $(this).parent().parent();
+                $('#tableAll input[type="checkbox"]:checked').each(function(){
+                    let row = tableAll.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("student");
 
-                    studentsToAdd.push(row.data("student"));
+                    studentsToAdd.push(rowData);
 
-                    // remove from all students table add to selected students table
+                    let rowNode = row.node();
                     row.remove();
-                    tableSelected.row.add(row).draw();
+
+                    tableSelected
+                        .row
+                        .add(rowNode)
+                        .draw();
 
                     // uncheck checkbox
                     $(this).prop("checked", false);
-                    $(this).attr("name", "removeSelected");
+                    //$(this).attr("name", "removeSelected");
                 });
+
+                console.log(studentsToAdd);
 
                 data = {
                     students : studentsToAdd,
@@ -112,28 +119,34 @@
                     url: "/FrontendTests/AddStudents",
                     data: data,
                     success: function(data) {
-                        studentsToAdd = [];
-                        console.log("output : " + JSON.stringify(data));
+                        //studentsToAdd = [];
+                        //console.log("output : " + JSON.stringify(data));
                     },
                     error: function(data) {
-                        console.log("error : " + JSON.stringify(data));
+                        //console.log("error : " + JSON.stringify(data));
                     },
                 });
+
+                studentsToAdd = [];
             });
 
             $("#removeBtn").click(function() {
-                $("input:checkbox[name=removeSelected]:checked").each(function(){
-                    row = $(this).parent().parent();
+                $('#tableSelected input[type="checkbox"]:checked').each(function(){
+                    let row = tableSelected.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("student");
 
-                    studentsToRemove.push(row.data("student"));
+                    studentsToRemove.push(rowData);
+
+                    let rowNode = row.node();
+                    row.remove();
 
                     // remove from selected students table add to all students table
-                    row.remove();
-                    tableAll.row.add(row).draw();
+                    tableAll.row.add(rowNode).draw();
+                    //rowAdd.remove();
 
                     // uncheck checkbox and change name
                     $(this).prop("checked", false);
-                    $(this).attr("name", "addSelected");
+                    //$(this).attr("name", "addSelected");
                 });
 
                 data = {
@@ -148,13 +161,15 @@
                     url: "/FrontendTests/RemoveStudents",
                     data: data,
                     success: function(data) {
-                        studentsToRemove = [];
-                        console.log("output : " + JSON.stringify(data));
+                        //studentsToRemove = [];
+                        //console.log("output : " + JSON.stringify(data));
                     },
                     error: function(data) {
-                        console.log("error : " + JSON.stringify(data));
+                        //console.log("error : " + JSON.stringify(data));
                     },
                 });
+
+                studentsToRemove = [];
             });
         });
     </script>

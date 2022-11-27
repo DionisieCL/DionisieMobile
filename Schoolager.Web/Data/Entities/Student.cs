@@ -24,6 +24,7 @@ namespace Schoolager.Web.Data.Entities
         public string Phone { get; set; }
 
         public Turma Turma { get; set; }
+
         public int TurmaId { get; set; }
 
         public ICollection<Grade> Grades { get; set; }

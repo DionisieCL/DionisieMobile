@@ -27,5 +27,10 @@ namespace Schoolager.Web.Controllers
         {
             return Json(students);
         }
+
+        public IActionResult EditSchedule()
+        {
+            return View();
+        }
     }
 }
