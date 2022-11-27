@@ -1,4 +1,6 @@
-﻿using Schoolager.Web.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Schoolager.Web.Data.Entities;
+using System.Linq;
 
 namespace Schoolager.Web.Data
 {
