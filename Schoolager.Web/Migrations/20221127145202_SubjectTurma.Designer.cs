@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schoolager.Web.Data;
 
 namespace Schoolager.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221127145202_SubjectTurma")]
+    partial class SubjectTurma
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,7 +198,7 @@ namespace Schoolager.Web.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TurmaId")
+                    b.Property<int>("TurmaId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -445,9 +447,10 @@ namespace Schoolager.Web.Migrations
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>
                 {
                     b.HasOne("Schoolager.Web.Data.Entities.Turma", "Turma")
-                        .WithMany("Students")
+                        .WithMany()
                         .HasForeignKey("TurmaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Schoolager.Web.Data.Entities.User", "User")
                         .WithMany()
@@ -510,8 +513,6 @@ namespace Schoolager.Web.Migrations
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Turma", b =>
                 {
-                    b.Navigation("Students");
-
                     b.Navigation("SubjectTurma");
                 });
 #pragma warning restore 612, 618

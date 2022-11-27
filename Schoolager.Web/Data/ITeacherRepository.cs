@@ -1,8 +1,10 @@
 ﻿using Schoolager.Web.Data.Entities;
+using System.Threading.Tasks;
 
 namespace Schoolager.Web.Data
 {
-    internal interface ITeacherRepository : IGenericRepository<Teacher>
+    public interface ITeacherRepository : IGenericRepository<Teacher>
     {
+        Task<Teacher> GetTeacherWithSubject(int id);
     }
 }

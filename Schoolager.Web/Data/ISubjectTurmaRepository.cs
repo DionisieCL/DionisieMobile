@@ -2,7 +2,7 @@
 
 namespace Schoolager.Web.Data
 {
-    public interface ISubjectRepository : IGenericRepository<Subject>
+    public interface ISubjectTurmaRepository : IGenericRepository<SubjectTurma>
     {
     }
 }
