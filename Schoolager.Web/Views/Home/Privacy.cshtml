@@ -1,6 +1,87 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@using Schoolager.Web.Data
+@using Syncfusion.EJ2.Schedule
+@using Syncfusion.EJ2
 
-<p>Use this page to detail your site's privacy policy.</p>
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    int[] workDays = new int[] { 1, 2, 3, 4, 5};
+
+    DateTime minVal= new DateTime(2000,01,01, 07,00,00);
+    DateTime maxVal = new DateTime(2000,01,01, 18,00,00);
+
+    ScheduleTimeScale timeScale = new ScheduleTimeScale
+    {
+        Interval = 60,
+        SlotCount = 2,
+    };
+
+    ScheduleWorkHours workHours = new ScheduleWorkHours
+    {
+        Start = "07:00",
+        End = "18:00",
+        Highlight = true
+    };
+
+    List<ScheduleView> viewOptions = new List<ScheduleView>
+    {
+        new ScheduleView
+        {
+            Option = Syncfusion.EJ2.Schedule.View.Day,
+            StartHour = "08:00",
+            EndHour = "18:00",
+            TimeScale = timeScale,
+        },
+        new ScheduleView 
+        { 
+            Option = Syncfusion.EJ2.Schedule.View.Week,
+            FirstDayOfWeek = 0,
+            StartHour = "08:00",
+            EndHour = "18:00",
+            TimeScale = timeScale,
+        },
+        new ScheduleView 
+        { 
+            Option = Syncfusion.EJ2.Schedule.View.Month,
+            //Readonly = true,
+        },
+    };
+
+    List<object> menuItems = new List<object>();
+
+    menuItems.Add(new
+    {
+        text = "New Event",
+        iconCss = "e-icons new",
+        id = "Add"
+    });
+    menuItems.Add(new
+    {
+        text = "Edit Event",
+        iconCss = "e-icons edit",
+        id = "Save"
+    });
+    menuItems.Add(new
+    {
+        text = "Delete Event",
+        iconCss = "e-icons delete",
+        id = "Delete"
+    });
+
+    List<AppointmentTest> appData = new List<AppointmentTest>();
+
+    appData.Add(new AppointmentTest
+    {
+        Id = 1,
+        SubjectName = "Paris",
+        StartTime = new DateTime(2022, 11, 28, 10, 0, 0),
+        EndTime = new DateTime(2022, 11, 28, 12, 30, 0),
+        RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;BYDAY=MO;UNTIL=12/12/2023",
+        //RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;BYDAY=MO;UNTIL=20220212T103000Z"
+    });
+}
+
+<ejs-schedule id="schedule" allowDragAndDrop="false" allowResizing="false" showWeekend="false" views="viewOptions" workDays="workDays">
+    <e-schedule-eventsettings dataSource="appData" enableTooltip="true"></e-schedule-eventsettings>
+
+</ejs-schedule>

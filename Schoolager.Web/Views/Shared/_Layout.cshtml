@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Schoolager.Web</title>
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/20.3.56/fluent.css" />
+    <link type="text/css" rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css"/>
     <link rel="stylesheet" href="~/css/style.css" />
+    <script src="https://cdn.syncfusion.com/ej2/20.3.56/dist/ej2.min.js"></script>
 </head>
 <body>
     <header>
@@ -31,6 +34,12 @@
     <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/menu.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+    <ejs-scripts></ejs-scripts>
 </body>
 </html>
