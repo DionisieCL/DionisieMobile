@@ -6,6 +6,16 @@
       "provider": "cdnjs",
       "library": "bootstrap@5.2.0",
       "destination": "wwwroot/bootstrap/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables.net-bs5@1.13.1",
+      "destination": "wwwroot/lib/datatables.net-bs5/"
     }
   ]
 }

@@ -1,0 +1,162 @@
+﻿@using Newtonsoft.Json
+@using Schoolager.Web.Data.Entities
+
+@{
+    ViewData["Title"] = "AddStudentsToTurma";
+
+    List<Student> AllStudents = new List<Student>();
+    List<Student> TurmaStudents = new List<Student>();
+
+    AllStudents.Add(new Student { Id=1, Name="Franciso Ferreira", Birthday=new DateTime(1996, 10, 2)});
+    AllStudents.Add(new Student { Id=2, Name="Tiago Machado", Birthday=new DateTime(1996, 2, 10)});
+    AllStudents.Add(new Student { Id=3, Name="João Pereira", Birthday=new DateTime(1996, 8, 5)});
+
+    TurmaStudents.Add(new Student { Id=2, Name="Miguel Antunes", Birthday=new DateTime(1996, 3, 1)});
+    TurmaStudents.Add(new Student { Id=3, Name="Rodrigo Coutinho", Birthday=new DateTime(1996, 7, 17)});
+}
+
+<div class="container-fluid px-5">
+    <div class="row mb-3 pt-5">
+        <div class="col-5 p-5 bg-white">
+            <h2 class="mb-2">All Students</h2>
+            <table class="table table-bordered table-hover" id="tableAll">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                        <th>Nome</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var student in AllStudents)
+                    {
+                        <tr data-student="@JsonConvert.SerializeObject(student)">
+                            <td class="align-middle"><input type="checkbox" name="addSelected" /></td>
+                            <td class="align-middle">@student.Name</td>
+                            <td class="align-middle">@student.Birthday.Value.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <div class="w-100 h-100 d-flex flex-column justify-content-evenly">
+                <button id="addBtn" type="button" class="btn btn-outline-dark">Add</button>
+                <button id="removeBtn" type="button" class="btn btn-outline-dark">Remove</button>
+            </div>
+        </div>
+        <div class="col-5 p-5 bg-white">
+            <h2 class="mb-2">Selected Students</h2>
+            <table class="table table-bordered table-hover" id="tableSelected">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                        <th>Nome</th>
+                        <th>Matricula</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var student in TurmaStudents)
+                    {
+                        <tr data-student="@JsonConvert.SerializeObject(student)">
+                            <td class="align-middle"><input type="checkbox" name="removeSelected" /></td>
+                            <td class="align-middle">@student.Name</td>
+                            <td class="align-middle">@student.Birthday.Value.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            let tableSelected = $("#tableSelected").DataTable();
+            let tableAll = $("#tableAll").DataTable();
+            let studentsToAdd = [];
+            let studentsToRemove = [];
+            let row;
+            let rowsToRemove, rowsToAdd = [];
+
+            let data;
+
+            $("#addBtn").click(function() {
+                $("input:checkbox[name=addSelected]:checked").each(function(){
+                    row = $(this).parent().parent();
+
+                    studentsToAdd.push(row.data("student"));
+
+                    // remove from all students table add to selected students table
+                    row.remove();
+                    tableSelected.row.add(row).draw();
+
+                    // uncheck checkbox
+                    $(this).prop("checked", false);
+                    $(this).attr("name", "removeSelected");
+                });
+
+                data = {
+                    students : studentsToAdd,
+                    turmaId : 1,
+                };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/FrontendTests/AddStudents",
+                    data: data,
+                    success: function(data) {
+                        studentsToAdd = [];
+                        console.log("output : " + JSON.stringify(data));
+                    },
+                    error: function(data) {
+                        console.log("error : " + JSON.stringify(data));
+                    },
+                });
+            });
+
+            $("#removeBtn").click(function() {
+                $("input:checkbox[name=removeSelected]:checked").each(function(){
+                    row = $(this).parent().parent();
+
+                    studentsToRemove.push(row.data("student"));
+
+                    // remove from selected students table add to all students table
+                    row.remove();
+                    tableAll.row.add(row).draw();
+
+                    // uncheck checkbox and change name
+                    $(this).prop("checked", false);
+                    $(this).attr("name", "addSelected");
+                });
+
+                data = {
+                    students : studentsToRemove,
+                    turmaId : 1,
+                };
+
+                $.ajax({
+                    //contentType: "application/json",
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/FrontendTests/RemoveStudents",
+                    data: data,
+                    success: function(data) {
+                        studentsToRemove = [];
+                        console.log("output : " + JSON.stringify(data));
+                    },
+                    error: function(data) {
+                        console.log("error : " + JSON.stringify(data));
+                    },
+                });
+            });
+        });
+    </script>
+}
+

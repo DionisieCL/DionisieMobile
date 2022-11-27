@@ -21,6 +21,7 @@ namespace Schoolager.Web.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Subject>(builder =>
             {
                 builder.HasMany(s => s.Teachers)
