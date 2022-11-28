@@ -8,10 +8,12 @@ namespace Schoolager.Web.Data.Entities
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? Birthday { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public string Address { get; set; }
 
@@ -19,9 +21,10 @@ namespace Schoolager.Web.Data.Entities
         public string Email { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         public Turma Turma { get; set; }
+
         public int? TurmaId { get; set; }
 
         public ICollection<Grade> Grades { get; set; }
@@ -34,5 +37,9 @@ namespace Schoolager.Web.Data.Entities
         public string ImageFullPath => ImageUrl == Guid.Empty
             ? $"https://schoolmanagesysstorage.blob.core.windows.net/noimage/noimage.png"
             : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageUrl}";
+
+        public ICollection<StudentLessonData> StudentLessonsData { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

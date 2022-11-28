@@ -140,6 +140,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.3.0.58" />
     <PackageReference Include="Syncfusion.Licensing" Version="20.3.0.58" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
 </Project>
