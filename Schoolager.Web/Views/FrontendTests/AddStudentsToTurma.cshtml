@@ -7,12 +7,12 @@
     List<Student> AllStudents = new List<Student>();
     List<Student> TurmaStudents = new List<Student>();
 
-    AllStudents.Add(new Student { Id=1, Name="Franciso Ferreira", Birthday=new DateTime(1996, 10, 2)});
-    AllStudents.Add(new Student { Id=2, Name="Tiago Machado", Birthday=new DateTime(1996, 2, 10)});
-    AllStudents.Add(new Student { Id=3, Name="João Pereira", Birthday=new DateTime(1996, 8, 5)});
+    AllStudents.Add(new Student { Id=1, FirstName="Franciso", LastName="Ferreira", DateOfBirth=new DateTime(1996, 10, 2)});
+    AllStudents.Add(new Student { Id=2, FirstName="Tiago", LastName="Machado", DateOfBirth=new DateTime(1996, 2, 10)});
+    AllStudents.Add(new Student { Id=3, FirstName="João", LastName="Pereira", DateOfBirth=new DateTime(1996, 8, 5)});
 
-    TurmaStudents.Add(new Student { Id=4, Name="Miguel Antunes", Birthday=new DateTime(1996, 3, 1)});
-    TurmaStudents.Add(new Student { Id=5, Name="Rodrigo Coutinho", Birthday=new DateTime(1996, 7, 17)});
+    TurmaStudents.Add(new Student { Id=4, FirstName="Miguel", LastName="Antunes", DateOfBirth=new DateTime(1996, 3, 1)});
+    TurmaStudents.Add(new Student { Id=5, FirstName="Rodrigo", LastName="Coutinho", DateOfBirth=new DateTime(1996, 7, 17)});
 }
 
 <div class="container-fluid px-5">
@@ -32,8 +32,8 @@
                     {
                         <tr data-student="@JsonConvert.SerializeObject(student)">
                             <td class="align-middle"><input type="checkbox" name="addSelected" /></td>
-                            <td class="align-middle">@student.Name</td>
-                            <td class="align-middle">@student.Birthday.Value.ToShortDateString()</td>
+                            <td class="align-middle">@student.FullName</td>
+                            <td class="align-middle">@student.DateOfBirth.Value.ToShortDateString()</td>
                         </tr>
                     }
                 </tbody>
@@ -60,8 +60,8 @@
                     {
                         <tr data-student="@JsonConvert.SerializeObject(student)">
                             <td class="align-middle"><input type="checkbox" name="removeSelected" /></td>
-                            <td class="align-middle">@student.Name</td>
-                            <td class="align-middle">@student.Birthday.Value.ToShortDateString()</td>
+                            <td class="align-middle">@student.FullName</td>
+                            <td class="align-middle">@student.DateOfBirth.Value.ToShortDateString()</td>
                         </tr>
                     }
                 </tbody>

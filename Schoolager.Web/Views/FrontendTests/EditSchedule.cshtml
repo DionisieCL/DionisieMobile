@@ -76,37 +76,40 @@
     appData.Add(new AppointmentTest
     {
         Id = 1,
-        Subject = "Paris",
+        SubjectName = "Paris",
         Location = "Sala 25",
         StartTime = new DateTime(2022, 9, 12, 10, 0, 0),
         EndTime = new DateTime(2022, 9, 12, 12, 30, 0),
         RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;UNTIL=20230731T190801Z;",
         RecurrenceException = holidays,
     });
+
     appData.Add(new AppointmentTest
     {
         Id = 1,
-        Subject = "Paris",
+        SubjectName = "Paris",
         Location = "Sala 25",
         StartTime = new DateTime(2022, 9, 13, 10, 0, 0),
         EndTime = new DateTime(2022, 9, 13, 12, 30, 0),
         RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;UNTIL=20230731T190801Z;",
         RecurrenceException = holidays,
     });
+
     appData.Add(new AppointmentTest
     {
         Id = 1,
-        Subject = "Paris",
+        SubjectName = "Paris",
         Location = "Sala 25",
         StartTime = new DateTime(2022, 9, 14, 10, 0, 0),
         EndTime = new DateTime(2022, 9, 14, 12, 30, 0),
         RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;UNTIL=20230731T190801Z;",
         RecurrenceException = holidays,
     });
+
     appData.Add(new AppointmentTest
     {
         Id = 1,
-        Subject = "Paris",
+        SubjectName = "Paris",
         Location = "Sala 25",
         StartTime = new DateTime(2022, 9, 15, 10, 0, 0),
         EndTime = new DateTime(2022, 9, 15, 12, 30, 0),
@@ -116,7 +119,7 @@
     appData.Add(new AppointmentTest
     {
         Id = 1,
-        Subject = "Paris",
+        SubjectName = "Paris",
         Location = "Sala 25",
         StartTime = new DateTime(2022, 9, 16, 10, 0, 0),
         EndTime = new DateTime(2022, 9, 16, 12, 30, 0),
@@ -129,6 +132,9 @@
     <div class="bg-white">
         <ejs-schedule id="schedule" allowDragAndDrop="false" allowResizing="false" showWeekend="false" views="viewOptions" workDays="workDays">
             <e-schedule-eventsettings dataSource="appData" enableTooltip="true">
+                <e-eventsettings-fields>
+                    <e-field-subject name="SubjectName"></e-field-subject>
+                </e-eventsettings-fields>
             </e-schedule-eventsettings>
         </ejs-schedule>
         <div class="p-5">

@@ -6,15 +6,13 @@ namespace Schoolager.Web.Data
     public class AppointmentTest
     {
         public int Id { get; set; }
-        public string Subject { get; set; }
-
+        public string SubjectName { get; set; }
         public string Location { get; set; }
 
         //public Subject Subject { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string RecurrenceRule { get; set; }
-
         public string RecurrenceException { get; set; }
     }
 }
