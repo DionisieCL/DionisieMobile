@@ -1,5 +1,6 @@
 ﻿@using Schoolager.Web.Constants
 @using Schoolager.Web.Data
+@using Schoolager.Web.Data.Entities
 @using Syncfusion.EJ2.Schedule
 @using Syncfusion.EJ2
 
@@ -71,9 +72,9 @@
         id = "Delete"
     });
 
-    List<AppointmentTest> appData = new List<AppointmentTest>();
+    List<Lesson> appData = new List<Lesson>();
 
-    appData.Add(new AppointmentTest
+    appData.Add(new Lesson
     {
         Id = 1,
         SubjectName = "Paris",
@@ -84,7 +85,7 @@
         RecurrenceException = holidays,
     });
 
-    appData.Add(new AppointmentTest
+    appData.Add(new Lesson
     {
         Id = 1,
         SubjectName = "Paris",
@@ -95,7 +96,7 @@
         RecurrenceException = holidays,
     });
 
-    appData.Add(new AppointmentTest
+    appData.Add(new Lesson
     {
         Id = 1,
         SubjectName = "Paris",
@@ -106,7 +107,7 @@
         RecurrenceException = holidays,
     });
 
-    appData.Add(new AppointmentTest
+    appData.Add(new Lesson
     {
         Id = 1,
         SubjectName = "Paris",
@@ -116,7 +117,7 @@
         RecurrenceRule = "FREQ=WEEKLY;INTERVAL=1;UNTIL=20230731T190801Z;",
         RecurrenceException = holidays,
     });
-    appData.Add(new AppointmentTest
+    appData.Add(new Lesson
     {
         Id = 1,
         SubjectName = "Paris",

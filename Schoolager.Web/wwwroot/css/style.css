@@ -56,6 +56,10 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
+.btn:hover {
+  color: #fff !important;
+}
+
 .panel-left {
   border-right: 1px solid #84848422;
 }
@@ -74,7 +78,14 @@ button.accept-policy {
   left: 0;
   top: 0;
   height: 100vh;
-  width: 200px;
+  width: 250px;
+}
+.sidebar-container.closed {
+  transform: translateX(-250px);
+}
+.sidebar-container.open {
+  width: 250px;
+  transform: translateX(0);
 }
 .sidebar-container .sidebar {
   width: 100%;
@@ -3484,12 +3495,12 @@ textarea.form-control-lg {
 
 .btn-link {
   --bs-btn-font-weight: 400;
-  --bs-btn-color: var(--bs-link-color);
+  --bs-btn-color: white;
   --bs-btn-bg: transparent;
   --bs-btn-border-color: transparent;
-  --bs-btn-hover-color: var(--bs-link-hover-color);
+  --bs-btn-hover-color: white;
   --bs-btn-hover-border-color: transparent;
-  --bs-btn-active-color: var(--bs-link-hover-color);
+  --bs-btn-active-color: white;
   --bs-btn-active-border-color: transparent;
   --bs-btn-disabled-color: #6c757d;
   --bs-btn-disabled-border-color: transparent;

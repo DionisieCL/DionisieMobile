@@ -1,0 +1,13 @@
+
+    .btn {
+        &.btn-outline-dark, 
+        &.btn-outline-light, 
+        &.btn-outline-primary, 
+        &.btn-ouline-secondary {
+            
+        }
+        &:hover {
+            color: #fff !important;
+        }
+    }
+

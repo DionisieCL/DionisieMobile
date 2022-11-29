@@ -1,77 +1,182 @@
-﻿@model IEnumerable<Schoolager.Web.Data.Entities.Lesson>
+﻿@using Schoolager.Web.Constants
+@using Syncfusion.EJ2.Schedule
+@model IEnumerable<Schoolager.Web.Data.Entities.Lesson>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lessons";
+
+    string holidays = Holidays.GetStaticHolidays();
+
+    int[] workDays = new int[] { 1, 2, 3, 4, 5};
+
+    DateTime minVal= new DateTime(2000,01,01, 07,00,00);
+    DateTime maxVal = new DateTime(2000,01,01, 18,00,00);
+
+    ScheduleTimeScale timeScale = new ScheduleTimeScale
+    {
+        Interval = 60,
+        SlotCount = 4,
+    };
+
+    ScheduleWorkHours workHours = new ScheduleWorkHours
+    {
+        Start = "07:00",
+        End = "18:00",
+        Highlight = true
+    };
+
+    List<ScheduleView> viewOptions = new List<ScheduleView>
+    {
+        new ScheduleView
+        {
+            Option = Syncfusion.EJ2.Schedule.View.Day,
+            StartHour = "08:00",
+            EndHour = "18:00",
+            TimeScale = timeScale,
+        },
+        new ScheduleView 
+        { 
+            Option = Syncfusion.EJ2.Schedule.View.Week,
+            FirstDayOfWeek = 0,
+            StartHour = "08:00",
+            EndHour = "18:00",
+            TimeScale = timeScale,
+        },
+        new ScheduleView 
+        { 
+            Option = Syncfusion.EJ2.Schedule.View.Month,
+            //Readonly = true,
+        },
+    };
+
+    List<object> menuItems = new List<object>();
+
+    menuItems.Add(new
+    {
+        text = "New Event",
+        iconCss = "e-icons new",
+        id = "Add"
+    });
+    menuItems.Add(new
+    {
+        text = "Edit Event",
+        iconCss = "e-icons edit",
+        id = "Save"
+    });
+    menuItems.Add(new
+    {
+        text = "Delete Event",
+        iconCss = "e-icons delete",
+        id = "Delete"
+    });
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SubjectName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecurrenceRule)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecurrenceException)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teacher)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubjectName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecurrenceRule)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecurrenceException)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+
+            <a asp-action="Create" class="btn btn-outline-primary">New Lesson</a>
+            <h2>Lessons</h2>
+        </div>
+        <ejs-schedule id="schedule" allowDragAndDrop="true" allowResizing="true" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" dragStart="onDragStart" dragStop="onDragStop" showQuickInfo="false">
+            <e-schedule-eventsettings dataSource="@Model" enableTooltip="true">
+                <e-eventsettings-fields>
+                    <e-field-subject name="SubjectName"></e-field-subject>
+                </e-eventsettings-fields>
+            </e-schedule-eventsettings>
+        </ejs-schedule>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+           
+	    });
+
+    </script>
 }
-    </tbody>
-</table>
+
+<script type="text/javascript">
+    function onPopupOpen(args) {
+            // cancel the default modal from the scheduler
+            args.cancel = true;
+
+            let date = offsetDateTimezoneToJson(args.data.StartTime);
+
+            // if the the user clicked an appointment
+            if (args.data.Id === undefined) {
+                window.location.href = "/Lessons/Create/?" + `date=${date}`;
+            } else {
+                window.location.href = "/Lessons/Edit/" + args.data.Id;
+            }
+        }
+
+    function onDragStart(args) {
+        //console.log(args);
+    }
+
+    function onDragStop(args) {
+        console.log(args);
+        let startTime = new Date(args.data.StartTime)
+        let endTime = new Date(args.data.EndTime)
+
+        args.data.StartTime = offsetDateTimezoneToJson(args.data.StartTime);
+        args.data.EndTime = offsetDateTimezoneToJson(args.data.EndTime);
+        args.data.StartTimeString = getShortTimeString(startTime);
+        args.data.EndTimeString = getShortTimeString(endTime);
+
+        $.ajax({
+            type: "POST",
+            url: "/Lessons/LessonDrag",
+            data: args.data,
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+//                $("#toastContainer").html(
+//                    `<div class="alert alert-success alert-dismissible" role="alert">
+//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//Appointment updated successfully.</div>`
+//                )
+            },
+            failure: function (response) {
+//                $("#toastContainer").html(
+//                    `<div class="alert alert-success alert-dismissible" role="alert">
+//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//Appointment could not be updated.</div>`
+//                )
+            },
+            error: function (response) {
+//                $("#toastContainer").html(
+//                    `<div class="alert alert-success alert-dismissible" role="alert">
+//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//Appointment could not be updated.</div>`
+//                )
+            }
+        });
+    }
+
+    function onResizeStop(args){
+        console.log(args);
+    }
+
+    function getShortTimeString(date) {
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+
+        if (minutes === 0) {
+            return `${hours}:${minutes}0`;
+        } else {
+            return `${hours}:${minutes}`;
+        }
+    }
+
+    function offsetDateTimezoneToJson(date) {
+        return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toJSON();
+    }
+</script>
+
+

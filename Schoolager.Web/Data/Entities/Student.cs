@@ -8,8 +8,10 @@ namespace Schoolager.Web.Data.Entities
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "You must enter a first name")]
         public string FirstName { get; set; }
 
+        [Required(ErrorMessage = "You must enter a last name")]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]

@@ -5,7 +5,16 @@
     left: 0;
     top: 0;
     height: 100vh;
-    width: 200px;
+    width: 250px;
+
+    &.closed {
+        transform: translateX(-250px);
+    }
+
+    &.open {
+        width: 250px;
+        transform: translateX(0);
+    }
 
     .sidebar {
         width: 100%;
@@ -28,6 +37,7 @@
 
         .brand-container {
             height: 80px;
+
             .brand-name-container {
                 .brand-name {
                     font-size: 1.75rem;

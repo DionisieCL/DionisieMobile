@@ -1,4 +1,5 @@
 ﻿using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
 using System;
@@ -12,5 +13,7 @@ namespace Schoolager.Web.Helpers
 
         Student ToStudent(StudentViewModel model, Guid imageId, bool isNew);
         StudentViewModel ToStudentViewModel(Student student);
+
+        Lesson ToLesson(LessonViewModel model, bool isNew);
     }
 }

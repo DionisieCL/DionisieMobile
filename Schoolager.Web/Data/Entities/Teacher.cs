@@ -7,8 +7,10 @@ namespace Schoolager.Web.Data.Entities
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "You must enter a first name")]
         public string FirstName { get; set; }
 
+        [Required(ErrorMessage = "You must enter a last name")]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
@@ -25,6 +27,7 @@ namespace Schoolager.Web.Data.Entities
         public Subject Subject { get; set; }
 
         [Display(Name = "Subject")]
+        [Range(1, int.MaxValue, ErrorMessage = "You must select a Subject")]
         public int SubjectId { get; set; }
 
         [Display(Name = "Image")]

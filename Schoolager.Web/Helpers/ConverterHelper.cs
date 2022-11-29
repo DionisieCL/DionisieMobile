@@ -1,4 +1,5 @@
 ﻿using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
 using System;
@@ -86,5 +87,33 @@ namespace Schoolager.Web.Helpers
             };
         }
 
+        public Lesson ToLesson(LessonViewModel model, bool isNew)
+        {
+            TimeSpan startTime = TimeSpan.Parse(model.StartTimeString);
+            TimeSpan endTime = TimeSpan.Parse(model.EndTimeString);
+
+            DateTime firstDay = model.StartTime.Value.StartOfWeek(DayOfWeek.Monday);
+
+            model.StartTime = firstDay;
+            model.EndTime = firstDay;
+
+            int dayDifference = model.WeekDay - (int)firstDay.DayOfWeek;
+
+            model.StartTime =  model.StartTime.Value.AddDays(dayDifference);
+            model.EndTime = model.EndTime.Value.AddDays(dayDifference);
+
+            return new Lesson
+            {
+                Id = isNew ? 0 : model.Id,
+                SubjectName = model.SubjectName,
+                SubjectId = model.SubjectId,
+                TeacherId = model.TeacherId,
+                StartTime = model.StartTime.Value.Date + startTime,
+                EndTime = model.EndTime.Value.Date + endTime,
+                Location = model.Location,
+                RecurrenceRule = model.RecurrenceRule,
+                RecurrenceException = model.RecurrenceException,
+            };
+        }
     }
 }

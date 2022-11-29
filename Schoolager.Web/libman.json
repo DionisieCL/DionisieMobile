@@ -16,6 +16,11 @@
       "provider": "cdnjs",
       "library": "datatables.net-bs5@1.13.1",
       "destination": "wwwroot/lib/datatables.net-bs5/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-timepicker@1.13.19",
+      "destination": "wwwroot/lib/jquery-timepicker/"
     }
   ]
 }

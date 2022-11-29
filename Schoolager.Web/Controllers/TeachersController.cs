@@ -18,16 +18,20 @@ namespace Schoolager.Web.Controllers
         private readonly ITeacherRepository _teacherRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
+        private readonly ISubjectRepository _subjectRepository;
 
-        public TeachersController(DataContext context,
-                                  ITeacherRepository teacherRepository,
-                                  IConverterHelper converterHelper,
-                                  IBlobHelper blobHelper)
+        public TeachersController(
+            DataContext context,                      
+            ITeacherRepository teacherRepository,
+            IConverterHelper converterHelper,
+            IBlobHelper blobHelper,
+            ISubjectRepository subjectRepository)
         {
             _context = context;
             _teacherRepository = teacherRepository;
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
+            _subjectRepository = subjectRepository;
         }
 
         // GET: Teachers
@@ -58,7 +62,8 @@ namespace Schoolager.Web.Controllers
         // GET: Teachers/Create
         public IActionResult Create()
         {
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name");
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             return View();
         }
 
@@ -84,7 +89,8 @@ namespace Schoolager.Web.Controllers
                 await _teacherRepository.CreateAsync(teacher);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", model.SubjectId);
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             return View(model);
         }
 
@@ -101,7 +107,8 @@ namespace Schoolager.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", teacher.SubjectId);
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             var view = _converterHelper.ToTeacherViewModel(teacher);
             return View(view);
         }
@@ -146,7 +153,8 @@ namespace Schoolager.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", model.SubjectId);
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             return View(model);
         }
 
@@ -175,6 +183,15 @@ namespace Schoolager.Web.Controllers
             var teacher = await _teacherRepository.GetByIdAsync(id);
             await _teacherRepository.DeleteAsync(teacher);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [Route("Teachers/GetTeachersBySubjectIdAsync")]
+        public async Task<JsonResult> GetTeachersBySubjectIdAsync(int subjectId)
+        {
+            var teachers =  _teacherRepository.GetTeachersBySubjectId(subjectId);
+
+            return Json(await teachers.ToListAsync());
         }
     }
 }

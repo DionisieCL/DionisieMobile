@@ -1,29 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Schoolager.Web.Constants;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
+using Schoolager.Web.Models.Lessons;
 
 namespace Schoolager.Web.Controllers
 {
     public class LessonsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly ILessonRepository _lessonRepository;
+        private readonly IConverterHelper _converterHelper;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly IRecurrenceHelper _recurrenceHelper;
 
-        public LessonsController(DataContext context)
+        public LessonsController(
+            ILessonRepository lessonRepository,
+            IConverterHelper converterHelper,
+            ITeacherRepository teacherRepository,
+            ISubjectRepository subjectRepository,
+            IRecurrenceHelper recurrenceHelper)
         {
-            _context = context;
+            _lessonRepository = lessonRepository;
+            _converterHelper = converterHelper;
+            _teacherRepository = teacherRepository;
+            _subjectRepository = subjectRepository;
+            _recurrenceHelper = recurrenceHelper;
         }
 
         // GET: Lessons
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Lessons.Include(l => l.Subject).Include(l => l.Teacher);
-            return View(await dataContext.ToListAsync());
+            var lessons = _lessonRepository.GetAll();
+
+
+            return View(await lessons.ToListAsync());
         }
 
         // GET: Lessons/Details/5
@@ -31,15 +50,15 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
-            var lesson = await _context.Lessons
-                .Include(l => l.Subject)
-                .Include(l => l.Teacher)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lesson = await _lessonRepository.GetByIdAsync(id.Value);
+
             if (lesson == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
@@ -47,11 +66,36 @@ namespace Schoolager.Web.Controllers
         }
 
         // GET: Lessons/Create
-        public IActionResult Create()
+        public IActionResult Create(string date)
         {
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Id");
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Id");
-            return View();
+            DateTime dateTime;
+
+            // If the user clicks the new appointment button
+            if (date == null)
+            {
+                // Make sure slected time is 7 am
+                TimeSpan time = new TimeSpan(8, 0, 0);
+
+                // TODO: Change to first day of school
+                dateTime = new DateTime(2022, 9, 15);
+                dateTime = dateTime.Date + time;
+            }
+            else
+            {
+                dateTime = DateTime.Parse(date);
+            }
+
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+            ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
+            ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+
+            LessonViewModel lessonViewModel = new LessonViewModel
+            {
+                StartTime = dateTime,
+                EndTime = dateTime,
+            };
+
+            return View(lessonViewModel);
         }
 
         // POST: Lessons/Create
@@ -59,17 +103,40 @@ namespace Schoolager.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SubjectName,Location,StartTime,EndTime,RecurrenceRule,RecurrenceException,SubjectId,TeacherId")] Lesson lesson)
+        public async Task<IActionResult> Create(LessonViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(lesson);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var subject = await _subjectRepository.GetByIdAsync(model.SubjectId);
+
+                    if(subject == null)  
+                    {
+                        // TODO: NotFoundViewResult
+                        return NotFound();
+                    }
+
+                    // TODO: Change to final day of school
+                    model.RecurrenceRule = _recurrenceHelper.GetRecurrenceRule(new DateTime(2023, 12 ,1));
+                    model.RecurrenceException = Holidays.GetStaticHolidays();
+                    model.SubjectName = subject.Name;
+
+                    var lesson = _converterHelper.ToLesson(model, true);
+
+                    await _lessonRepository.CreateAsync(lesson);
+
+                    // TODO: success message
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // TODO: failure message
+                }
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Id", lesson.SubjectId);
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Id", lesson.TeacherId);
-            return View(lesson);
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
+            return View(model);
         }
 
         // GET: Lessons/Edit/5
@@ -77,16 +144,19 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
-            var lesson = await _context.Lessons.FindAsync(id);
+            var lesson = await _lessonRepository.GetByIdAsync(id.Value);
+
             if (lesson == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Id", lesson.SubjectId);
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Id", lesson.TeacherId);
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             return View(lesson);
         }
 
@@ -99,31 +169,31 @@ namespace Schoolager.Web.Controllers
         {
             if (id != lesson.Id)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
+
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(lesson);
-                    await _context.SaveChangesAsync();
+                    await _lessonRepository.UpdateAsync(lesson);
+                    // TODO: success message
+                    return View(lesson);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LessonExists(lesson.Id))
+                    if (!await _lessonRepository.ExistAsync(lesson.Id))
                     {
+                        // TODO: NotFoundViewResult
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    // TODO: failure message
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Id", lesson.SubjectId);
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Id", lesson.TeacherId);
+
             return View(lesson);
         }
 
@@ -132,15 +202,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
-            var lesson = await _context.Lessons
-                .Include(l => l.Subject)
-                .Include(l => l.Teacher)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lesson = await _lessonRepository.GetByIdAsync(id.Value);
             if (lesson == null)
             {
+                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
@@ -152,15 +221,35 @@ namespace Schoolager.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var lesson = await _context.Lessons.FindAsync(id);
-            _context.Lessons.Remove(lesson);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var lesson = await _lessonRepository.GetByIdAsync(id);
+            try
+            {
+                await _lessonRepository.DeleteAsync(lesson);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (!await _lessonRepository.ExistAsync(lesson.Id))
+                {
+                    // TODO: NotFoundViewResult
+                    return NotFound();
+                }
+            }
+
+
+            return View(lesson);
         }
 
-        private bool LessonExists(int id)
+        [HttpPost]
+        [Route("Lessons/LessonDrag")]
+        public async Task<JsonResult> LessonDrag(LessonViewModel model)
         {
-            return _context.Lessons.Any(e => e.Id == id);
+            //Console.WriteLine(model);
+            var appointment = _converterHelper.ToLesson(model, false);
+
+            await _lessonRepository.UpdateAsync(appointment);
+
+            return Json(model);
         }
     }
 }

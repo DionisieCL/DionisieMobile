@@ -1,63 +1,117 @@
-﻿@model Schoolager.Web.Data.Entities.Lesson
+﻿@model Schoolager.Web.Models.Lessons.LessonViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "New Lesson";
 }
 
-<h1>Create</h1>
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
 
-<h4>Lesson</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SubjectName" class="control-label"></label>
-                <input asp-for="SubjectName" class="form-control" />
-                <span asp-validation-for="SubjectName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RecurrenceRule" class="control-label"></label>
-                <input asp-for="RecurrenceRule" class="form-control" />
-                <span asp-validation-for="RecurrenceRule" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RecurrenceException" class="control-label"></label>
-                <input asp-for="RecurrenceException" class="form-control" />
-                <span asp-validation-for="RecurrenceException" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubjectId" class="control-label"></label>
-                <select asp-for="SubjectId" class ="form-control" asp-items="ViewBag.SubjectId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TeacherId" class="control-label"></label>
-                <select asp-for="TeacherId" class ="form-control" asp-items="ViewBag.TeacherId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <h2>New Lesson</h2>
+        </div>
+        <div class="d-flex justify-content-center align-items-center w-100">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-secondary"></div>
+                <input asp-for="StartTime" type="hidden"/>
+                <input asp-for="EndTime" type="hidden"/>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label asp-for="SubjectId" class="control-label"></label>
+                        <select asp-for="SubjectId" class ="form-control" asp-items="ViewBag.SubjectId"></select>
+                        <span asp-validation-for="SubjectId" class="text-secondary"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="TeacherId" class="control-label"></label>
+                        <select asp-for="TeacherId" class ="form-control" asp-items="ViewBag.TeacherId">
+                            <option value="0">< Select a teacher ></option>
+                        </select>
+                        <span asp-validation-for="SubjectId" class="text-secondary"></span>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label asp-for="Location" class="control-label"></label>
+                        <input asp-for="Location" class="form-control" />
+                        <span asp-validation-for="Location" class="text-secondary"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="WeekDay" class="control-label"></label>
+                        <select asp-for="WeekDay" class ="form-control">
+                            <option value="0">< Select a weekday ></option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                        </select>
+                        <span asp-validation-for="WeekDay" class="text-secondary"></span>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label asp-for="StartTime" class="control-label"></label>
+                        <input id="startTime" class="timepicker form-control" name="timepicker"/>
+                        <input asp-for="StartTimeString" id="startTimeHidden" type="hidden"/>
+                        <span asp-validation-for="StartTime" class="text-secondary"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="EndTime" class="control-label"></label>
+                        <input id="endTime" class="timepicker form-control" name="timepicker"/>
+                        <input asp-for="EndTimeString" id="endTimeHidden" type="hidden"/>
+                        <span asp-validation-for="EndTime" class="text-secondary"></span>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
+                    <button asp-action="Create" type="submit" value="Create" class="btn btn-outline-success">Create</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            
+            let selectedDateString = '@ViewData["DateString"]';
+            let selectedDate = '@ViewData["Date"]';
+            console.log(selectedDate);
+            setDropdownTimes(selectedDate);
+
+		    $("#SubjectId").change(function () {
+			    $("#TeacherId").empty();
+			    $.ajax({
+				    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
+				    type: 'POST',
+				    dataType: 'json',
+				    data: {subjectId:$("#SubjectId").val()},
+				    success: function (teachers) {
+					    debugger;
+					    $("#TeacherId").append('<option value="0">< Select a teacher ></option>');
+					    $.each(teachers, function (i, teacher) {
+                            console.log(teacher);
+						    $("#TeacherId").append('<option value="'
+							    + teacher.id + '">'
+							    + teacher.fullName + '</option>');
+					    });
+				    },
+				    error: function (ex) {
+					    debugger;
+					    alert('Failed to retrieve teachers.' + ex);
+				    }
+			    });
+			    return false;
+		    })
+	    });
+
+    </script>
+
+    <script type="text/javascript" src="~/js/lessonTimePickers.js"></script>
+}
 
