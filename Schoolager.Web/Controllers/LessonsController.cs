@@ -36,13 +36,18 @@ namespace Schoolager.Web.Controllers
             _recurrenceHelper = recurrenceHelper;
         }
 
-        // GET: Lessons
+
         public async Task<IActionResult> Index()
         {
             var lessons = _lessonRepository.GetAll();
 
 
             return View(await lessons.ToListAsync());
+        }
+
+        public async Task<IActionResult> IndexTeacher()
+        {
+            return View();
         }
 
         // GET: Lessons/Details/5
@@ -77,12 +82,17 @@ namespace Schoolager.Web.Controllers
                 TimeSpan time = new TimeSpan(8, 0, 0);
 
                 // TODO: Change to first day of school
-                dateTime = new DateTime(2022, 9, 15);
-                dateTime = dateTime.Date + time;
+                dateTime = new DateTime(2022, 9, 15).Date + time;
+                //dateTime = dateTime.Date + time;
             }
             else
             {
+                // Get the time from the parsed in date
                 dateTime = DateTime.Parse(date);
+                TimeSpan time = dateTime.TimeOfDay;
+
+                // TODO: Change to first day of school
+                dateTime = new DateTime(2022, 9, 15).Date + time;
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
@@ -155,9 +165,15 @@ namespace Schoolager.Web.Controllers
                 // TODO: NotFoundViewResult
                 return NotFound();
             }
-            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
-            return View(lesson);
+            var model = _converterHelper.ToLessonViewModel(lesson);
+
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+            ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
+            ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+            ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+            
+            return View(model);
         }
 
         // POST: Lessons/Edit/5
@@ -165,27 +181,36 @@ namespace Schoolager.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SubjectName,Location,StartTime,EndTime,RecurrenceRule,RecurrenceException,SubjectId,TeacherId")] Lesson lesson)
+        public async Task<IActionResult> Edit(int id, LessonViewModel model)
         {
-            if (id != lesson.Id)
+            if (id != model.Id)
             {
                 // TODO: NotFoundViewResult
                 return NotFound();
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+            ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
+            ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+            ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var lesson = _converterHelper.ToLesson(model, false);
+
                     await _lessonRepository.UpdateAsync(lesson);
+
+                    ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+                    ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+
                     // TODO: success message
-                    return View(lesson);
+                    return View(model);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _lessonRepository.ExistAsync(lesson.Id))
+                    if (!await _lessonRepository.ExistAsync(model.Id))
                     {
                         // TODO: NotFoundViewResult
                         return NotFound();
@@ -194,62 +219,66 @@ namespace Schoolager.Web.Controllers
                 }
             }
 
-            return View(lesson);
+            return View(model);
         }
 
-        // GET: Lessons/Delete/5
+
+        [HttpPost]
+        [Route("Lessons/LessonDrag")]
+        public async Task<JsonResult> LessonDrag(LessonViewModel model)
+        {
+            TimeSpan startTime = model.StartTime.Value.TimeOfDay;
+            TimeSpan endTime = model.EndTime.Value.TimeOfDay;
+
+            // Get first day of school
+            model.StartTime = new DateTime(2022, 9, 15).Date + startTime;
+            model.EndTime = new DateTime(2022, 9, 15).Date + endTime;
+
+            model.RecurrenceException = Holidays.GetStaticHolidays();
+
+            var lesson = _converterHelper.ToLesson(model, false);
+            //TODO: Get Recurrence exception
+
+            await _lessonRepository.UpdateAsync(lesson);
+
+            return Json(model);
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                // TODO: NotFoundViewResult
+                // NotFoundViewResult("AppointmentNotFound");
                 return NotFound();
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(id.Value);
+
             if (lesson == null)
             {
-                // TODO: NotFoundViewResult
                 return NotFound();
             }
 
-            return View(lesson);
-        }
-
-        // POST: Lessons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var lesson = await _lessonRepository.GetByIdAsync(id);
             try
             {
                 await _lessonRepository.DeleteAsync(lesson);
+
+                //_flashMessage.Confirmation("Appointment deleted successfully.");
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 if (!await _lessonRepository.ExistAsync(lesson.Id))
                 {
-                    // TODO: NotFoundViewResult
                     return NotFound();
                 }
+                //_flashMessage.Danger(ex.Message);
             }
 
+            //_flashMessage.Danger("Could not delete appointment.");
 
-            return View(lesson);
-        }
-
-        [HttpPost]
-        [Route("Lessons/LessonDrag")]
-        public async Task<JsonResult> LessonDrag(LessonViewModel model)
-        {
-            //Console.WriteLine(model);
-            var appointment = _converterHelper.ToLesson(model, false);
-
-            await _lessonRepository.UpdateAsync(appointment);
-
-            return Json(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

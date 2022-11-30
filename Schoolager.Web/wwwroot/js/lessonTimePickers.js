@@ -1,8 +1,9 @@
 ﻿let startTimePicker = $("#startTime");
 let endTimePicker = $("#endTime");
 
-function setDropdownTimes(startDate) {
-    console.log(startDate);
+function setDropdownTimes(startDate, endDate = null) {
+    console.log(startDate)
+    console.log(endDate)
     startTimePicker.timepicker({
         'timeFormat': 'H:i',
         'minTime': '8:00',
@@ -22,10 +23,11 @@ function setDropdownTimes(startDate) {
     startTimePicker.change(onStartTimeChange);
     endTimePicker.change(onEndTimeChange);
 
-    let startTime = new Date(startDate);
-    console.log(startTime);
+    let startTime = removeMinutes(new Date(startDate), 60);
 
-    // Shift the selected start time by 30 minutes
+    let endTime;
+
+    // Shift the selected start time by 45 and 90 minutes
     let shiftedTimeHalfSlot = addMinutes(startTime, 45);
     let shiftedTimeFullSlot = addMinutes(startTime, 90);
 
@@ -33,8 +35,15 @@ function setDropdownTimes(startDate) {
         shiftedTimeFullSlot = shiftedTimeHalfSlot;
     }
 
+    if (endDate === null) {
+        endTime = shiftedTimeHalfSlot;
+    } else {
+        endTime = removeMinutes(new Date(endDate), 60);
+    }
+
+
     startTimePicker.timepicker('setTime', startTime);
-    endTimePicker.timepicker('setTime', shiftedTimeHalfSlot);
+    endTimePicker.timepicker('setTime', endTime);
 
     // Set the minimum allowed time for the end time
     endTimePicker.timepicker('option', { 'minTime': getShortTimeString(shiftedTimeHalfSlot) });
@@ -42,7 +51,7 @@ function setDropdownTimes(startDate) {
 
     // set the value of the hidden inputs, these values are the ones that will be used in the backEnd
     $("#startTimeHidden").attr('value', getShortTimeString(startTime));
-    $("#endTimeHidden").attr('value', getShortTimeString(shiftedTimeHalfSlot));
+    $("#endTimeHidden").attr('value', getShortTimeString(endTime));
 }
 
 
@@ -92,6 +101,10 @@ function getShortTimeString(date) {
 // add a specific amount of minutes to a date
 function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
+}
+
+function removeMinutes(date, minutes) {
+    return new Date(date.getTime() - minutes * 60000);
 }
 
 function offsetDateTimezone(date) {

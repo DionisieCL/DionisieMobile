@@ -3,6 +3,7 @@ using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Schoolager.Web.Helpers
@@ -102,17 +103,43 @@ namespace Schoolager.Web.Helpers
             model.StartTime =  model.StartTime.Value.AddDays(dayDifference);
             model.EndTime = model.EndTime.Value.AddDays(dayDifference);
 
+            model.StartTime = model.StartTime.Value.Date + startTime;
+            model.EndTime = model.EndTime.Value.Date + endTime;
+
             return new Lesson
             {
                 Id = isNew ? 0 : model.Id,
                 SubjectName = model.SubjectName,
                 SubjectId = model.SubjectId,
                 TeacherId = model.TeacherId,
-                StartTime = model.StartTime.Value.Date + startTime,
-                EndTime = model.EndTime.Value.Date + endTime,
+                StartTime = model.StartTime.Value,
+                EndTime = model.EndTime.Value,
                 Location = model.Location,
                 RecurrenceRule = model.RecurrenceRule,
                 RecurrenceException = model.RecurrenceException,
+                WeekDay = model.WeekDay,
+            };
+        }
+
+        public LessonViewModel ToLessonViewModel(Lesson lesson)
+        {
+            string startTimeString = lesson.StartTime.Value.ToString("h:mm");
+            string endTimeString = lesson.EndTime.Value.ToString("h:mm");
+
+            return new LessonViewModel
+            {
+                Id = lesson.Id,
+                StartTime = lesson.StartTime,
+                EndTime = lesson.EndTime,
+                SubjectId = lesson.SubjectId,
+                TeacherId = lesson.SubjectId,
+                SubjectName = lesson.SubjectName,
+                Location = lesson.Location == null ? "" : lesson.Location,
+                RecurrenceRule = lesson.RecurrenceRule,
+                RecurrenceException = lesson.RecurrenceException,
+                WeekDay = lesson.WeekDay,
+                StartTimeString = startTimeString,
+                EndTimeString = endTimeString
             };
         }
     }

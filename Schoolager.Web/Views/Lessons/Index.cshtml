@@ -79,7 +79,7 @@
             <a asp-action="Create" class="btn btn-outline-primary">New Lesson</a>
             <h2>Lessons</h2>
         </div>
-        <ejs-schedule id="schedule" allowDragAndDrop="true" allowResizing="true" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" dragStart="onDragStart" dragStop="onDragStop" showQuickInfo="false">
+        <ejs-schedule id="schedule" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" dragStart="onDragStart" dragStop="onDragStop" showQuickInfo="false">
             <e-schedule-eventsettings dataSource="@Model" enableTooltip="true">
                 <e-eventsettings-fields>
                     <e-field-subject name="SubjectName"></e-field-subject>
@@ -102,7 +102,7 @@
 
 <script type="text/javascript">
     function onPopupOpen(args) {
-            // cancel the default modal from the scheduler
+            //// cancel the default modal from the scheduler
             args.cancel = true;
 
             let date = offsetDateTimezoneToJson(args.data.StartTime);
@@ -120,19 +120,34 @@
     }
 
     function onDragStop(args) {
-        console.log(args);
-        let startTime = new Date(args.data.StartTime)
-        let endTime = new Date(args.data.EndTime)
+        console.log(args.data);
+        let startTime = new Date(args.data.StartTime);
+        let endTime = new Date(args.data.EndTime);
 
-        args.data.StartTime = offsetDateTimezoneToJson(args.data.StartTime);
-        args.data.EndTime = offsetDateTimezoneToJson(args.data.EndTime);
-        args.data.StartTimeString = getShortTimeString(startTime);
-        args.data.EndTimeString = getShortTimeString(endTime);
+        //args.data.StartTime = offsetDateTimezoneToJson(args.data.StartTime);
+        //args.data.EndTime = offsetDateTimezoneToJson(args.data.StartTime);
+        //args.data.StartTimeString = getShortTimeString(startTime);
+        //args.data.EndTimeString = getShortTimeString(endTime);
+        console.log(getShortTimeString(startTime));
+
+        let lessonViewModel = {
+            "Id" : args.data.Id,
+            "StartTime" : args.data.StartTime.toJSON(),
+            "EndTime" : args.data.EndTime.toJSON(),
+            "StartTimeString" : getShortTimeString(startTime),
+            "EndTimeString" : getShortTimeString(endTime),
+            "RecurrenceRule" : args.data.RecurrenceRule,
+            "SubjectName" : args.data.SubjectName,
+            "WeekDay":  args.data.StartTime.getDay(),
+            "SubjectId" : args.data.SubjectId,
+            "TeacherId" : args.data.TeacherId,
+            "Location" : args.data.Location,
+        }
 
         $.ajax({
             type: "POST",
             url: "/Lessons/LessonDrag",
-            data: args.data,
+            data: lessonViewModel,
             //contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {

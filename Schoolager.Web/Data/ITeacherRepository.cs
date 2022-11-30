@@ -10,7 +10,7 @@ namespace Schoolager.Web.Data
     {
         Task<Teacher> GetTeacherWithSubject(int id);
         IQueryable<Teacher> GetTeachersBySubjectId(int subjectId);
-
         IEnumerable<SelectListItem> GetComboTeachers();
+        IEnumerable<SelectListItem> GetComboTeachersBySubjectId(int subjectId);
     }
 }

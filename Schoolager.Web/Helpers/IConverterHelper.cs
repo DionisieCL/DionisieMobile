@@ -15,5 +15,6 @@ namespace Schoolager.Web.Helpers
         StudentViewModel ToStudentViewModel(Student student);
 
         Lesson ToLesson(LessonViewModel model, bool isNew);
+        LessonViewModel ToLessonViewModel(Lesson lesson);
     }
 }
