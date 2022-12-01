@@ -20,6 +20,7 @@ namespace Schoolager.Web.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly ITeacherRepository _teacherRepository;
         private readonly ISubjectRepository _subjectRepository;
+        private readonly ITurmaRepository _turmaRepository;
         private readonly IRecurrenceHelper _recurrenceHelper;
 
         public LessonsController(
@@ -27,27 +28,59 @@ namespace Schoolager.Web.Controllers
             IConverterHelper converterHelper,
             ITeacherRepository teacherRepository,
             ISubjectRepository subjectRepository,
+            ITurmaRepository turmaRepository,
             IRecurrenceHelper recurrenceHelper)
         {
             _lessonRepository = lessonRepository;
             _converterHelper = converterHelper;
             _teacherRepository = teacherRepository;
             _subjectRepository = subjectRepository;
+            _turmaRepository = turmaRepository;
             _recurrenceHelper = recurrenceHelper;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            var lessons = _lessonRepository.GetAll();
+            var turmas = _turmaRepository.GetAll();
 
 
-            return View(await lessons.ToListAsync());
+            return View(await turmas.ToListAsync());
+        }
+
+        public async Task<IActionResult> TurmaSchedule(int id)
+        {
+            var turma = await _turmaRepository.GetByIdAsync(id);
+
+            if (turma == null)
+            {
+                // new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
+            ViewData["TurmaId"] = id;
+            ViewData["TurmaName"] = turma.Name;
+
+            var lessons = await _lessonRepository.GetLessonByTurmaIdAsync(id);
+
+            return View(lessons);
         }
 
         public async Task<IActionResult> IndexTeacher()
         {
-            return View();
+            // TODO: Get logged in teacher
+            var teacher = await _teacherRepository.GetByIdAsync(1);
+
+            if (teacher == null)
+            {
+                // TODO: NotFoundViewResult()
+                return NotFound();
+            }
+
+            var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
+            //var lessonsList = await lessons.ToListAsync();
+
+            return View(lessons);
         }
 
         // GET: Lessons/Details/5
@@ -71,8 +104,16 @@ namespace Schoolager.Web.Controllers
         }
 
         // GET: Lessons/Create
-        public IActionResult Create(string date)
+        public async Task<IActionResult> Create(int id, string date)
         {
+            var turma = await _turmaRepository.GetByIdAsync(id);
+
+            if(turma == null)
+            {
+                // new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
             DateTime dateTime;
 
             // If the user clicks the new appointment button
@@ -98,6 +139,7 @@ namespace Schoolager.Web.Controllers
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
             ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+            ViewData["TurmaId"] = id;
 
             LessonViewModel lessonViewModel = new LessonViewModel
             {
@@ -137,7 +179,7 @@ namespace Schoolager.Web.Controllers
                     await _lessonRepository.CreateAsync(lesson);
 
                     // TODO: success message
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(TurmaSchedule), new { id = model.TurmaId });
                 }
                 catch (Exception ex)
                 {
@@ -279,6 +321,36 @@ namespace Schoolager.Web.Controllers
             //_flashMessage.Danger("Could not delete appointment.");
 
             return RedirectToAction(nameof(Index));
+        }
+
+        //[HttpGet("details")]
+        public async Task<IActionResult> LessonData(int lessonId, string date)
+        {
+            DateTime lessonDate = DateTime.Parse(date);
+
+            var lessonData = await _lessonRepository.GetLessonData(lessonId, lessonDate);
+
+            if(lessonData == null)
+            {
+                // TODO: return create new View
+                return RedirectToAction(nameof(CreateLessonData), new { id = lessonId});
+            }
+
+            // TODO: return create new View
+            return RedirectToAction(nameof(EditLessonData), new { id = lessonData.Id });
+
+
+            return View();
+        }
+
+        public async Task<IActionResult> CreateLessonData(int id)
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> EditLessonData(int id)
+        {
+            return View();
         }
     }
 }

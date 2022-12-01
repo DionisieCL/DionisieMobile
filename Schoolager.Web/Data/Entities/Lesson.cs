@@ -24,6 +24,10 @@ namespace Schoolager.Web.Data.Entities
 
         [Range(1, int.MaxValue, ErrorMessage = "You must select a Teacher")]
         public int TeacherId { get; set; }
+
+        public Turma Turma { get; set; }
+        public int TurmaId { get; set; }
+
         public ICollection<LessonData> LessonDatas { get; set; }
     }
 }
