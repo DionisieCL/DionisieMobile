@@ -2,7 +2,7 @@
 
 namespace Schoolager.Web.Data
 {
-    internal interface ITurmaRepository : IGenericRepository<Turma>
+    public interface ITurmaRepository : IGenericRepository<Turma>
     {
     }
 }

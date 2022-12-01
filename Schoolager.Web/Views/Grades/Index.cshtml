@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Schoolager.Web.Data.Entities.Turma>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Alunos da Turma "Por aqui nome da turma"</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>              
+            <td>
+                <a asp-action="ShowStudentsInTurma" asp-route-id="@item.Id">Ver alunos</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

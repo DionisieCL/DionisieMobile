@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Schoolager.Web.Data.Entities.Student>
+
+@{
+    ViewData["Title"] = "ShowStudentsInTurma";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img src="@Url.Content(item.ImageFullPath)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>              
+            <td>
+                <a asp-action="Grade" asp-route-id="@item.Id">Notas</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
