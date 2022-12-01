@@ -3,7 +3,9 @@ using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Schoolager.Web.Helpers
@@ -112,6 +114,7 @@ namespace Schoolager.Web.Helpers
                 SubjectName = model.SubjectName,
                 SubjectId = model.SubjectId,
                 TeacherId = model.TeacherId,
+                TurmaId = model.TurmaId,
                 StartTime = model.StartTime.Value,
                 EndTime = model.EndTime.Value,
                 Location = model.Location,
@@ -133,14 +136,27 @@ namespace Schoolager.Web.Helpers
                 EndTime = lesson.EndTime,
                 SubjectId = lesson.SubjectId,
                 TeacherId = lesson.SubjectId,
+                TurmaId = lesson.TurmaId,
                 SubjectName = lesson.SubjectName,
                 Location = lesson.Location == null ? "" : lesson.Location,
                 RecurrenceRule = lesson.RecurrenceRule,
                 RecurrenceException = lesson.RecurrenceException,
                 WeekDay = lesson.WeekDay,
                 StartTimeString = startTimeString,
-                EndTimeString = endTimeString
+                EndTimeString = endTimeString,
             };
+        }
+
+        public ICollection<LessonViewModel> AllToLessonViewModel(IQueryable lessons)
+        {
+            List<LessonViewModel> lessonViewModels = new List<LessonViewModel>();
+
+            foreach(Lesson lesson in lessons)
+            {
+                lessonViewModels.Add(ToLessonViewModel(lesson));
+            }
+
+            return lessonViewModels;
         }
     }
 }

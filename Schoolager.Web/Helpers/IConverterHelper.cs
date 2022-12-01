@@ -3,6 +3,8 @@ using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Schoolager.Web.Helpers
 {
@@ -16,5 +18,6 @@ namespace Schoolager.Web.Helpers
 
         Lesson ToLesson(LessonViewModel model, bool isNew);
         LessonViewModel ToLessonViewModel(Lesson lesson);
+        ICollection<LessonViewModel> AllToLessonViewModel(IQueryable lessons);
     }
 }

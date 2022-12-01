@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schoolager.Web.Data;
 
 namespace Schoolager.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221130170759_AddLessonDatas")]
+    partial class AddLessonDatas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,9 +204,6 @@ namespace Schoolager.Web.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TurmaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("WeekDay")
                         .HasColumnType("int");
 
@@ -213,8 +212,6 @@ namespace Schoolager.Web.Migrations
                     b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
-
-                    b.HasIndex("TurmaId");
 
                     b.ToTable("Lessons");
                 });
@@ -558,17 +555,9 @@ namespace Schoolager.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Schoolager.Web.Data.Entities.Turma", "Turma")
-                        .WithMany("Lessons")
-                        .HasForeignKey("TurmaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Subject");
 
                     b.Navigation("Teacher");
-
-                    b.Navigation("Turma");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.LessonData", b =>
@@ -681,8 +670,6 @@ namespace Schoolager.Web.Migrations
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Turma", b =>
                 {
-                    b.Navigation("Lessons");
-
                     b.Navigation("Students");
 
                     b.Navigation("SubjectTurma");

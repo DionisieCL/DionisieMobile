@@ -3,7 +3,7 @@
 @model IEnumerable<Schoolager.Web.Data.Entities.Lesson>
 
 @{
-    ViewData["Title"] = "My Lessons";
+    ViewData["Title"] = "Lessons";
 
     string holidays = Holidays.GetStaticHolidays();
 
@@ -75,11 +75,11 @@
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="px-3 p-3 d-flex justify-content-between align-items-center">
-
-            <a asp-action="Create" class="btn btn-outline-primary">New Lesson</a>
-            <h2>Lessons</h2>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <h2>@ViewData["TurmaName"]</h2>
+            <a id="newLessonBtn" class="btn btn-outline-primary">New Lesson</a>
         </div>
-        <ejs-schedule id="schedule" allowDragAndDrop="false" allowResizing="false" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" showQuickInfo="false">
+        <ejs-schedule id="schedule" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" dragStart="onDragStart" dragStop="onDragStop" showQuickInfo="false">
             <e-schedule-eventsettings dataSource="@Model" enableTooltip="true">
                 <e-eventsettings-fields>
                     <e-field-subject name="SubjectName"></e-field-subject>
@@ -94,7 +94,13 @@
 
     <script type="text/javascript">
 	    $(document).ready(function () {
-           
+            let turmaId = @ViewData["TurmaId"];
+
+            console.log(turmaId );
+
+            $("#newLessonBtn").click(function() {
+                window.location.href = "/Lessons/Create/?" + `id=${turmaId}`;
+            });
 	    });
 
     </script>
@@ -102,17 +108,18 @@
 
 <script type="text/javascript">
     function onPopupOpen(args) {
+            let turmaId = @ViewData["TurmaId"];
 
-            console.log(args);
             //// cancel the default modal from the scheduler
             args.cancel = true;
 
             let date = offsetDateTimezoneToJson(args.data.StartTime);
 
             // if the the user clicked an appointment
-
-            if (args.data.Id !== undefined) {
-                window.location.href = "/Lessons/LessonData/?" + `lessonId=${args.data.Id}&&date=${date}`;
+            if (args.data.Id === undefined) {
+                window.location.href = "/Lessons/Create/?" + `id=${turmaId}&&date=${date}`;
+            } else {
+                window.location.href = "/Lessons/Edit/" + args.data.Id;
             }
         }
 
