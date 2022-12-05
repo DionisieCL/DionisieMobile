@@ -26,7 +26,7 @@ namespace Schoolager.Web.Data
             modelBuilder.Entity<Subject>()
                 .HasMany(s => s.Teachers)
                 .WithOne(t => t.Subject)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Grade>()
                 .HasKey(g => new { g.StudentId, g.SubjectId });
