@@ -39,14 +39,13 @@ namespace Schoolager.Web.Data
                 .HasOne(g => g.Student)
                 .WithMany(s => s.Grades)
                 .HasForeignKey(g => g.StudentId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Subject)
                 .WithMany(sub => sub.Grades)
                 .HasForeignKey(g => g.SubjectId)
-                .OnDelete(DeleteBehavior.NoAction);
-
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<SubjectTurma>()
@@ -56,20 +55,20 @@ namespace Schoolager.Web.Data
                 .HasOne(st => st.Turma)
                 .WithMany(t => t.SubjectTurmas)
                 .HasForeignKey(st => st.TurmaId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SubjectTurma>()
                 .HasOne(st => st.Subject)
                 .WithMany(sub => sub.SubjectTurma)
                 .HasForeignKey(g => g.SubjectId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Turma)
                 .WithMany(t => t.Students)
                 .HasForeignKey(s => s.TurmaId)
-                .OnDelete(DeleteBehavior.NoAction)
+                .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
 
 
@@ -80,13 +79,13 @@ namespace Schoolager.Web.Data
                 .HasOne(sl => sl.Student)
                 .WithMany(s => s.StudentLessonsData)
                 .HasForeignKey(sl => sl.StudentId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StudentLessonData>()
                 .HasOne(sl => sl.LessonData)
                 .WithMany(s => s.StudentLessonsData)
                 .HasForeignKey(l => l.LessonDataId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<TeacherTurma>()
