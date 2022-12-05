@@ -85,5 +85,12 @@ namespace Schoolager.Web.Data
                 .Include(t => t.Subject)
                 .ToListAsync();
         }
+
+        public async Task<Teacher> GetTeacherByIdWithSubjectAsync(int id)
+        {
+            return await _context.Teachers
+                .Include(t => t.Subject)
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
     }
 }

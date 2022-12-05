@@ -58,7 +58,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var teacher = await _teacherRepository.GetByIdAsync(id.Value);
+            var teacher = await _teacherRepository.GetTeacherByIdWithSubjectAsync(id.Value);
 
             if (teacher == null)
             {
@@ -175,6 +175,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             if (ModelState.IsValid)
             {
                 try
@@ -231,8 +232,6 @@ namespace Schoolager.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
-
             return View(model);
         }
 

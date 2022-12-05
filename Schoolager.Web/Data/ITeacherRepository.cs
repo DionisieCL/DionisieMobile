@@ -15,5 +15,6 @@ namespace Schoolager.Web.Data
         Task<Teacher> GetByUserIdAsync(string userId);
         Task<Teacher> GetByUserIdWithSubjectAsync(string userId);
         Task<List<Teacher>> GetWithSubjectsAsync();
+        Task<Teacher> GetTeacherByIdWithSubjectAsync(int id);
     }
 }

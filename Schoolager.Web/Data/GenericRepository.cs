@@ -16,7 +16,6 @@ namespace Schoolager.Web.Data
 
         public IQueryable<T> GetAll()
         {
-            //Vai a tabela T e traz tudo o que está nela e desliga a ligação
             return _context.Set<T>().AsNoTracking();
         }
 
