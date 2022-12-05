@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Models.Turmas;
 
 namespace Schoolager.Web.Controllers
 {
     public class TurmasController : Controller
     {
         private readonly DataContext _context;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly ISubjectTurmaRepository _subjectTurmaRepository;
 
-        public TurmasController(DataContext context)
+        public TurmasController(DataContext context,
+                                ISubjectRepository subjectRepository,
+                                ISubjectTurmaRepository subjectTurmaRepository)
         {
             _context = context;
+            _subjectRepository = subjectRepository;
+            _subjectTurmaRepository = subjectTurmaRepository;
         }
 
         // GET: Turmas
@@ -149,5 +156,82 @@ namespace Schoolager.Web.Controllers
         {
             return _context.Turma.Any(e => e.Id == id);
         }
+
+        //Teste adicionar Subjects a uma Turma
+        public async Task<IActionResult> AddSubjectsToTurmaAsync(int? id)
+        {
+
+            var allSubjects = await _subjectRepository.GetAll().ToListAsync();
+
+            var subjectsInTurma = await _subjectTurmaRepository.GetAllSubjectsWithTurma(id.Value);
+
+            List<Subject> available = allSubjects.Where(st => !subjectsInTurma.Any(al => al.Id == st.Id)).ToList();
+
+            var model = new AddSubjectsToTurmaViewModel
+            {
+                TurmaId = id.Value,
+                AvailableSubjects = available,
+                SubjectsInTurma = subjectsInTurma
+            };
+
+            ViewData["TurmaId"] = id.Value;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddSubjects(List<Subject> subjects, int turmaId)
+        {
+
+            List<SubjectTurma> subTurmas = new List<SubjectTurma>();
+
+            foreach (var item in subjects)
+            {
+                subTurmas.Add(new SubjectTurma
+                {
+                    SubjectId = item.Id,
+                    TurmaId = turmaId
+                });
+            }
+
+            try
+            {
+                await _subjectTurmaRepository.InsertSubjectTurmasAsync(subTurmas);
+            }
+            catch (Exception ec)
+            {
+                throw;
+            }
+            
+
+            return Json(subjects);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveSubjects(List<Subject> subjects, int turmaId)
+        {
+
+            List<SubjectTurma> subTurmas = new List<SubjectTurma>();
+
+            foreach (var item in subjects)
+            {
+                subTurmas.Add(new SubjectTurma
+                {
+                    SubjectId = item.Id,
+                    TurmaId = turmaId
+                });
+            }
+
+            try
+            {
+                await _subjectTurmaRepository.RemoveSubjectTurmasAsync(subTurmas);
+            }
+            catch (Exception ec)
+            {
+                throw;
+            }
+
+            return Json(subjects);
+        }
+
     }
 }

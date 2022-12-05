@@ -16,18 +16,11 @@ namespace Schoolager.Web.Data
             _context = context;
         }
 
-        //public async Task<Student> GetStudentWithTurma(int id)
-        //{
-        //    return await _context.Students
-        //        .Include(s => s.Turma)
-        //        .Where(s => s.TurmaId == id)
-        //        .FirstOrDefaultAsync();
-        //}
-
         public async Task<List<Student>> GetStudentWithTurma(int id)
         {
             return await _context.Students
                 .Where(s => s.TurmaId == id)
+                .Include(s => s.Turma)
                 .ToListAsync();
         }
 

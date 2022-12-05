@@ -12,14 +12,17 @@ namespace Schoolager.Web.Controllers
         private readonly DataContext _context;
         private readonly ITurmaRepository _turmaRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly IGradeRepository _gradeRepository;
 
         public GradesController(DataContext context,
                                 ITurmaRepository turmaRepository,
-                                IStudentRepository studentRepository)
+                                IStudentRepository studentRepository,
+                                IGradeRepository gradeRepository)
         {
             _context = context;
             _turmaRepository = turmaRepository;
             _studentRepository = studentRepository;
+            _gradeRepository = gradeRepository;
         }
 
         public IActionResult Index()
@@ -32,11 +35,9 @@ namespace Schoolager.Web.Controllers
             return View(await _studentRepository.GetStudentWithTurma(id.Value));
         }
 
-        public IActionResult Create()
+        public async Task<ActionResult> ShowAllStudentGrades(int? id)
         {
-            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name");
-            return View();
+            return View(await _gradeRepository.GetGradesWithStudent(id.Value));
         }
-
     }
 }
