@@ -11,23 +11,22 @@ namespace Schoolager.Web.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Turma> Turma { get; set; }
+        public DbSet<Turma> Turmas { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<SubjectTurma> SubjectTurmas { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonData> LessonDatas { get; set; }
-        public DbSet<StudentLessonData> StudentLessonsData { get; set; }
-        
+        public DbSet<StudentLessonData> StudentLessonsDatas { get; set; }
+        public DbSet<TeacherTurma> TeacherTurmas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Subject>(builder =>
-            {
-                builder.HasMany(s => s.Teachers)
+            modelBuilder.Entity<Subject>()
+                .HasMany(s => s.Teachers)
                 .WithOne(t => t.Subject)
                 .OnDelete(DeleteBehavior.NoAction);
-            });
 
             modelBuilder.Entity<Grade>()
                 .HasKey(g => new { g.StudentId, g.SubjectId });
@@ -44,12 +43,14 @@ namespace Schoolager.Web.Data
                 .HasForeignKey(g => g.SubjectId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
+
             modelBuilder.Entity<SubjectTurma>()
                 .HasKey(st => new { st.SubjectId, st.TurmaId });
 
             modelBuilder.Entity<SubjectTurma>()
                 .HasOne(st => st.Turma)
-                .WithMany(t => t.SubjectTurma)
+                .WithMany(t => t.SubjectTurmas)
                 .HasForeignKey(st => st.TurmaId)
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -59,12 +60,14 @@ namespace Schoolager.Web.Data
                 .HasForeignKey(g => g.SubjectId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Turma)
                 .WithMany(t => t.Students)
                 .HasForeignKey(s => s.TurmaId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
+
 
             modelBuilder.Entity<StudentLessonData>()
                 .HasKey(sl => new { sl.StudentId, sl.LessonDataId });
@@ -80,6 +83,22 @@ namespace Schoolager.Web.Data
                 .WithMany(s => s.StudentLessonsData)
                 .HasForeignKey(l => l.LessonDataId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<TeacherTurma>()
+                .HasKey(sl => new { sl.TeacherId, sl.TurmaId });
+
+            modelBuilder.Entity<TeacherTurma>()
+                .HasOne(tt => tt.Teacher)
+                .WithMany(t => t.TeacherTurmas)
+                .HasForeignKey(tt => tt.TeacherId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TeacherTurma>()
+                .HasOne(tt => tt.Turma)
+                .WithMany(t => t.TeacherTurmas)
+                .HasForeignKey(tt => tt.TurmaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

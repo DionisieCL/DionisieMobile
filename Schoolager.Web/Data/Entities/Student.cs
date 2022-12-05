@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Schoolager.Web.Data.Entities
 {
-    public class Student : IEntity
+    public class Student : IEntity, IIsUser
     {
         public int Id { get; set; }
 
@@ -20,6 +20,7 @@ namespace Schoolager.Web.Data.Entities
         public string Address { get; set; }
 
         [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "You must enter an email address")]
         public string Email { get; set; }
 
         [DataType(DataType.PhoneNumber)]
@@ -32,13 +33,15 @@ namespace Schoolager.Web.Data.Entities
         public ICollection<Grade> Grades { get; set; }
 
         [Display(Name = "Image")]
-        public Guid ImageUrl { get; set; }
+        public Guid ImageId { get; set; }
 
         public User User { get; set; }
 
-        public string ImageFullPath => ImageUrl == Guid.Empty
+        public string UserId { get; set; }
+
+        public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://schoolmanagesysstorage.blob.core.windows.net/noimage/noimage.png"
-            : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageUrl}";
+            : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageId}";
 
         public ICollection<StudentLessonData> StudentLessonsData { get; set; }
 

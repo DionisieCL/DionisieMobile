@@ -17,5 +17,20 @@ namespace Schoolager.Web.Helpers
         Task<SignInResult> LoginAsync(LoginViewModel model);
 
         Task LogoutAsync();
+
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task AddUserToRoleAsync(User user, string roleName);
+
+        Task CheckRoleAsync(string roleName);
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+        Task<User> GetUserByIdAsync(string userId);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
     }
 }

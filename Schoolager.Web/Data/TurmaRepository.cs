@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data.Entities;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Schoolager.Web.Data
 {
@@ -11,6 +13,21 @@ namespace Schoolager.Web.Data
         public TurmaRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public Task<List<Turma>> GetTurmasByTeacherIdAsync(int id)
+        {
+            return _context.Turmas
+                .Where(t => t.TeacherTurmas.Any(tt => tt.TeacherId == id))
+                .ToListAsync();
+        }
+
+        public Turma GetWithStudentsById(int id)
+        {
+            return _context.Turmas
+                .Where(t => t.Id == id)
+                .Include(t => t.Students)
+                .FirstOrDefault();
         }
     }
 }

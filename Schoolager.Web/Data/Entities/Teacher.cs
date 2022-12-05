@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Schoolager.Web.Data.Entities
 {
-    public class Teacher : IEntity
+    public class Teacher : IEntity, IIsUser
     {
         public int Id { get; set; }
 
@@ -19,6 +20,7 @@ namespace Schoolager.Web.Data.Entities
         public string Address { get; set; }
 
         [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "You must enter an email address")]
         public string Email { get; set; }
 
         [DataType(DataType.PhoneNumber)]
@@ -31,13 +33,17 @@ namespace Schoolager.Web.Data.Entities
         public int SubjectId { get; set; }
 
         [Display(Name = "Image")]
-        public Guid ImageUrl { get; set; }
+        public Guid ImageId { get; set; }
 
         public User User { get; set; }
 
-        public string ImageFullPath => ImageUrl == Guid.Empty
+        public string UserId { get; set; }
+
+        public ICollection<TeacherTurma> TeacherTurmas{ get; set; }
+
+        public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://schoolmanagesysstorage.blob.core.windows.net/noimage/noimage.png"
-            : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageUrl}";
+            : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageId}";
 
         public string FullName => $"{FirstName} {LastName}";
     }

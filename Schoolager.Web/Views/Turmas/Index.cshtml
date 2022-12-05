@@ -1,35 +1,77 @@
-﻿@model IEnumerable<Schoolager.Web.Data.Entities.Turma>
+﻿@using Schoolager.Web.Constants
+@using Syncfusion.EJ2.Schedule
+@model IEnumerable<Schoolager.Web.Data.Entities.Turma>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Turmas";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center border-bottom">
+            <h2>Schedules</h2>
+        </div>
+        <div class="p-3 table-responsive">
+            <table class="table table-bordered table-hover" id="turmasTable">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var turma in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => turma.Name)
+                            </td>
+                            <td class="align-middle">
+                                <a asp-controller="Turmas" asp-action="AddStudents" asp-route-id="@turma.Id" class="btn btn-outline-dark">
+                                    Subjects
+                                    <i data-feather="book-open" stroke-width="1"></i>
+                                </a>
+                            </td>
+                            <td class="align-middle">
+                                <a asp-controller="Turmas" asp-action="AddStudents" asp-route-id="@turma.Id" class="btn btn-outline-dark">
+                                    Students
+                                    <i data-feather="book-open" stroke-width="1"></i>
+                                </a>
+                            </td>
+                            <td class="align-middle">
+                                <a asp-controller="Lessons" asp-action="TurmaSchedule" asp-route-id="@turma.Id" class="btn btn-outline-dark">
+                                    Schedule
+                                    <i data-feather="book-open" stroke-width="1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+           // Datatable
+            let table = $("#turmasTable").DataTable({
+                "columnDefs": [
+                    { "width": "1%", "targets": 1 },
+                    { "width": "1%", "targets": 2 },
+                    { "width": "1%", "targets": 3 },
+                    { "searchable": false, "targets": 1 },
+                    { "searchable": false, "targets": 2 },
+                    { "searchable": false, "targets": 3 }
+                ]
+            });
+	    });
+
+    </script>
 }
-    </tbody>
-</table>

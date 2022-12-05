@@ -6,13 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Vereyon.Web;
 
 namespace Schoolager.Web
 {
@@ -39,7 +42,21 @@ namespace Schoolager.Web
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
             })
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<DataContext>();
+
+            services.AddAuthentication()
+               .AddCookie()
+               .AddJwtBearer(cfg =>
+               {
+                   cfg.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidIssuer = this.Configuration["Tokens:Issuer"],
+                       ValidAudience = this.Configuration["Tokens:Audience"],
+                       IssuerSigningKey = new SymmetricSecurityKey(
+                           Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                   };
+               });
 
             services.AddDbContext<DataContext>(cfg =>
             {
@@ -49,6 +66,8 @@ namespace Schoolager.Web
             // Register seeder
             services.AddTransient<SeedDb>();
 
+            services.AddFlashMessage();
+
             // Helper services
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IStudentRepository, StudentRepository>();
@@ -56,9 +75,11 @@ namespace Schoolager.Web
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
+            services.AddScoped<IGradeRepository, GradeRepository>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IRecurrenceHelper, RecurrenceHelper>();
             services.AddScoped<IBlobHelper, BlobHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
 
             services.AddControllersWithViews();

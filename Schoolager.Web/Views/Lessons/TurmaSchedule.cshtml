@@ -75,7 +75,7 @@
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="px-3 p-3 d-flex justify-content-between align-items-center">
-            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <a asp-action="Index" asp-controller="Turmas" class="btn btn-outline-secondary">Back</a>
             <h2>@ViewData["TurmaName"]</h2>
             <a id="newLessonBtn" class="btn btn-outline-primary">New Lesson</a>
         </div>
@@ -142,6 +142,7 @@
             "Id" : args.data.Id,
             "StartTime" : args.data.StartTime.toJSON(),
             "EndTime" : args.data.EndTime.toJSON(),
+            "TurmaId" : args.data.TurmaId,
             "StartTimeString" : getShortTimeString(startTime),
             "EndTimeString" : getShortTimeString(endTime),
             "RecurrenceRule" : args.data.RecurrenceRule,

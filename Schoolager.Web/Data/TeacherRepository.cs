@@ -65,5 +65,18 @@ namespace Schoolager.Web.Data
 
             return list;
         }
+
+        public async Task<Teacher> GetByUserIdAsync(string userId)
+        {
+            return await _context.Teachers
+                .FirstOrDefaultAsync(t => t.UserId == userId);
+        }
+
+        public async Task<Teacher> GetByUserIdWithSubjectAsync(string userId)
+        {
+            return await _context.Teachers
+                .Include(t => t.Subject)
+                .FirstOrDefaultAsync(t => t.UserId == userId);
+        }
     }
 }

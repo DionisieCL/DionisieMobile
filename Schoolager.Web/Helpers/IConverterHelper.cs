@@ -13,11 +13,18 @@ namespace Schoolager.Web.Helpers
         Teacher ToTeacher(TeacherViewModel model, Guid imageId, bool isNew);
         TeacherViewModel ToTeacherViewModel(Teacher teacher);
 
+
         Student ToStudent(StudentViewModel model, Guid imageId, bool isNew);
+        Student ToStudent(StudentViewModel model, int? turmaId);
         StudentViewModel ToStudentViewModel(Student student);
+        List<StudentViewModel> AllToStudentViewModel(List<Student> students);
+        List<Student> AllToStudent(List<StudentViewModel> model, int? turmaId);
+
 
         Lesson ToLesson(LessonViewModel model, bool isNew);
         LessonViewModel ToLessonViewModel(Lesson lesson);
         ICollection<LessonViewModel> AllToLessonViewModel(IQueryable lessons);
+
+        User ToUser(IIsUser userEntity, User user, string blobContainerName);
     }
 }

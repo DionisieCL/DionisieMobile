@@ -17,7 +17,7 @@
             <div class="panel-left col vh-100 d-flex justify-content-center align-items-center">
                 <div class="text-center" style="min-width: 344px">
                     <img src="~/images/schoolager.svg" alt="" />
-                    <h1 class="login-title">Schoolager</h1>
+                    <h1 class="login-title text-light">Schoolager</h1>
                 </div>
             </div>
             <div class="panel-right col vh-100 d-flex justify-content-center align-items-center" id="loginForm">
@@ -25,17 +25,17 @@
                     <form method="post">
                         <div asp-validation-summary="ModelOnly"></div>
                         <div class="mb-4">
-                            <label asp-for="Username">Username</label>
+                            <label asp-for="Username" class="text-light" >Username</label>
                             <input asp-for="Username" class="form-control"/>
                             <span asp-validation-for="Username" class="text-warning"></span>
                         </div>
                         <div class="mb-4">
-                            <label asp-for="Password">Password</label>
-                            <input asp-for="Password" class="form-control"/>
+                            <label asp-for="Password" class="text-light">Password</label>
+                            <input asp-for="Password" type="password" class="form-control"/>
                             <span asp-validation-for="Password" class="text-warning"></span>
                         </div>
                         <div class="mb-4 text-center">
-                            <button asp-action="Login" asp-controller="Account" type="submit" class="btn btn-primary text-light w-100 mb-2">Login</button>
+                            <button asp-action="Login" asp-controller="Account" type="submit" class="btn btn-outline-primary text-light w-100 mb-2">Login</button>
                             <a href="#" class="fw-normal">Forgot your password?</a>
                         </div>
                     </form>

@@ -1,0 +1,74 @@
+﻿@model Schoolager.Web.Models.Grades.GradesViewModel
+@{
+    ViewData["Title"] = "TurmaGrading";
+}
+
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+            <h2>@ViewData["SubjectName"]</h2>
+        </div>
+        <div class="px-3 pb-3">
+            <form asp-action="TurmaGrading" method="post">
+                <input asp-for="SubjectId" value="@ViewData["SubjectId"]" type="hidden"/>
+                <div class="mb-2">
+                    <table class="table table-bordered table-hover" id="gradesTable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Date of Birth</th>
+                                <th>First Term</th>
+                                <th>Second Term</th>
+                                <th>Third Term</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(int i = 0; i < Model.GradeViewModels.Count; i++)
+                            {
+                                <tr>
+                                    <td class="align-middle">
+                                        @Model.GradeViewModels[i].StudentViewModel.FullName
+                                    </td>
+                                    <td class="align-middle">
+                                        @Model.GradeViewModels[i].StudentViewModel.DateOfBirth.Value.ToShortDateString()
+                                    </td>
+                                    <td class="align-middle">
+                                        <input asp-for="@Model.GradeViewModels[i].StudentId" value="@Model.GradeViewModels[i].StudentViewModel.Id" type="hidden"/>
+                                        <input asp-for="@Model.GradeViewModels[i].FirstTermMark" class="form-control" type="number" min="0" max="5"/>
+                                    </td>
+                                    <td class="align-middle">
+                                        <input asp-for="@Model.GradeViewModels[i].SecondTermMark" class="form-control" type="number" min="0" max="5"/>
+                                    </td>
+                                    <td class="align-middle">
+                                        <input asp-for="@Model.GradeViewModels[i].ThirdTermMark" class="form-control" type="number" min="0" max="5"/>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mb-2">
+                    <button asp-action="TurmaGrading" type="submit" value="Create" class="btn btn-outline-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+           // Datatable
+            let table = $("#gradesTable").DataTable({
+                "columnDefs": [
+                    { "width": "1%", "targets": 2 },
+                    { "width": "1%", "targets": 3 },
+                    { "width": "1%", "targets": 4 },
+                ]
+            });
+	    });
+
+    </script>
+}

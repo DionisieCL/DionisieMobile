@@ -39,15 +39,6 @@ namespace Schoolager.Web.Controllers
             _recurrenceHelper = recurrenceHelper;
         }
 
-
-        public async Task<IActionResult> Index()
-        {
-            var turmas = _turmaRepository.GetAll();
-
-
-            return View(await turmas.ToListAsync());
-        }
-
         public async Task<IActionResult> TurmaSchedule(int id)
         {
             var turma = await _turmaRepository.GetByIdAsync(id);
@@ -66,7 +57,7 @@ namespace Schoolager.Web.Controllers
             return View(lessons);
         }
 
-        public async Task<IActionResult> IndexTeacher()
+        public async Task<IActionResult> TeacherIndex()
         {
             // TODO: Get logged in teacher
             var teacher = await _teacherRepository.GetByIdAsync(1);
@@ -82,6 +73,9 @@ namespace Schoolager.Web.Controllers
 
             return View(lessons);
         }
+
+
+        //public
 
         // GET: Lessons/Details/5
         public async Task<IActionResult> Details(int? id)

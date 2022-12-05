@@ -1,0 +1,224 @@
+﻿@using Newtonsoft.Json
+@using Schoolager.Web.Data.Entities
+@model Schoolager.Web.Models.Turmas.AddStudentsViewModel
+@{
+    ViewData["Title"] = "Add Students";
+
+    JsonSerializerSettings serializerSettings =  new JsonSerializerSettings 
+    { 
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+    };
+}
+
+<div class="container-fluid p-5">
+    <div class="row mb-3 bg-white">
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <a asp-action="Index" asp-controller="Turmas" class="btn btn-outline-secondary">Back</a>
+            <h2>@ViewData["TurmaName"]</h2>
+            <a asp-action="TurmaSchedule" asp-controller="Lessons" asp-route-id="@ViewData["TurmaId"]" class="btn btn-outline-primary">Schedule</a>
+        </div>
+        <div class="col-5 p-3">
+            <h3 class="mb-2">All Students</h3>
+            <table class="table table-bordered table-hover" id="tableAll">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.FreeStudents)
+                    {
+                        <tr data-student="@JsonConvert.SerializeObject(item, serializerSettings)">
+                            <td class="align-middle">
+                                <input type="checkbox" class="checkbox" name="addSelected" />
+                            </td>
+                            <td class="align-middle">
+                                <div class="frame" style="background-image: url(@Url.Content(item.ImageFullPath))"></div>
+                            </td>
+                            <td class="align-middle">
+                                @item.FullName
+                            </td>
+                            <td class="align-middle">
+                                @item.DateOfBirth.Value.ToShortDateString()
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <div class="w-100 h-100 d-flex flex-column justify-content-evenly">
+                <button id="addBtn" type="button" class="btn btn-outline-dark">Add</button>
+                <button id="removeBtn" type="button" class="btn btn-outline-dark">Remove</button>
+            </div>
+        </div>
+        <div class="col-5 p-3 bg-white">
+            <h3 class="mb-2">Selected Students</h3>
+            <table class="table table-bordered table-hover" id="tableSelected">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.TurmaStudents)
+                    {
+                        <tr data-student="@JsonConvert.SerializeObject(item, serializerSettings)">
+                            <td class="align-middle">
+                                <input type="checkbox" class="checkbox" name="removeSelected" />
+                            </td>
+                            <td class="align-middle">
+                                <div class="frame" style="background-image: url(@Url.Content(item.ImageFullPath))"></div>
+                            </td>
+                            <td class="align-middle">
+                                @item.FullName
+                            </td>
+                            <td class="align-middle">
+                                @item.DateOfBirth.Value.ToShortDateString()
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            let tableSelected = $("#tableSelected").DataTable({
+                "columnDefs": [
+                    { "width": "1%", "targets": 0 },
+                    { "width": "1%", "targets": 1 },
+                    { "searchable": false, "targets": 0 }
+                ]
+            });
+
+            let tableAll = $("#tableAll").DataTable({
+                "columnDefs": [
+                    { "width": "1%", "targets": 0 },
+                    { "width": "1%", "targets": 1 },
+                    { "searchable": false, "targets": 0 }
+                ]
+            });
+
+            let studentsToAdd = [];
+            let studentsToRemove = [];
+            //let rowAdd, rowRemove;
+            let rowsToRemove, rowsToAdd = [];
+            let turmaId = @ViewData["TurmaId"];
+            let data;
+
+            $("#addBtn").click(function() {
+                $('#tableAll input[type="checkbox"]:checked').each(function(){
+                    let row = tableAll.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("student");
+
+                    studentsToAdd.push(rowData);
+
+                    let rowNode = row.node();
+                    row.remove();
+
+                    tableSelected
+                        .row
+                        .add(rowNode)
+                        .draw();
+                    // uncheck checkbox
+                    $(this).prop("checked", false);
+                    //$(this).attr("name", "removeSelected");
+                });
+
+                data = {
+                    model : studentsToAdd,
+                    turmaId : turmaId,
+                };
+
+                console.log(data);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/Turmas/ManageStudents",
+                    data: data,
+                    success: function(data) {
+                        //studentsToAdd = [];
+                        //console.log("output : " + JSON.stringify(data));
+                    },
+                    error: function(data) {
+                        //console.log("error : " + JSON.stringify(data));
+                    },
+                });
+
+                studentsToAdd = [];
+            });
+
+            $("#removeBtn").click(function() {
+                $('#tableSelected input[type="checkbox"]:checked').each(function(){
+                    let row = tableSelected.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("student");
+
+                    studentsToRemove.push(rowData);
+
+                    let rowNode = row.node();
+                    row.remove();
+
+                    // remove from selected students table add to all students table
+                    tableAll.row.add(rowNode).draw();
+                    //rowAdd.remove();
+
+                    // uncheck checkbox and change name
+                    $(this).prop("checked", false);
+                    //$(this).attr("name", "addSelected");
+                });
+
+                data = {
+                    model: studentsToRemove,
+                    turmaId : null,
+                };
+
+                $.ajax({
+                    //contentType: "application/json",
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/Turmas/ManageStudents",
+                    data: data,
+                    success: function(data) {
+                        //studentsToRemove = [];
+                        //console.log("output : " + JSON.stringify(data));
+                    },
+                    error: function(data) {
+                        //console.log("error : " + JSON.stringify(data));
+                    },
+                });
+
+                studentsToRemove = [];
+            });
+
+            $("tr").click(function() {
+                let checkbox = $(this).find(".checkbox");
+
+                let isChecked = checkbox.is(":checked");
+
+                if (isChecked) {
+                    checkbox.prop("checked", false);
+                    checkbox.attr("checked", false);
+                } else {
+                    checkbox.prop("checked", true);
+                    checkbox.attr("checked", true);
+                }
+            });
+        });
+    </script>
+}
+

@@ -7,22 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
+using Schoolager.Web.Models.Students;
+using Schoolager.Web.Models.Turmas;
 
 namespace Schoolager.Web.Controllers
 {
     public class TurmasController : Controller
     {
-        private readonly DataContext _context;
+        
+        private readonly ITurmaRepository _turmaRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IConverterHelper _converterHelper;
 
-        public TurmasController(DataContext context)
+        public TurmasController(
+            ITurmaRepository turmaRepository,
+            IStudentRepository studentRepository,
+            IConverterHelper converterHelper)
         {
-            _context = context;
+            _turmaRepository = turmaRepository;
+            _studentRepository = studentRepository;
+            _converterHelper = converterHelper;
         }
 
         // GET: Turmas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Turma.ToListAsync());
+            var turmas = _turmaRepository.GetAll();
+
+            return View(await turmas.ToListAsync());
         }
 
         // GET: Turmas/Details/5
@@ -33,8 +46,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var turma = await _context.Turma
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
             if (turma == null)
             {
                 return NotFound();
@@ -58,12 +70,62 @@ namespace Schoolager.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(turma);
-                await _context.SaveChangesAsync();
+                await _turmaRepository.CreateAsync(turma);
+                
                 return RedirectToAction(nameof(Index));
             }
+
             return View(turma);
         }
+
+        public async Task<IActionResult> AddStudents(int? id)
+        {
+            if (id == null)
+            {
+                //TODO:return new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+            var turma = _turmaRepository.GetWithStudentsById(id.Value);
+
+            if (turma == null)
+            {
+                //TODO:return new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
+            var turmaStudents = _studentRepository.GetByTurmaId(turma.Id);
+            var students = _studentRepository.GetFreeStudents();
+
+            AddStudentsViewModel model = new AddStudentsViewModel
+            {
+                FreeStudents = _converterHelper.AllToStudentViewModel(students),
+                TurmaStudents = _converterHelper.AllToStudentViewModel(turmaStudents),
+            };
+
+            ViewData["TurmaId"] = turma.Id;
+            @ViewData["TurmaName"] = turma.Name;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ManageStudents(List<StudentViewModel> model, int? turmaId)
+        {
+            List<Student> students = _converterHelper.AllToStudent(model, turmaId);
+
+            try
+            {
+                await _studentRepository.UpdateRangeAsync(students);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Json(model);
+        }
+
 
         // GET: Turmas/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -73,7 +135,8 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var turma = await _context.Turma.FindAsync(id);
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
+
             if (turma == null)
             {
                 return NotFound();
@@ -97,12 +160,11 @@ namespace Schoolager.Web.Controllers
             {
                 try
                 {
-                    _context.Update(turma);
-                    await _context.SaveChangesAsync();
+                    await _turmaRepository.UpdateAsync(turma);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TurmaExists(turma.Id))
+                    if (!await _turmaRepository.ExistAsync(turma.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +186,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var turma = await _context.Turma
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
             if (turma == null)
             {
                 return NotFound();
@@ -139,15 +200,10 @@ namespace Schoolager.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var turma = await _context.Turma.FindAsync(id);
-            _context.Turma.Remove(turma);
-            await _context.SaveChangesAsync();
+            var turma = await _turmaRepository.GetByIdAsync(id);
+            await _turmaRepository.DeleteAsync(turma);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TurmaExists(int id)
-        {
-            return _context.Turma.Any(e => e.Id == id);
-        }
     }
 }

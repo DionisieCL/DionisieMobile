@@ -17,7 +17,7 @@ namespace Schoolager.Web.Helpers
             var teacher = new Teacher
             {
                 Id = isNew ? 0 : model.Id,
-                ImageUrl = imageId,
+                ImageId = imageId,
                 Address = model.Address,
                 DateOfBirth = model.DateOfBirth,
                 Email = model.Email,
@@ -40,7 +40,7 @@ namespace Schoolager.Web.Helpers
                 Address = teacher.Address,
                 DateOfBirth = teacher.DateOfBirth,
                 Email = teacher.Email,
-                ImageUrl = teacher.ImageUrl,
+                ImageId = teacher.ImageId,
                 FirstName = teacher.FirstName,
                 LastName = teacher.LastName,
                 PhoneNumber = teacher.PhoneNumber,
@@ -55,7 +55,7 @@ namespace Schoolager.Web.Helpers
             var student = new Student
             {
                 Id = isNew ? 0 : model.Id,
-                ImageUrl = imageId,
+                ImageId = imageId,
                 Address = model.Address,
                 DateOfBirth = model.DateOfBirth,
                 Email = model.Email,
@@ -71,6 +71,27 @@ namespace Schoolager.Web.Helpers
             return student;
         }
 
+        public Student ToStudent(StudentViewModel model, int? turmaId)
+        {
+            var student = new Student
+            {
+                Id = model.Id,
+                Address = model.Address,
+                DateOfBirth = model.DateOfBirth,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                Turma = model.Turma,
+                TurmaId = turmaId,
+                Grades = model.Grades,
+                User = model.User,
+                ImageId = model.ImageId,
+            };
+
+            return student;
+        }
+
         public StudentViewModel ToStudentViewModel(Student student)
         {
             return new StudentViewModel
@@ -79,7 +100,7 @@ namespace Schoolager.Web.Helpers
                 Address = student.Address,
                 DateOfBirth = student.DateOfBirth,
                 Email = student.Email,
-                ImageUrl = student.ImageUrl,
+                ImageId = student.ImageId,
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 PhoneNumber = student.PhoneNumber,
@@ -87,7 +108,33 @@ namespace Schoolager.Web.Helpers
                 Turma = student.Turma,
                 TurmaId = student.TurmaId,
                 Grades = student.Grades,
+                UserId = student.UserId,
             };
+        }
+
+        public List<StudentViewModel> AllToStudentViewModel(List<Student> students)
+        {
+            List<StudentViewModel> model = new List<StudentViewModel>();
+
+            foreach (Student student in students)
+            {
+                model.Add(ToStudentViewModel(student));
+            }
+
+            return model;
+        }
+
+
+        public List<Student> AllToStudent(List<StudentViewModel> model, int? turmaId)
+        {
+            List<Student> students = new List<Student>();
+
+            foreach(var item in model)
+            {
+                students.Add(ToStudent(item, turmaId));
+            }
+
+            return students;
         }
 
         public Lesson ToLesson(LessonViewModel model, bool isNew)
@@ -157,6 +204,20 @@ namespace Schoolager.Web.Helpers
             }
 
             return lessonViewModels;
+        }
+
+        public User ToUser(IIsUser userEntity, User user, string blobContainerName)
+        {
+            user.FirstName = userEntity.FirstName;
+            user.LastName = userEntity.LastName;
+            user.UserName = userEntity.Email;
+            user.Email = userEntity.Email;
+            user.EmailConfirmed = false;
+            user.PhoneNumber = userEntity.PhoneNumber;
+            user.BlobContainer = blobContainerName;
+            user.ImageId = userEntity.ImageId;
+
+            return user;
         }
     }
 }

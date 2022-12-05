@@ -16,6 +16,22 @@ namespace Schoolager.Web.Data
             _context = context;
         }
 
+        public List<Student> GetByTurmaId(int id)
+        {
+            return _context.Students
+                .Where(s => s.TurmaId == id)
+                .AsNoTrackingWithIdentityResolution()
+                .ToList();
+        }
+
+        public List<Student> GetFreeStudents()
+        {
+            return _context.Students
+                .Where(s => s.TurmaId == null)
+                .AsNoTrackingWithIdentityResolution()
+                .ToList();
+        }
+
         //public async Task<Student> GetStudentWithTurma(int id)
         //{
         //    return await _context.Students
@@ -31,5 +47,11 @@ namespace Schoolager.Web.Data
                 .ToListAsync();
         }
 
+        public async Task UpdateRangeAsync(List<Student> students)
+        {
+            _context.UpdateRange(students);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

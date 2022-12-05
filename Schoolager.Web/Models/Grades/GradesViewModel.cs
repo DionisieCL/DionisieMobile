@@ -5,6 +5,7 @@ namespace Schoolager.Web.Models.Grades
 {
     public class GradesViewModel
     {
-        
+        public int SubjectId { get; set; }
+        public List<GradeViewModel> GradeViewModels { get; set; }
     }
 }

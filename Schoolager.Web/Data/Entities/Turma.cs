@@ -10,7 +10,8 @@ namespace Schoolager.Web.Data.Entities
         //Appointment
         public ICollection<Student> Students { get; set; }
 
-        public ICollection<SubjectTurma> SubjectTurma;
+        public ICollection<SubjectTurma> SubjectTurmas;
         public ICollection<Lesson> Lessons { get; set; }
+        public ICollection<TeacherTurma> TeacherTurmas{ get; set; }
     }
 }

@@ -22,6 +22,11 @@ namespace Schoolager.Web.Data
         {
             await _context.Database.MigrateAsync();
 
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Employee");
+            await _userHelper.CheckRoleAsync("Student");
+            await _userHelper.CheckRoleAsync("Teacher");
+
             await AddAdminUser();
         }
 
@@ -38,6 +43,7 @@ namespace Schoolager.Web.Data
                     Email = "admin@schoolager.com",
                     UserName = "admin@schoolager.com",
                     PhoneNumber = "214658973",
+                    PasswordChanged = true,
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");
@@ -46,6 +52,13 @@ namespace Schoolager.Web.Data
                 {
                     throw new InvalidOperationException("Could not create the user in seeder.");
                 }
+
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+                await _userHelper.AddUserToRoleAsync(user, "Employee");
+
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+                await _userHelper.ConfirmEmailAsync(user, token);
 
                 await _context.SaveChangesAsync();
             }

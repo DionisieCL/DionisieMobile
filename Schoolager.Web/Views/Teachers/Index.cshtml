@@ -4,68 +4,93 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container-fluid p-5">
+    <div class="row mb-3 bg-white">
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <a asp-action="Create" class="btn btn-outline-primary">New Teacher</a>
+            <h2>Teachers</h2>
+        </div>
+        <div class="p-3">
+            <table class="table table-bordered table-hover" id="tableTeachers">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ImageId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateOfBirth)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Subject)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td class="align-middle">
+                                <div class="frame" style="background-image: url(@Url.Content(item.ImageFullPath))"></div>
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Subject.Name)
+                            </td>
+                            <td class="align-middle">
+                                <div class="d-flex flex-row">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success me-2">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary me-2">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="@Url.Content(item.ImageFullPath)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            let tableTeachers = $("#tableTeachers").DataTable({
+                "columnDefs": [
+                    { "width": "1%", "targets": 0 },
+                    { "width": "1%", "targets": 7 },
+                ]
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>
