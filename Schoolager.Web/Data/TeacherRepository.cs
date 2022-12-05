@@ -22,10 +22,10 @@ namespace Schoolager.Web.Data
                 .Where(t => t.SubjectId == subjectId);
         }
 
-        public async Task<Teacher> GetTeacherWithSubject(int id)
+        public async Task<Teacher> GetWithUserByIdAsync(int id)
         {
             return await _context.Teachers
-                .Include(t => t.Subject)
+                .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -77,6 +77,13 @@ namespace Schoolager.Web.Data
             return await _context.Teachers
                 .Include(t => t.Subject)
                 .FirstOrDefaultAsync(t => t.UserId == userId);
+        }
+
+        public async Task<List<Teacher>> GetWithSubjectsAsync()
+        {
+            return await _context.Teachers
+                .Include(t => t.Subject)
+                .ToListAsync();
         }
     }
 }

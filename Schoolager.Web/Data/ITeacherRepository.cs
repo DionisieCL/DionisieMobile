@@ -8,11 +8,12 @@ namespace Schoolager.Web.Data
 {
     public interface ITeacherRepository : IGenericRepository<Teacher>
     {
-        Task<Teacher> GetTeacherWithSubject(int id);
+        Task<Teacher> GetWithUserByIdAsync(int id);
         IQueryable<Teacher> GetTeachersBySubjectId(int subjectId);
         IEnumerable<SelectListItem> GetComboTeachers();
         IEnumerable<SelectListItem> GetComboTeachersBySubjectId(int subjectId);
         Task<Teacher> GetByUserIdAsync(string userId);
         Task<Teacher> GetByUserIdWithSubjectAsync(string userId);
+        Task<List<Teacher>> GetWithSubjectsAsync();
     }
 }
