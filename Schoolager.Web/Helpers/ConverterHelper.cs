@@ -27,6 +27,7 @@ namespace Schoolager.Web.Helpers
                 Subject = model.Subject,
                 SubjectId = model.SubjectId,
                 User = model.User,
+                UserId = model.UserId,
             };
 
             return teacher;
@@ -45,6 +46,7 @@ namespace Schoolager.Web.Helpers
                 LastName = teacher.LastName,
                 PhoneNumber = teacher.PhoneNumber,
                 User = teacher.User,
+                UserId = teacher.UserId,
                 Subject = teacher.Subject,
                 SubjectId = teacher.SubjectId,
             };
@@ -65,7 +67,7 @@ namespace Schoolager.Web.Helpers
                 Turma = model.Turma,
                 TurmaId = model.TurmaId,
                 Grades = model.Grades,
-                User = model.User,
+                UserId = model.UserId,
             };
 
             return student;

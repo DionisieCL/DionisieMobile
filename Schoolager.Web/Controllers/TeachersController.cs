@@ -16,7 +16,6 @@ namespace Schoolager.Web.Controllers
 {
     public class TeachersController : Controller
     {
-        private readonly DataContext _context;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
@@ -25,8 +24,7 @@ namespace Schoolager.Web.Controllers
         private readonly IFlashMessage _flashMessage;
         private readonly IUserHelper _userHelper;
 
-        public TeachersController(
-            DataContext context,                      
+        public TeachersController(                      
             ITeacherRepository teacherRepository,
             IConverterHelper converterHelper,
             IBlobHelper blobHelper,
@@ -35,7 +33,6 @@ namespace Schoolager.Web.Controllers
             IFlashMessage flashMessage,
             IUserHelper userHelper)
         {
-            _context = context;
             _teacherRepository = teacherRepository;
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
@@ -48,8 +45,9 @@ namespace Schoolager.Web.Controllers
         // GET: Teachers
         public async Task<IActionResult> Index()
         {
-            var teachers = _context.Teachers.Include(t => t.Subject);
-            return View(await teachers.ToListAsync());
+            var teachers = await _teacherRepository.GetWithSubjectsAsync();
+
+            return View(teachers);
         }
 
         // GET: Teachers/Details/5
@@ -151,7 +149,8 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var teacher = await _context.Teachers.FindAsync(id);
+            var teacher = await _teacherRepository.GetWithUserByIdAsync(id.Value);
+
             if (teacher == null)
             {
                 return NotFound();
@@ -159,8 +158,9 @@ namespace Schoolager.Web.Controllers
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
-            var view = _converterHelper.ToTeacherViewModel(teacher);
-            return View(view);
+            var model = _converterHelper.ToTeacherViewModel(teacher);
+
+            return View(model);
         }
 
         // POST: Teachers/Edit/5
