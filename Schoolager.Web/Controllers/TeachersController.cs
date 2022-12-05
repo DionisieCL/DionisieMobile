@@ -156,6 +156,7 @@ namespace Schoolager.Web.Controllers
             {
                 return NotFound();
             }
+
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
             var view = _converterHelper.ToTeacherViewModel(teacher);
