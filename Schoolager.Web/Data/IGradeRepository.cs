@@ -10,7 +10,7 @@ namespace Schoolager.Web.Data
         Task InsertGradesAsync(List<Grade> grades);
 
         Task UpdateGradesAsync(List<Grade> grades);
-
         Task<List<Grade>> GetGradesBySubjectAndStudentIdsAsync(int subjectId, List<int> studentIds);
+
     }
 }

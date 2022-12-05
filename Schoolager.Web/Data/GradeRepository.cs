@@ -44,5 +44,6 @@ namespace Schoolager.Web.Data
                 .Where(g => g.SubjectId == subjectId && studentIds.Contains(g.StudentId))
                 .ToListAsync();
         }
+
     }
 }
