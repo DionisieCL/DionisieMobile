@@ -44,6 +44,7 @@ namespace Schoolager.Web.Data
         {
             return await _context.Students
                 .Where(s => s.TurmaId == id)
+                .Include(s => s.Turma)
                 .ToListAsync();
         }
 

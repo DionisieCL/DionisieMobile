@@ -15,6 +15,15 @@ namespace Schoolager.Web.Data
             _context = context;
         }
 
+        public async Task<List<Grade>> GetGradesWithStudent(int id)
+        {
+            return await _context.Grades
+                .Where(g => g.StudentId == id)
+                .Include(s => s.Subject)
+                .Include(s => s.Student)
+                .ToListAsync();
+        }
+
         public async Task InsertGradesAsync(List<Grade> grades)
         {
             _context.Grades.AddRange(grades);

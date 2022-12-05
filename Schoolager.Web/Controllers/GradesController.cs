@@ -143,11 +143,9 @@ namespace Schoolager.Web.Controllers
             return View(await _studentRepository.GetStudentWithTurma(id.Value));
         }
 
-        public IActionResult Create()
+        public async Task<ActionResult> ShowAllStudentGrades(int? id)
         {
-            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name");
-            return View();
+            return View(await _gradeRepository.GetGradesWithStudent(id.Value));
         }
-
     }
 }

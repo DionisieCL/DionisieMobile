@@ -31,6 +31,10 @@ namespace Schoolager.Web.Data
             modelBuilder.Entity<Grade>()
                 .HasKey(g => new { g.StudentId, g.SubjectId });
 
+            //modelBuilder.Entity<Grade>()
+            //    .Property(g => g.Id)
+            //    .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Student)
                 .WithMany(s => s.Grades)

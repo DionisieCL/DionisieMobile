@@ -6,6 +6,7 @@ namespace Schoolager.Web.Data
 {
     public interface IGradeRepository : IGenericRepository<Grade>
     {
+        Task<List<Grade>> GetGradesWithStudent(int id);
         Task InsertGradesAsync(List<Grade> grades);
 
         Task UpdateGradesAsync(List<Grade> grades);

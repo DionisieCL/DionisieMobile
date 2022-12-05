@@ -76,6 +76,8 @@ namespace Schoolager.Web
             services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
             services.AddScoped<IGradeRepository, GradeRepository>();
+            services.AddScoped<ISubjectTurmaRepository, SubjectTurmaRepository>();
+            services.AddScoped<IGradeRepository, GradeRepository>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IRecurrenceHelper, RecurrenceHelper>();
             services.AddScoped<IBlobHelper, BlobHelper>();

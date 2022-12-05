@@ -1,0 +1,167 @@
+﻿@using Newtonsoft.Json
+@using Schoolager.Web.Data.Entities
+@model Schoolager.Web.Models.Turmas.AddSubjectsToTurmaViewModel
+
+@{
+    ViewData["Title"] = "AddSubjectsToTurma";
+
+    List<Subject> AllSubjects = Model.AvailableSubjects;
+    List<Subject> TurmaSubjects = Model.SubjectsInTurma;
+    int turmaId = Model.TurmaId;
+}
+
+<div class="container-fluid px-5">
+    <div class="row mb-3 pt-5">
+        <div class="col-5 p-5 bg-white">
+            <h2 class="mb-2">All Subjects</h2>
+            <table class="table table-bordered table-hover" id="tableAll">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var subject in AllSubjects)
+                    {
+                        <tr data-subject="@JsonConvert.SerializeObject(subject)">
+                            <td class="align-middle"><input type="checkbox" name="addSelected" /></td>
+                            <td class="align-middle">@subject.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <div class="w-100 h-100 d-flex flex-column justify-content-evenly">
+                <button id="addBtn" type="button" class="btn btn-outline-dark">Add</button>
+                <button id="removeBtn" type="button" class="btn btn-outline-dark">Remove</button>
+            </div>
+        </div>
+        <div class="col-5 p-5 bg-white">
+            <h2 class="mb-2">Selected Subjects</h2>
+            <table class="table table-bordered table-hover" id="tableSelected">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var subject in TurmaSubjects)
+                    {
+                        <tr data-subject="@JsonConvert.SerializeObject(subject)">
+                            <td class="align-middle"><input type="checkbox" name="removeSelected" /></td>
+                            <td class="align-middle">@subject.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            let tableSelected = $("#tableSelected").DataTable();
+            let tableAll = $("#tableAll").DataTable();
+            let subjectsToAdd = [];
+            let subjectsToRemove = [];
+            //let rowAdd, rowRemove;
+            let rowsToRemove, rowsToAdd = [];
+            let turmaId = @ViewData["TurmaId"];
+            let data;
+
+            $("#addBtn").click(function() {
+                $('#tableAll input[type="checkbox"]:checked').each(function(){
+                    let row = tableAll.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("subject");
+
+                    subjectsToAdd.push(rowData);
+
+                    let rowNode = row.node();
+                    row.remove();
+
+                    tableSelected
+                        .row
+                        .add(rowNode)
+                        .draw();
+
+                    // uncheck checkbox
+                    $(this).prop("checked", false);
+                    //$(this).attr("name", "removeSelected");
+                });
+
+                console.log(subjectsToAdd);
+
+                data = {
+                    subjects : subjectsToAdd,
+                    turmaId : turmaId,
+                };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/Turmas/AddSubjects",
+                    data: data,
+                    success: function(data) {
+                        //studentsToAdd = [];
+                        console.log(data);
+                    },
+                    error: function(data) {
+                        //console.log("error : " + JSON.stringify(data));
+                    },
+                });
+
+                subjectsToAdd = [];
+            });
+
+            $("#removeBtn").click(function() {
+                $('#tableSelected input[type="checkbox"]:checked').each(function(){
+                    let row = tableSelected.row($(this).parents("tr"));
+                    let rowData = $(this).parent().parent().data("subject");
+
+                    subjectsToRemove.push(rowData);
+
+                    let rowNode = row.node();
+                    row.remove();
+
+                    // remove from selected students table add to all students table
+                    tableAll.row.add(rowNode).draw();
+                    //rowAdd.remove();
+
+                    // uncheck checkbox and change name
+                    $(this).prop("checked", false);
+                    //$(this).attr("name", "addSelected");
+                });
+
+                data = {
+                    subjects : subjectsToRemove,
+                    turmaId : turmaId,
+                };
+
+                $.ajax({
+                    //contentType: "application/json",
+                    dataType: 'json',
+                    type: "POST",
+                    url: "/Turmas/RemoveSubjects",
+                    data: data,
+                    success: function(data) {
+                        //studentsToRemove = [];
+                        //console.log("output : " + JSON.stringify(data));
+                    },
+                    error: function(data) {
+                        //console.log("error : " + JSON.stringify(data));
+                    },
+                });
+
+                subjectsToRemove = [];
+            });
+        });
+    </script>
+}
