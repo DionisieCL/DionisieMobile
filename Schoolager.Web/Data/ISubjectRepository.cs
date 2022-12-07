@@ -8,5 +8,7 @@ namespace Schoolager.Web.Data
     {
         IEnumerable<SelectListItem> GetComboSubjects();
         IEnumerable<SelectListItem> GetComboSubjectsWithTurma(int id);
+
+        IEnumerable<SelectListItem> GetComboSubjectsByTurmaId(int id);
     }
 }

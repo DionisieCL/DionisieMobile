@@ -11,6 +11,7 @@ namespace Schoolager.Web.Data
         Task InsertTeacherTurmaAsync(List<TeacherTurma> teacherTurma);
         Task UpdateTeacherTurmaAsync(List<TeacherTurma> teacherTurma);
         Task DeleteTeacherTurmaAsync(List<TeacherTurma> teacherTurma);
-
+        Task DeleteAllByTurmaId(int turmaId);
+        Task<Teacher> GetTeacherBySubjectAndTurmaIdAsync(int subjectId, int turmaId);
     }
 }

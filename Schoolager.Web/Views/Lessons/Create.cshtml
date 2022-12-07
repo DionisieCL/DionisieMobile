@@ -78,7 +78,7 @@
 
     <script type="text/javascript">
 	    $(document).ready(function () {
-            
+            let turmaId = @ViewData["TurmaId"];
             let selectedDateString = '@ViewData["DateString"]';
             let selectedDate = '@ViewData["Date"]';
 
@@ -90,16 +90,20 @@
 				    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
 				    type: 'POST',
 				    dataType: 'json',
-				    data: {subjectId:$("#SubjectId").val()},
-				    success: function (teachers) {
-					    debugger;
-					    $("#TeacherId").append('<option value="0">< Select a teacher ></option>');
-					    $.each(teachers, function (i, teacher) {
-                            console.log(teacher);
-						    $("#TeacherId").append('<option value="'
-							    + teacher.id + '">'
-							    + teacher.fullName + '</option>');
-					    });
+				    data: 
+                    {
+                        subjectId:$("#SubjectId").val(),
+                        turmaId: turmaId,
+                    },
+				    success: function (teacher) {
+					    $("#TeacherId").append(`<option value="${teacher.id}">${teacher.fullName}</option>`);
+
+					    //$.each(teachers, function (i, teacher) {
+         //                   console.log(teacher);
+						   // $("#TeacherId").append('<option value="'
+							  //  + teacher.id + '">'
+							  //  + teacher.fullName + '</option>');
+					    //});
 				    },
 				    error: function (ex) {
 					    debugger;

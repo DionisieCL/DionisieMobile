@@ -9,5 +9,6 @@ namespace Schoolager.Web.Models.Turmas
         public Subject Subject { get; set; }
         public IEnumerable<SelectListItem> Teachers { get; set; }
         public int TeacherId { get; set; }
+        public int SubjectId { get; set; }
     }
 }

@@ -48,5 +48,24 @@ namespace Schoolager.Web.Data
             _context.TeacherTurmas.RemoveRange(teacherTurma);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAllByTurmaId(int turmaId)
+        {
+            var teacherTurmas = await _context.TeacherTurmas
+                .Where(tt => tt.TurmaId == turmaId)
+                .ToListAsync();
+
+            _context.TeacherTurmas.RemoveRange(teacherTurmas);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Teacher> GetTeacherBySubjectAndTurmaIdAsync(int subjectId, int turmaId)
+        {
+            return await _context.TeacherTurmas
+                .Where(tt => tt.TurmaId == turmaId && tt.SubjectId == subjectId)
+                .Select(tt => tt.Teacher)
+                .FirstOrDefaultAsync();
+        }
     }
 }

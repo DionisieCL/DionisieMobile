@@ -9,5 +9,7 @@
 
         public Turma Turma { get; set; }
         public int TurmaId { get; set; }
+
+        public int SubjectId { get; set; }
     }
 }
