@@ -60,15 +60,17 @@
 
     <script type="text/javascript">
 	    $(document).ready(function () {
-           // Datatable
+            // Datatable
             let table = $("#turmasTable").DataTable({
                 "columnDefs": [
                     { "width": "1%", "targets": 1 },
                     { "width": "1%", "targets": 2 },
                     { "width": "1%", "targets": 3 },
+                    { "width": "1%", "targets": 4 },
                     { "searchable": false, "targets": 1 },
                     { "searchable": false, "targets": 2 },
-                    { "searchable": false, "targets": 3 }
+                    { "searchable": false, "targets": 3 },
+                    { "searchable": false, "targets": 4 }
                 ]
             });
 	    });

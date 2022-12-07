@@ -81,7 +81,7 @@ namespace Schoolager.Web.Controllers
             {
                 model.GradeViewModels.Add(new GradeViewModel
                 {
-                    StudentViewModel = _converterHelper.ToStudentViewModel(student)
+                    StudentViewModel = _converterHelper.ToStudentViewModel(student),
                 });
             }
 

@@ -27,6 +27,7 @@
                             {
                                 <tr>
                                     <td class="align-middle">
+                                        <input type="hidden" asp-for="@Model.GradeViewModels[i].StudentViewModel"/>
                                         @Model.GradeViewModels[i].StudentViewModel.FullName
                                     </td>
                                     <td class="align-middle">
