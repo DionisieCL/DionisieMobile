@@ -8,6 +8,7 @@ namespace Schoolager.Web.Data
     {
         Task<List<Turma>> GetTurmasByTeacherIdAsync(int id);
         Turma GetWithStudentsById(int id);
+        Task<List<Subject>> GetTurmaSubjects(int id);
 
     }
 }

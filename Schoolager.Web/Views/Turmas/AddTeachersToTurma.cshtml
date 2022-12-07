@@ -1,0 +1,131 @@
+﻿@model Schoolager.Web.Models.Turmas.AddTeacherToTurmaViewModel
+
+@*<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <h2>New Lesson</h2>
+        </div>
+        <div class="d-flex justify-content-center align-items-center w-100">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-secondary"></div>
+                <input asp-for="TurmaId" value="@ViewData["TurmaId"]" type="hidden"/>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label asp-for="SubjectsInTurma" class="control-label"></label>
+                        <select asp-for="SubjectId" class ="form-control" asp-items="ViewBag.SubjectId"></select>
+                        <span asp-validation-for="SubjectId" class="text-secondary"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="Teachers" class="control-label"></label>
+                        <select asp-for="TeacherId" class ="form-control" asp-items="ViewBag.TeacherId">
+                            <option value="0">< Select a teacher ></option>
+                        </select>
+                        <span asp-validation-for="TeacherId" class="text-secondary"></span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
+                    <button asp-action="Create" type="submit" value="Create" class="btn btn-outline-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+
+		    $("#SubjectId").change(function () {
+                console.log($("#SubjectId").val());
+
+			    $("#TeacherId").empty();
+			    $.ajax({
+				    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
+				    type: 'POST',
+				    dataType: 'json',
+				    data: {subjectId:$("#SubjectId").val()},
+				    success: function (teachers) {
+					    debugger;
+					    $("#TeacherId").append('<option value="0">< Select a teacher ></option>');
+					    $.each(teachers, function (i, teacher) {
+                            console.log(teacher);
+						    $("#TeacherId").append('<option value="'
+							    + teacher.id + '">'
+							    + teacher.fullName + '</option>');
+					    });
+				    },
+				    error: function (ex) {
+					    debugger;
+					    alert('Failed to retrieve teachers.' + ex);
+				    }
+			    });
+			    return false;
+		    })
+	    });
+
+    </script>
+
+    <script type="text/javascript" src="~/js/lessonTimePickers.js"></script>
+}
+
+*@
+
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+            <h2>@ViewData["SubjectName"]</h2>
+        </div>
+        <div class="px-3 pb-3">
+            <form asp-action="AddTeachersToTurma" method="post">
+                <input asp-for="TurmaId" value="@ViewData["TurmaId"]" type="hidden"/>
+
+                <div class="mb-2">
+                    <table class="table table-bordered table-hover" id="gradesTable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Teacher</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(int i = 0; i < Model.SubjectTurmaViewModels.Count; i++)
+                            {
+                                <tr>
+                                    <td class="align-middle">
+                                        @Model.SubjectTurmaViewModels[i].Subject.Name
+                                    </td>
+                                    <td class="align-middle">
+                                        <select asp-for="@Model.SubjectTurmaViewModels[i].TeacherId" class="form-control" type="number" min="0" max="5" asp-items="@Model.SubjectTurmaViewModels[i].Teachers"></select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mb-2">
+                    <button asp-action="AddTeachersToTurma" type="submit" value="Create" class="btn btn-outline-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+           // Datatable
+            let table = $("#gradesTable").DataTable({
+                "columnDefs": [
+                    { "width": "50%", "targets": 0 },
+                ]
+            });
+	    });
+
+    </script>
+}

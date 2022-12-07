@@ -27,10 +27,8 @@ namespace Schoolager.Web.Data.Entities
         public string PhoneNumber { get; set; }
 
         public Subject Subject { get; set; }
-
         [Display(Name = "Subject")]
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a Subject")]
-        public int SubjectId { get; set; }
+        public int? SubjectId { get; set; }
 
         [Display(Name = "Image")]
         public Guid ImageId { get; set; }
