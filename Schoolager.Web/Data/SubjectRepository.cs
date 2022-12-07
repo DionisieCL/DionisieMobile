@@ -25,7 +25,27 @@ namespace Schoolager.Web.Data
             list.Insert(0, new SelectListItem
             {
                 Text = "< Select a subject >",
-                Value = "0",
+                Value = null,
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboSubjectsWithTurma(int id)
+        {
+            var list = _context.SubjectTurmas
+                .Where(t => t.TurmaId == id)
+                .Select(s => s.Subject)
+                .Select(s => new SelectListItem
+                {
+                    Text = s.Name,
+                    Value = s.Id.ToString(),
+                }).OrderBy(sli => sli.Text).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "< Select a subject >",
+                Value = null,
             });
 
             return list;

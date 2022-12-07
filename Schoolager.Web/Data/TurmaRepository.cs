@@ -29,5 +29,25 @@ namespace Schoolager.Web.Data
                 .Include(t => t.Students)
                 .FirstOrDefault();
         }
+
+        public Task<List<Subject>> GetTurmaSubjects(int id)
+        {
+            return _context.SubjectTurmas
+                .Where(t => t.TurmaId == id)
+                .Include(s => s.Subject)
+                .Select(s => s.Subject)
+                .ToListAsync();
+        }
+
+        //public Task<List<Subject>> GetTeachersInTurma(int id)
+        //{
+        //    return _context.SubjectTurmas
+        //        .Where(t => t.TurmaId == id)
+        //        .Include(s => s.Subject)
+        //        .Select(s => s.Subject)
+        //        .ToListAsync();
+        //}
+
+
     }
 }

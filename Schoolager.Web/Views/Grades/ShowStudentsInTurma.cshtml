@@ -7,7 +7,10 @@
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="px-3 p-3 d-flex justify-content-between align-items-center">
-            <h1>Alunos do @Model.FirstOrDefault().Turma.Name</h1>
+            @if (Model.FirstOrDefault().Turma != null)
+            {
+                <h1>Alunos do @Model.FirstOrDefault().Turma.Name</h1>
+            }
         </div>
         <div class="container-fluid">
             <table class="table">
