@@ -29,5 +29,5 @@ namespace Schoolager.Prism
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LogInPage, LogInPageViewModel>();
         }
-    }
+    } 
 }
