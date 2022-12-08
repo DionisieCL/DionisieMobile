@@ -1,0 +1,32 @@
+﻿@model Schoolager.Web.Data.Entities.Room
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <h2>New Room</h2>
+        </div>
+        <div class="d-flex justify-content-center align-items-center w-100">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-outline-success" />
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

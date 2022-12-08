@@ -32,9 +32,11 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col">
-                        <label asp-for="Location" class="control-label"></label>
-                        <input asp-for="Location" class="form-control" />
-                        <span asp-validation-for="Location" class="text-secondary"></span>
+                        <label asp-for="RoomId" class="control-label"></label>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId">
+                           <option value="0">< Select a room ></option>
+                        </select>
+                        <span asp-validation-for="RoomId" class="text-secondary"></span>
                     </div>
                     <div class="col">
                         <label asp-for="WeekDay" class="control-label"></label>

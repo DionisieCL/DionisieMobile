@@ -139,6 +139,7 @@ namespace Schoolager.Web.Controllers
                 dateTime = new DateTime(2022, 9, 15).Date + time;
             }
 
+
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjectsByTurmaId(id);
             ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
             ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -212,6 +213,7 @@ namespace Schoolager.Web.Controllers
             }
 
             var model = _converterHelper.ToLessonViewModel(lesson);
+
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
