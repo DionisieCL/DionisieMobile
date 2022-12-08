@@ -51,5 +51,6 @@ namespace Schoolager.Web.Data
                 .Where(ld => ld.LessonId == lessonId && ld.LessonDate == lessonDate)
                 .FirstOrDefaultAsync();
         }
+
     }
 }

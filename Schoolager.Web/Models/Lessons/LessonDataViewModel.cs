@@ -5,9 +5,12 @@ namespace Schoolager.Web.Models.Lessons
 {
     public class LessonDataViewModel
     {
+        public int Id { get; set; }
+
+        public int LessonId { get; set; }
         public string DateString { get; set; }
         public string SubjectName { get; set; }
         public string Summary { get; set; }
-        public ICollection<Student> Students { get; set; }
+        public List<AttendanceViewModel> Attendances { get; set; }
     }
 }

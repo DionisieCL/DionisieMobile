@@ -16,7 +16,7 @@ namespace Schoolager.Web.Data
         public DbSet<SubjectTurma> SubjectTurmas { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonData> LessonDatas { get; set; }
-        public DbSet<StudentLessonData> StudentLessonsDatas { get; set; }
+        public DbSet<StudentLessonData> StudentLessonDatas { get; set; }
         public DbSet<TeacherTurma> TeacherTurmas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
