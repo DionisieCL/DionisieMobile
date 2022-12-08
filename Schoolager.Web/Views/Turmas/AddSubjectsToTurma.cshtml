@@ -10,9 +10,14 @@
     int turmaId = Model.TurmaId;
 }
 
-<div class="container-fluid px-5">
-    <div class="row mb-3 pt-5">
-        <div class="col-5 p-5 bg-white">
+<div class="container-fluid p-5">
+    <div class="row mb-3 bg-white">
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <a asp-action="Index" asp-controller="Turmas" class="btn btn-outline-secondary">Back</a>
+            <h2>@ViewData["TurmaName"]</h2>
+            <a asp-action="TurmaSchedule" asp-controller="Lessons" asp-route-id="@ViewData["TurmaId"]" class="btn btn-outline-primary">Schedule</a>
+        </div>
+        <div class="col-5 p-3">
             <h2 class="mb-2">All Subjects</h2>
             <table class="table table-bordered table-hover" id="tableAll">
                 <thead>
@@ -25,7 +30,7 @@
                     @foreach(var subject in AllSubjects)
                     {
                         <tr data-subject="@JsonConvert.SerializeObject(subject)">
-                            <td class="align-middle"><input type="checkbox" name="addSelected" /></td>
+                            <td class="align-middle"><input type="checkbox" name="addSelected" class="checkbox" /></td>
                             <td class="align-middle">@subject.Name</td>
                         </tr>
                     }
@@ -38,7 +43,7 @@
                 <button id="removeBtn" type="button" class="btn btn-outline-dark">Remove</button>
             </div>
         </div>
-        <div class="col-5 p-5 bg-white">
+        <div class="col-5 p-3">
             <h2 class="mb-2">Selected Subjects</h2>
             <table class="table table-bordered table-hover" id="tableSelected">
                 <thead>
@@ -51,7 +56,7 @@
                     @foreach(var subject in TurmaSubjects)
                     {
                         <tr data-subject="@JsonConvert.SerializeObject(subject)">
-                            <td class="align-middle"><input type="checkbox" name="removeSelected" /></td>
+                            <td class="align-middle"><input type="checkbox" name="removeSelected" class="checkbox" /></td>
                             <td class="align-middle">@subject.Name</td>
                         </tr>
                     }
@@ -161,6 +166,20 @@
                 });
 
                 subjectsToRemove = [];
+            });
+
+             $("tr").click(function() {
+                let checkbox = $(this).find(".checkbox");
+
+                let isChecked = checkbox.is(":checked");
+
+                if (isChecked) {
+                    checkbox.prop("checked", false);
+                    checkbox.attr("checked", false);
+                } else {
+                    checkbox.prop("checked", true);
+                    checkbox.attr("checked", true);
+                }
             });
         });
     </script>

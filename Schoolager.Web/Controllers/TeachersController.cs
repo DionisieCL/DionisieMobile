@@ -23,6 +23,7 @@ namespace Schoolager.Web.Controllers
         private readonly IMailHelper _mailHelper;
         private readonly IFlashMessage _flashMessage;
         private readonly IUserHelper _userHelper;
+        private readonly ITeacherTurmaRepository _teacherTurmaRepository;
 
         public TeachersController(                      
             ITeacherRepository teacherRepository,
@@ -31,7 +32,8 @@ namespace Schoolager.Web.Controllers
             ISubjectRepository subjectRepository,
             IMailHelper mailHelper,
             IFlashMessage flashMessage,
-            IUserHelper userHelper)
+            IUserHelper userHelper,
+            ITeacherTurmaRepository teacherTurmaRepository)
         {
             _teacherRepository = teacherRepository;
             _converterHelper = converterHelper;
@@ -40,6 +42,7 @@ namespace Schoolager.Web.Controllers
             _mailHelper = mailHelper;
             _flashMessage = flashMessage;
             _userHelper = userHelper;
+            _teacherTurmaRepository = teacherTurmaRepository;
         }
 
         // GET: Teachers
@@ -264,11 +267,11 @@ namespace Schoolager.Web.Controllers
 
         [HttpPost]
         [Route("Teachers/GetTeachersBySubjectIdAsync")]
-        public async Task<JsonResult> GetTeachersBySubjectIdAsync(int subjectId)
+        public async Task<JsonResult> GetTeachersBySubjectIdAsync(int subjectId, int turmaId)
         {
-            var teachers =  _teacherRepository.GetTeachersBySubjectId(subjectId);
+            var teacher = await _teacherTurmaRepository.GetTeacherBySubjectAndTurmaIdAsync(subjectId, turmaId);
 
-            return Json(await teachers.ToListAsync());
+            return Json(teacher);
         }
 
         public async Task<Response> ConfirmEmailAsync(User user, TeacherViewModel model)

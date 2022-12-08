@@ -8,7 +8,7 @@
     <div class="bg-white">
         <div class="px-3 p-3 d-flex justify-content-between align-items-center">
 
-            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <a asp-action="TurmaSchedule" asp-route-id="@Model.TurmaId" class="btn btn-outline-secondary">Back</a>
             <h2>New Lesson</h2>
         </div>
         <div class="d-flex justify-content-center align-items-center w-100">
@@ -20,6 +20,8 @@
                 <input asp-for="RecurrenceRule" type="hidden"/>
                 <input asp-for="RecurrenceException" type="hidden"/>
                 <input asp-for="SubjectName" type="hidden"/>
+                <input asp-for="TurmaId" type="hidden"/>
+
                 <div class="row mb-2">
                     <div class="col">
                         <label asp-for="SubjectId" class="control-label"></label>
@@ -34,9 +36,9 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col">
-                        <label asp-for="Location" class="control-label"></label>
-                        <input asp-for="Location" class="form-control" />
-                        <span asp-validation-for="Location" class="text-secondary"></span>
+                        <label asp-for="RoomId" class="control-label"></label>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"/>
+                        <span asp-validation-for="RoomId" class="text-secondary"></span>
                     </div>
                     <div class="col">
                         <label asp-for="WeekDay" class="control-label"></label>

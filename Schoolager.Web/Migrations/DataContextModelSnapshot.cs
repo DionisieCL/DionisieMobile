@@ -181,14 +181,14 @@ namespace Schoolager.Web.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RecurrenceException")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecurrenceRule")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
@@ -209,6 +209,9 @@ namespace Schoolager.Web.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoomId")
+                        .IsUnique();
 
                     b.HasIndex("SubjectId");
 
@@ -240,6 +243,21 @@ namespace Schoolager.Web.Migrations
                     b.HasIndex("LessonId");
 
                     b.ToTable("LessonDatas");
+                });
+
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>
@@ -296,9 +314,6 @@ namespace Schoolager.Web.Migrations
                     b.Property<int>("LessonDataId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("WasPresent")
                         .HasColumnType("bit");
 
@@ -306,7 +321,7 @@ namespace Schoolager.Web.Migrations
 
                     b.HasIndex("LessonDataId");
 
-                    b.ToTable("StudentLessonsDatas");
+                    b.ToTable("StudentLessonDatas");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Subject", b =>
@@ -397,6 +412,9 @@ namespace Schoolager.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.HasKey("TeacherId", "TurmaId");
@@ -575,6 +593,12 @@ namespace Schoolager.Web.Migrations
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Lesson", b =>
                 {
+                    b.HasOne("Schoolager.Web.Data.Entities.Room", "Room")
+                        .WithOne("Lesson")
+                        .HasForeignKey("Schoolager.Web.Data.Entities.Lesson", "RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Schoolager.Web.Data.Entities.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
@@ -592,6 +616,8 @@ namespace Schoolager.Web.Migrations
                         .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Room");
 
                     b.Navigation("Subject");
 
@@ -708,6 +734,11 @@ namespace Schoolager.Web.Migrations
             modelBuilder.Entity("Schoolager.Web.Data.Entities.LessonData", b =>
                 {
                     b.Navigation("StudentLessonsData");
+                });
+
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.Room", b =>
+                {
+                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>

@@ -1,0 +1,26 @@
+﻿@model Schoolager.Web.Models.Lessons.LessonDataViewModel
+@{
+    ViewData["Title"] = "LessonDataResources";
+}
+
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="mb-3">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a asp-action="LessonData" asp-controller="Lessons" class="nav-link text-dark" >Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.LessonId" class="nav-link text-dark">Absences</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark active" aria-current="page">Resources</a>
+                </li>
+                <li class="nav-item">
+                    <a  asp-action="LessonDataHomework" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Homework</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

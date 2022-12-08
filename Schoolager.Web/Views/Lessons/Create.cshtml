@@ -32,9 +32,11 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col">
-                        <label asp-for="Location" class="control-label"></label>
-                        <input asp-for="Location" class="form-control" />
-                        <span asp-validation-for="Location" class="text-secondary"></span>
+                        <label asp-for="RoomId" class="control-label"></label>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId">
+                           <option value="0">< Select a room ></option>
+                        </select>
+                        <span asp-validation-for="RoomId" class="text-secondary"></span>
                     </div>
                     <div class="col">
                         <label asp-for="WeekDay" class="control-label"></label>
@@ -78,7 +80,7 @@
 
     <script type="text/javascript">
 	    $(document).ready(function () {
-            
+            let turmaId = @ViewData["TurmaId"];
             let selectedDateString = '@ViewData["DateString"]';
             let selectedDate = '@ViewData["Date"]';
 
@@ -90,16 +92,20 @@
 				    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
 				    type: 'POST',
 				    dataType: 'json',
-				    data: {subjectId:$("#SubjectId").val()},
-				    success: function (teachers) {
-					    debugger;
-					    $("#TeacherId").append('<option value="0">< Select a teacher ></option>');
-					    $.each(teachers, function (i, teacher) {
-                            console.log(teacher);
-						    $("#TeacherId").append('<option value="'
-							    + teacher.id + '">'
-							    + teacher.fullName + '</option>');
-					    });
+				    data: 
+                    {
+                        subjectId:$("#SubjectId").val(),
+                        turmaId: turmaId,
+                    },
+				    success: function (teacher) {
+					    $("#TeacherId").append(`<option value="${teacher.id}">${teacher.fullName}</option>`);
+
+					    //$.each(teachers, function (i, teacher) {
+         //                   console.log(teacher);
+						   // $("#TeacherId").append('<option value="'
+							  //  + teacher.id + '">'
+							  //  + teacher.fullName + '</option>');
+					    //});
 				    },
 				    error: function (ex) {
 					    debugger;

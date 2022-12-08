@@ -15,25 +15,31 @@ namespace Schoolager.Web.Controllers
 {
     public class TurmasController : Controller
     {
-        
+
         private readonly ITurmaRepository _turmaRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly ISubjectRepository _subjectRepository;
         private readonly ISubjectTurmaRepository _subjectTurmaRepository;
+        private readonly ITeacherRepository _teacherRepositry;
+        private readonly ITeacherTurmaRepository _teacherTurmaRepository;
 
         public TurmasController(
             ITurmaRepository turmaRepository,
             IStudentRepository studentRepository,
             IConverterHelper converterHelper,
             ISubjectRepository subjectRepository,
-            ISubjectTurmaRepository subjectTurmaRepository)
+            ISubjectTurmaRepository subjectTurmaRepository,
+            ITeacherRepository teacherRepositry,
+            ITeacherTurmaRepository teacherTurmaRepository)
         {
             _turmaRepository = turmaRepository;
             _studentRepository = studentRepository;
             _converterHelper = converterHelper;
             _subjectRepository = subjectRepository;
             _subjectTurmaRepository = subjectTurmaRepository;
+            _teacherRepositry = teacherRepositry;
+            _teacherTurmaRepository = teacherTurmaRepository;
         }
 
         // GET: Turmas
@@ -77,7 +83,7 @@ namespace Schoolager.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _turmaRepository.CreateAsync(turma);
-                
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -109,7 +115,7 @@ namespace Schoolager.Web.Controllers
             };
 
             ViewData["TurmaId"] = turma.Id;
-            @ViewData["TurmaName"] = turma.Name;
+            ViewData["TurmaName"] = turma.Name;
 
             return View(model);
         }
@@ -228,14 +234,23 @@ namespace Schoolager.Web.Controllers
                 SubjectsInTurma = subjectsInTurma
             };
 
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
+
+            if (turma == null)
+            {
+                //TODO:return new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
+
             ViewData["TurmaId"] = id.Value;
+            ViewData["TurmaName"] = turma.Name;
             return View(model);
         }
 
         [HttpPost]
         public async Task<JsonResult> AddSubjects(List<Subject> subjects, int turmaId)
         {
-
             List<SubjectTurma> subTurmas = new List<SubjectTurma>();
 
             foreach (var item in subjects)
@@ -287,5 +302,102 @@ namespace Schoolager.Web.Controllers
             return Json(subjects);
         }
 
+        public async Task<IActionResult> AddTeachersToTurma(int? id)
+        {
+
+            if (id == null)
+            {
+                return View();
+            }
+
+            var subjects = await _turmaRepository.GetTurmaSubjects(id.Value);
+
+            var model = new AddTeacherToTurmaViewModel();
+
+            model.SubjectTurmaViewModels = new List<SubjectTurmaViewModel>();
+
+            foreach (var item in subjects)
+            {
+                var teacher = _teacherTurmaRepository.GetTeacherWithSubjectInTurma(id.Value, item.Id);
+
+                model.SubjectTurmaViewModels.Add(new SubjectTurmaViewModel
+                {
+                    Subject = item,
+                    SubjectId = item.Id,
+                    Teachers = _teacherRepositry.GetComboTeachersBySubjectId(item.Id),
+                    TeacherId = teacher == null ? 0 : teacher.Id,
+                });
+            }
+
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
+
+            if (turma == null)
+            {
+                //TODO:return new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
+
+            ViewData["TurmaId"] = id.Value;
+            ViewData["TurmaName"] = turma.Name;
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddTeachersToTurma(AddTeacherToTurmaViewModel model)
+        {
+            // Delete existing records
+            await _teacherTurmaRepository.DeleteAllByTurmaId(model.TurmaId);
+
+            List<TeacherTurma> teacherTurmas = new List<TeacherTurma>();
+
+            foreach (var item in model.SubjectTurmaViewModels)
+            {
+                if(item.TeacherId != 0)
+                {
+                    teacherTurmas.Add(new TeacherTurma
+                    {
+                        TeacherId=item.TeacherId,
+                        TurmaId = model.TurmaId,
+                        SubjectId = item.SubjectId,
+                    });
+                }
+            }
+            
+            await _teacherTurmaRepository.InsertTeacherTurmaAsync(teacherTurmas);
+
+
+            var subjects = await _turmaRepository.GetTurmaSubjects(model.TurmaId);
+
+            model.SubjectTurmaViewModels = new List<SubjectTurmaViewModel>();
+
+            foreach (var item in subjects)
+            {
+                var teacher = _teacherTurmaRepository.GetTeacherWithSubjectInTurma(model.TurmaId, item.Id);
+
+                model.SubjectTurmaViewModels.Add(new SubjectTurmaViewModel
+                {
+                    Subject = item,
+                    Teachers = _teacherRepositry.GetComboTeachersBySubjectId(item.Id),
+                    TeacherId = teacher == null ? 0 : teacher.Id,
+                });
+            }
+
+            var turma = await _turmaRepository.GetByIdAsync(model.TurmaId);
+
+            if (turma == null)
+            {
+                //TODO:return new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
+
+            ViewData["TurmaId"] = model.TurmaId;
+            ViewData["TurmaName"] = turma.Name;
+
+            return View(model);
+        }
     }
 }
