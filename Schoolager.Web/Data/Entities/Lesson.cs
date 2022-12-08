@@ -8,7 +8,8 @@ namespace Schoolager.Web.Data.Entities
     {
         public int Id { get; set; }
         public string SubjectName { get; set; }
-        public string Location { get; set; }
+        public Room Room { get; set; }
+        public int RoomId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "You must select a day")]
         public int WeekDay { get; set; }
