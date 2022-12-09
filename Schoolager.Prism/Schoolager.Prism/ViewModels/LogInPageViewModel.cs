@@ -29,11 +29,7 @@ namespace Schoolager.Prism.ViewModels
 
         public DelegateCommand LoginCommand => _loginCommand ?? (_loginCommand = new DelegateCommand(Login));
 
-        private void Login()
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public bool IsRunning
         {
             get =>   _isRunning;
@@ -44,5 +40,26 @@ namespace Schoolager.Prism.ViewModels
             get => _isEnable;
             set => SetProperty(ref _isEnable, value);
         }
+
+        private async void Login()
+        {
+            if (string.IsNullOrEmpty(Email))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "You must enter an E-mail", "Accept");
+                Password = string.Empty;
+                return;
+
+            }
+            if (string.IsNullOrEmpty(Password))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "You must enter a password", "Accept");
+                Password = string.Empty;
+                return;
+
+            }
+
+            await App.Current.MainPage.DisplayAlert("Ok", "You're logged", "Accept");
+        }
+
     }
 }
