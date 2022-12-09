@@ -1,5 +1,6 @@
 using Prism;
 using Prism.Ioc;
+using Schoolager.Prism.Services;
 using Schoolager.Prism.ViewModels;
 using Schoolager.Prism.Views;
 using Xamarin.Essentials.Implementation;
@@ -25,7 +26,7 @@ namespace Schoolager.Prism
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
-
+            containerRegistry.Register<IApiServices, ApiServicescs>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LogInPage, LogInPageViewModel>();
         }

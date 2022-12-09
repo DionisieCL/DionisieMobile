@@ -6,6 +6,9 @@
   <Application.Resources>
 
     <!-- Application resource dictionary -->
-
+        <ResourceDictionary>
+            <!--Parameters-->
+            <x:String x:Key="UrlAPI"></x:String>
+        </ResourceDictionary>
   </Application.Resources>
 </prism:PrismApplication>
