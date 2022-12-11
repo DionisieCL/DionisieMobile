@@ -95,7 +95,7 @@ namespace Schoolager.Web.Controllers
                     {
                         var student = _converterHelper.ToStudent(model, imageId, true);
 
-                        user = _converterHelper.ToUser(student, new User(), "owners");
+                        user = _converterHelper.ToUser(student, new User(), "students");
 
                         var password = Guid.NewGuid().ToString();
 

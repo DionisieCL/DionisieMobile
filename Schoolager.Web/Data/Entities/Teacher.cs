@@ -41,7 +41,7 @@ namespace Schoolager.Web.Data.Entities
 
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://schoolmanagesysstorage.blob.core.windows.net/noimage/noimage.png"
-            : $"https://schoolmanagesysstorage.blob.core.windows.net/students/{ImageId}";
+            : $"https://schoolmanagesysstorage.blob.core.windows.net/teachers/{ImageId}";
 
         public string FullName => $"{FirstName} {LastName}";
     }

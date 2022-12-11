@@ -16,5 +16,9 @@ namespace Schoolager.Web.Data.Entities
         public Lesson Lesson { get; set; }
 
         public int LessonId { get; set; }
+
+        //public LessonResource LessonResource { get; set; }
+
+        //public int LessonResourceId { get; set; }
     }
 }
