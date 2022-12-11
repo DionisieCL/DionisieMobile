@@ -62,7 +62,30 @@ namespace Schoolager.Web.Data
             {
                 await AddStudents();
             }
+
+            if (!_context.Rooms.Any())
+            {
+                await AddRooms();
+            }
         }
+
+        private async Task AddRooms()
+        {
+            // Load data from json file
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\MockData", "Rooms.json");
+
+            string roomsJson = File.ReadAllText(path);
+
+            List<Room> rooms = JsonConvert.DeserializeObject<List<Room>>(roomsJson);
+
+            foreach (var room in rooms)
+            {
+                _context.Rooms.Add(room);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         private async Task AddTurmas()
         {
             // Load data from json file

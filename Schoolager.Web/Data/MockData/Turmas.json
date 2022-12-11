@@ -1,7 +1,23 @@
 [
-  { "Name": "5º - A" },
-  { "Name": "5º - B" },
-  { "Name": "5º - C" },
-  { "Name": "5º - D" },
-  { "Name": "5º - E" }
+  {
+    "Name": "5º - A",
+    "SchoolYear": 5
+  },
+
+  {
+    "Name": "6º - A",
+    "SchoolYear": 6
+  },
+  {
+    "Name": "7º - A",
+    "SchoolYear": 7
+  },
+  {
+    "Name": "8º - A",
+    "SchoolYear": 8
+  },
+  {
+    "Name": "9º - A",
+    "SchoolYear": 9
+  }
 ]

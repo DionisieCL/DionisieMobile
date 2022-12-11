@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schoolager.Web.Data;
 
 namespace Schoolager.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221211153929_SchoolYears")]
+    partial class SchoolYears
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,30 +244,6 @@ namespace Schoolager.Web.Migrations
                     b.HasIndex("LessonId");
 
                     b.ToTable("LessonDatas");
-                });
-
-            modelBuilder.Entity("Schoolager.Web.Data.Entities.LessonResource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<Guid>("FileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("LessonDataId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonDataId");
-
-                    b.ToTable("LessonResources");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Room", b =>
@@ -664,17 +642,6 @@ namespace Schoolager.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
-                });
-
-            modelBuilder.Entity("Schoolager.Web.Data.Entities.LessonResource", b =>
-                {
-                    b.HasOne("Schoolager.Web.Data.Entities.LessonData", "LessonData")
-                        .WithMany()
-                        .HasForeignKey("LessonDataId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LessonData");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>

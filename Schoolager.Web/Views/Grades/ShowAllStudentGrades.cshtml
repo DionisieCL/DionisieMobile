@@ -7,7 +7,14 @@
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="px-3 p-3 d-flex justify-content-between align-items-center">
-            <h1>Notas do Aluno @Model.FirstOrDefault().Student.FullName</h1>
+            @if(@Model.FirstOrDefault().Student.FullName != null)
+            {
+                <h1>Notas do Aluno @Model.FirstOrDefault().Student.FullName</h1>
+            }
+            else
+            {
+                <h1>Ainda não existem notas para este aluno.</h1>
+            }
         </div>
         <div class="container-fluid">
             <table class="table">
