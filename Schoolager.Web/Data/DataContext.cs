@@ -106,8 +106,13 @@ namespace Schoolager.Web.Data
 
             modelBuilder.Entity<Lesson>()
                 .HasOne(l => l.Room)
-                .WithOne(r => r.Lesson)
-                .HasForeignKey<Lesson>(r => r.RoomId);
+                .WithMany(r => r.Lessons)
+                .HasForeignKey(r => r.RoomId);
+
+            //modelBuilder.Entity<Room>()
+            //    .HasOne(l => l.Room)
+            //    .WithMany(r => r.Lessons)
+            //    .HasForeignKey(r => r.RoomId);
         }
     }
 }

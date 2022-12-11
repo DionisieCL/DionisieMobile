@@ -25,6 +25,7 @@ namespace Schoolager.Web.Controllers
         private readonly IRecurrenceHelper _recurrenceHelper;
         private readonly ILessonDataRepository _lessonDataRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly IRoomRepository _roomRepository;
 
         public LessonsController(
             ILessonRepository lessonRepository,
@@ -34,7 +35,8 @@ namespace Schoolager.Web.Controllers
             ITurmaRepository turmaRepository,
             IRecurrenceHelper recurrenceHelper,
             ILessonDataRepository lessonDataRepository,
-            IStudentRepository studentRepository)
+            IStudentRepository studentRepository,
+            IRoomRepository roomRepository)
         {
             _lessonRepository = lessonRepository;
             _converterHelper = converterHelper;
@@ -44,6 +46,7 @@ namespace Schoolager.Web.Controllers
             _recurrenceHelper = recurrenceHelper;
             _lessonDataRepository = lessonDataRepository;
             _studentRepository = studentRepository;
+            _roomRepository = roomRepository;
         }
 
         public async Task<IActionResult> TurmaSchedule(int id)
@@ -139,7 +142,6 @@ namespace Schoolager.Web.Controllers
                 dateTime = new DateTime(2022, 9, 15).Date + time;
             }
 
-
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjectsByTurmaId(id);
             ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
             ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -151,6 +153,7 @@ namespace Schoolager.Web.Controllers
                 EndTime = dateTime,
             };
 
+            //ViewData["RoomId"] = _roomRepository.GetComboAvailableRooms((DateTime)lessonViewModel.StartTime, (DateTime)lessonViewModel.EndTime, lessonViewModel.WeekDay);
             return View(lessonViewModel);
         }
 
@@ -214,7 +217,7 @@ namespace Schoolager.Web.Controllers
 
             var model = _converterHelper.ToLessonViewModel(lesson);
 
-
+            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -236,6 +239,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);

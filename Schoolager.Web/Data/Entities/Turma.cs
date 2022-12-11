@@ -13,5 +13,6 @@ namespace Schoolager.Web.Data.Entities
         public ICollection<SubjectTurma> SubjectTurmas;
         public ICollection<Lesson> Lessons { get; set; }
         public ICollection<TeacherTurma> TeacherTurmas{ get; set; }
+        public int SchoolYear { get; set; }
     }
 }

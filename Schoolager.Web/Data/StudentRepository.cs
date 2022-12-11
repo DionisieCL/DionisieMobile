@@ -32,6 +32,14 @@ namespace Schoolager.Web.Data
                 .ToList();
         }
 
+        public List<Student> GetFreeStudentsBySchoolYear(int schoolYear)
+        {
+            return _context.Students
+                .Where(s => s.SchoolYear == schoolYear && s.TurmaId == null)
+                .AsNoTrackingWithIdentityResolution()
+                .ToList();
+        }
+
         //public async Task<Student> GetStudentWithTurma(int id)
         //{
         //    return await _context.Students

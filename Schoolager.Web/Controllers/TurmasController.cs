@@ -78,7 +78,7 @@ namespace Schoolager.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Turma turma)
+        public async Task<IActionResult> Create(Turma turma)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +106,8 @@ namespace Schoolager.Web.Controllers
             }
 
             var turmaStudents = _studentRepository.GetByTurmaId(turma.Id);
-            var students = _studentRepository.GetFreeStudents();
+            var students = _studentRepository.GetFreeStudentsBySchoolYear(turma.SchoolYear);
+            //var students = _studentRepository.GetFreeStudents();
 
             AddStudentsViewModel model = new AddStudentsViewModel
             {
@@ -161,7 +162,7 @@ namespace Schoolager.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Turma turma)
+        public async Task<IActionResult> Edit(int id, Turma turma)
         {
             if (id != turma.Id)
             {
