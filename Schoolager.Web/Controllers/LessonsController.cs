@@ -37,8 +37,7 @@ namespace Schoolager.Web.Controllers
             IRecurrenceHelper recurrenceHelper,
             ILessonDataRepository lessonDataRepository,
             IStudentRepository studentRepository,
-            IRoomRepository roomRepository)
-            IStudentRepository studentRepository,
+            IRoomRepository roomRepository,
             IBlobHelper blobHelper)
         {
             _lessonRepository = lessonRepository;
