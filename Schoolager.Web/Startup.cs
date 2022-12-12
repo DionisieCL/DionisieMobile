@@ -33,6 +33,7 @@ namespace Schoolager.Web
         {
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
+                // TODO: Change to true
                 cfg.SignIn.RequireConfirmedEmail = false;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;

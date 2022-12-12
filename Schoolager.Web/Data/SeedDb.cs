@@ -139,6 +139,8 @@ namespace Schoolager.Web.Data
                 {
                     user = _converterHelper.ToUser(teacher, new User(), "teachers");
 
+                    user.PasswordChanged = true;
+
                     var result = await _userHelper.AddUserAsync(user, "123456");
 
                     // check if adding user was successful
@@ -237,6 +239,8 @@ namespace Schoolager.Web.Data
                 if (user == null)
                 {
                     user = _converterHelper.ToUser(student, new User(), "students");
+
+                    user.PasswordChanged = true;
 
                     var result = await _userHelper.AddUserAsync(user, "123456");
 
