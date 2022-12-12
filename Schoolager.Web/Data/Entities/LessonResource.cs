@@ -12,7 +12,7 @@ namespace Schoolager.Web.Data.Entities
 
         [Required]
         public Guid FileId { get; set; }
-        public string FileFullPath => $"https://schoolmanagesysstorage.blob.core.windows.net/teachers/{FileId}";
+        public string FileFullPath => $"https://schoolmanagesysstorage.blob.core.windows.net/teachers/{FileId}.pdf";
 
         public LessonData LessonData { get; set; }
 

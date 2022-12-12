@@ -1,0 +1,20 @@
+﻿<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a asp-action="LessonDataSummary" asp-controller="Lessons" asp-route-id="@ViewData["Id"]" class="nav-link text-dark" id="summary">Summary</a>
+    </li>
+    @if(User.IsInRole("Teacher"))
+    {
+        <li class="nav-item">
+            <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@ViewData["Id"]" class="nav-link text-dark" id="absences">Absences</a>
+        </li>
+    }
+    <li class="nav-item">
+        <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@ViewData["Id"]" class="nav-link text-dark" id="resources">Resources</a>
+    </li>
+    <li class="nav-item">
+        <a  asp-action="LessonDataHomework" asp-controller="Lessons" asp-route-id="@ViewData["Id"]" class="nav-link text-dark" id="homework">Homework</a>
+    </li>
+    <li class="nav-item">
+        <a  asp-action="LessonDataDoubts" asp-controller="Lessons" asp-route-id="@ViewData["Id"]" class="nav-link text-dark" id="doubts">Doubts</a>
+    </li>
+</ul>

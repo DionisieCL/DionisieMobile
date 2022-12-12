@@ -74,6 +74,11 @@ namespace Schoolager.Web.Helpers
             return await _userManager.FindByIdAsync(userId);
         }
 
+        public async Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
         public async Task<SignInResult> LoginAsync(LoginViewModel model)
         {
             return await _signInManager.PasswordSignInAsync(

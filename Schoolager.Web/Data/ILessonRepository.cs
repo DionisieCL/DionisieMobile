@@ -13,5 +13,6 @@ namespace Schoolager.Web.Data
         Task<List<Lesson>> GetLessonByTeacherIdAsync(int id);
         Task<LessonData> GetLessonData(int lessonId, DateTime lessonDate);
         Task<List<Lesson>> GetLessonByTurmaIdAsync(int id);
+        Task<List<Lesson>> GetLessonByStudentIdAsync(int id);
     }
 }

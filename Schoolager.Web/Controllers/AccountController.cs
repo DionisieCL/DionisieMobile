@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Helpers;
 using Schoolager.Web.Models.Account;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Vereyon.Web;
 
@@ -29,6 +31,18 @@ namespace Schoolager.Web.Controllers
 
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Teacher") || User.IsInRole("Student"))
+                {
+                    return RedirectToAction("TeacherIndex", "Lessons");
+                } 
+                else if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Turmas");
+                }
+            }
+
             return View();
         }
 
@@ -41,7 +55,18 @@ namespace Schoolager.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    var user = _userHelper.GetUserByEmailAsync(model.Username);
+                    var user = await _userHelper.GetUserByEmailAsync(model.Username);
+
+                    if(await _userHelper.IsInRoleAsync(user, "Teacher") ||
+                        await _userHelper.IsInRoleAsync(user, "Student"))
+                    {
+                        return RedirectToAction("TeacherIndex", "Lessons");
+                    } 
+                    else if(await _userHelper.IsInRoleAsync(user, "Employee") ||
+                        await _userHelper.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Index", "Turmas");
+                    }
 
                     return RedirectToAction(nameof(Test));
                     //if (this.Request.Query.Keys.Contains("ReturnUrl"))
@@ -64,6 +89,7 @@ namespace Schoolager.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+        [Authorize]
         public IActionResult ConfirmEmail(string userId, string confirmationToken, string passwordToken)
         {
             if (string.IsNullOrEmpty(userId) ||
@@ -134,6 +160,30 @@ namespace Schoolager.Web.Controllers
             _flashMessage.Danger("There was a problem confirming your account, please try again.");
 
             return View(model);
+        }
+
+        public IActionResult RecoverPassword()
+        {
+            return View();
+        }
+        public IActionResult NotAuthorized()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Account/GetUserAsync")]
+        public async Task<JsonResult> GetUserAsync(int countryId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = await _userHelper.GetUserByIdAsync(userId);
+
+            if (user != null)
+            {
+                return Json(user);
+            }
+            return Json("NotAuthorized");
         }
 
         public IActionResult Test()

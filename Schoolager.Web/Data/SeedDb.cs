@@ -147,7 +147,7 @@ namespace Schoolager.Web.Data
                         throw new InvalidOperationException("Could not add user");
                     }
 
-                    await _userHelper.AddUserToRoleAsync(user, "Student");
+                    await _userHelper.AddUserToRoleAsync(user, "Teacher");
 
                     var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
@@ -208,7 +208,7 @@ namespace Schoolager.Web.Data
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
-                await _userHelper.AddUserToRoleAsync(user, "Employee");
+                //await _userHelper.AddUserToRoleAsync(user, "Employee");
 
                 var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 

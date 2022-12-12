@@ -1,27 +1,14 @@
 ﻿<nav class="navbar fixed-top navbar-expand-sm box-shadow bg-white" id="navbar">
     <div class="container-fluid p-0">
         <div class="navbar-collapse collapse d-flex justify-content-between">
-            <div class="burger-container ms-3">
-                <button id="burgerBtn" class="btn btn-outline-dark">X</button>
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="burger-container ms-3">
+                    <button id="burgerBtn" class="btn btn-outline-dark">X</button>
+                </div>
+            }
             <ul class="navbar-nav navbar-right">
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <li class="nav-item" id="homeNav">
-                        <a class="px-4 text-light fw-lighter" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item" id="specialityNav">
-                        <a class="px-4 text-light fw-lighter" asp-area="" asp-controller="Specialities" asp-action="IndexPublic">Specialities</a>
-                    </li>
-                    <li class="nav-item" id="contactNav">
-                        <a class="px-4 text-light fw-lighter" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-                    </li>
-                    <li class="nav-item" id="loginNav">
-                        <a class="px-4 text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="Login">
-                            Login
-                        </a>
-                    </li>
-                } else
+                @if (User.Identity.IsAuthenticated)
                 {  
                     <li class="">
                         <div class="dropdown me-4">
@@ -33,11 +20,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="EditProfile">Edit Profile</a>
-                                    </li>
-                                <li>
                                     <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="RecoverPassword">Recover Password</a>
-                                    </li>
+                                </li>
                                 <li>
                                     <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="Logout">
                                 Logout

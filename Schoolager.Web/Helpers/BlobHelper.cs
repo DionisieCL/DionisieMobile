@@ -37,6 +37,21 @@ namespace Schoolager.Web.Helpers
             return await UploadStreamAsync(stream, containerName);
         }
 
+        public async Task<Guid> UploadBlobAsync(IFormFile file, string containerName, string extension)
+        {
+            Stream stream = file.OpenReadStream();
+            return await UploadStreamAsync(stream, containerName, extension);
+        }
+
+        private async Task<Guid> UploadStreamAsync(Stream stream, string containerName, string extension)
+        {
+            Guid name = Guid.NewGuid();
+            CloudBlobContainer container = _blobClient.GetContainerReference(containerName);
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{name}.{extension}");
+            await blockBlob.UploadFromStreamAsync(stream);
+            return name;
+        }
+
         private async Task<Guid> UploadStreamAsync(Stream stream, string containerName)
         {
             Guid name = Guid.NewGuid();

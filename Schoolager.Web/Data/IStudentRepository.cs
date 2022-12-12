@@ -11,5 +11,6 @@ namespace Schoolager.Web.Data
         Task UpdateRangeAsync(List<Student> students);
         List<Student> GetByTurmaId(int id);
         List<Student> GetFreeStudentsBySchoolYear(int schoolYear);
+        Task<Student> GetByUserIdAsync(string userId);
     }
 }

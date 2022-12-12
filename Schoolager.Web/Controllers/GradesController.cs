@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Schoolager.Web.Controllers
 {
+    [Authorize]
     public class GradesController : Controller
     {
         private readonly DataContext _context;
