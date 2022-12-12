@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +11,9 @@ namespace Schoolager.Web.Data
     {
 
         private readonly DataContext _context;
+        private readonly IUserHelper _userHelper;
 
-        public StudentRepository(DataContext context) : base(context)
+        public StudentRepository(DataContext context, IUserHelper userHelper) : base(context)
         {
             _context = context;
         }
@@ -62,5 +64,16 @@ namespace Schoolager.Web.Data
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Student>> GetStudentGradesWithUser(int id, string email)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(email);
+
+            return await _context.Students
+                .Where(s => s.TurmaId == id && s.UserId == user.Id)
+                .Include(s => s.Turma)
+                .ToListAsync();
+        }
+
     }
 }

@@ -22,6 +22,7 @@ namespace Schoolager.Web.Controllers
         private readonly ITeacherRepository _teacherRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IConverterHelper _converterHelper;
+        private readonly IUserHelper _userHelper;
 
         public GradesController(
             DataContext context,
@@ -29,7 +30,8 @@ namespace Schoolager.Web.Controllers
             IStudentRepository studentRepository,
             ITeacherRepository teacherRepository,
             IGradeRepository gradeRepository,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IUserHelper userHelper)
         {
             _context = context;
             _turmaRepository = turmaRepository;
@@ -37,6 +39,7 @@ namespace Schoolager.Web.Controllers
             _teacherRepository = teacherRepository;
             _gradeRepository = gradeRepository;
             _converterHelper = converterHelper;
+            _userHelper = userHelper;
         }
 
         public IActionResult Index()
@@ -118,7 +121,9 @@ namespace Schoolager.Web.Controllers
                 { 
                     SubjectId = model.SubjectId, 
                     StudentId = grade.StudentId,
-                    Mark = grade.FirstTermMark,
+                    FirstMark = grade.FirstTermMark,
+                    SecondMark = grade.SecondTermMark,
+                    ThirdMark = grade.ThirdTermMark,
                 });
             }
 
@@ -129,7 +134,9 @@ namespace Schoolager.Web.Controllers
             {
                 for(int i = 0; i < gradesDb.Count; i++)
                 {
-                    gradesDb[i].Mark = model.GradeViewModels[i].FirstTermMark;
+                    gradesDb[i].FirstMark = model.GradeViewModels[i].FirstTermMark;
+                    gradesDb[i].SecondMark = model.GradeViewModels[i].SecondTermMark;
+                    gradesDb[i].ThirdMark = model.GradeViewModels[i].ThirdTermMark;
                 }
 
                 await _gradeRepository.UpdateGradesAsync(gradesDb);
@@ -138,14 +145,28 @@ namespace Schoolager.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> ShowStudentsInTurma(int? id)
-        {
-            return View(await _studentRepository.GetStudentWithTurma(id.Value));
-        }
+        //public async Task<IActionResult> ShowStudentsInTurma(int? id)
+        //{
+        //    return View(await _studentRepository.GetStudentWithTurma(id.Value));
+        //}
 
-        public async Task<ActionResult> ShowAllStudentGrades(int? id)
+        //public async Task<ActionResult> ShowAllStudentGrades(int? id)
+        //{
+        //    return View(await _gradeRepository.GetGradesWithStudent(id.Value));
+        //}
+
+        public async Task<IActionResult> ShowLoggedStudentGrades()
         {
-            return View(await _gradeRepository.GetGradesWithStudent(id.Value));
+            var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+            if(user == null)
+            {
+                return View();
+            }
+
+            var grades = await _gradeRepository.GetLoggedStudentGrades(user.UserName);
+
+            return View(grades);
         }
     }
 }

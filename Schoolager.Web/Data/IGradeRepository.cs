@@ -12,5 +12,7 @@ namespace Schoolager.Web.Data
         Task UpdateGradesAsync(List<Grade> grades);
         Task<List<Grade>> GetGradesBySubjectAndStudentIdsAsync(int subjectId, List<int> studentIds);
 
+        Task<List<Grade>> GetLoggedStudentGrades(string userName);
+
     }
 }
