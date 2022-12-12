@@ -24,7 +24,7 @@ namespace Schoolager.Web.Data.Entities
         public Guid ImageId { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty
-             ? $"https://vetmanage.azurewebsites.net/images/noimage.png"
-             : $"https://vetmanagestorage.blob.core.windows.net/{BlobContainer}/{ImageId}";
+             ? $"https://schoolmanagesysstorage.blob.core.windows.net/noimage/noimage.png"
+             : $"https://schoolmanagesysstorage.blob.core.windows.net/{BlobContainer}/{ImageId}";
     }
 }

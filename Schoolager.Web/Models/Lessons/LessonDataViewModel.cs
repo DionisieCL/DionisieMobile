@@ -10,7 +10,9 @@ namespace Schoolager.Web.Models.Lessons
         public string DateString { get; set; }
         public string SubjectName { get; set; }
         public string Summary { get; set; }
+        public string Homework { get; set; }
         public List<AttendanceViewModel> Attendances { get; set; }
+        public List<DoubtViewModel> Doubts { get; set; }
         public LessonResourceViewModel LessonResource { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace Schoolager.Web.Helpers
     {
         Task<Guid> UploadBlobAsync(byte[] file, string containerName);
         Task<Guid> UploadBlobAsync(IFormFile file, string containerName);
+        Task<Guid> UploadBlobAsync(IFormFile file, string containerName, string extension);
         Task<Guid> UploadBlobAsync(string image, string containerName);
     }
 }

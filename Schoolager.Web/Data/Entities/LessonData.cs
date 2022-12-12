@@ -9,6 +9,8 @@ namespace Schoolager.Web.Data.Entities
 
         public string Summary { get; set; }
 
+        public string Homework { get; set; }
+
         public DateTime LessonDate { get; set; }
 
         public ICollection<StudentLessonData> StudentLessonsData { get; set; }

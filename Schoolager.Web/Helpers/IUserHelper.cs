@@ -32,5 +32,6 @@ namespace Schoolager.Web.Helpers
         Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
 
         Task<IdentityResult> UpdateUserAsync(User user);
+        Task<bool> IsInRoleAsync(User user, string v);
     }
 }

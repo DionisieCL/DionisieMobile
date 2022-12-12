@@ -26,6 +26,12 @@ namespace Schoolager.Web.Data
                 .ToList();
         }
 
+        public async Task<Student> GetByUserIdAsync(string userId)
+        {
+            return await _context.Students
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+        }
+
         public List<Student> GetFreeStudents()
         {
             return _context.Students

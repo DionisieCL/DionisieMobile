@@ -8,5 +8,7 @@ namespace Schoolager.Web.Data
     public interface IRoomRepository : IGenericRepository<Room>
     {
         IEnumerable<SelectListItem> GetComboAvailableRooms(DateTime startTime, DateTime endTime, int weekDay);
+
+        IEnumerable<SelectListItem> GetComboRooms();
     }
 }

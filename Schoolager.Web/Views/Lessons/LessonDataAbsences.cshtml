@@ -1,25 +1,14 @@
 ﻿@model Schoolager.Web.Models.Lessons.LessonDataViewModel
 @{
     ViewData["Title"] = "LessonDataAbsences";
+
+    ViewData["Id"] = Model.Id;
 }
 
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="mb-3">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a asp-action="LessonDataSummary" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark" >Summary</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark active" aria-current="page">Absences</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Resources</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="LessonDataHomework" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Homework</a>
-                </li>
-            </ul>
+            <partial name="_LessonDataNav" view-data="ViewData" />
         </div>
         <div class="mx-3">
             <form method="post">
@@ -66,3 +55,12 @@
 </div>
 
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            $('#absences').addClass("active");
+	    });
+    </script>
+}

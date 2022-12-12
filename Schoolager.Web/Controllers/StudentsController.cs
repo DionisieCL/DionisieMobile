@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
+    [Authorize(Roles = "Employee,Admin")]
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _studentRepository;

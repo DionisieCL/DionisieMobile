@@ -12,5 +12,10 @@ namespace Schoolager.Web.Data
         Task<LessonResource> GetLessonResourceByLessonDataIdAsync(int lessonDataId);
         Task InsertLessonResourceAsync(LessonResource lessonResource);
         Task UpdateLessonResourceAsync(LessonResource lessonResource);
+        Task<List<Doubt>> GetDoubtsByLessonDataIdAsync(int id);
+        Task<Doubt> GetDoubtByIdAsync(int id);
+        Task UpdateDoubtAsync(Doubt doubt);
+        Task<List<Doubt>> GetDoubtsByLessonDataAndStudentIdsAsync(int lessonDataId, int studentId);
+        Task InsertDoubt(Doubt doubt);
     }
 }

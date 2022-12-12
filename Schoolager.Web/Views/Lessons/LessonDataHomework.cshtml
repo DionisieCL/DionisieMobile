@@ -1,26 +1,51 @@
 ﻿@model Schoolager.Web.Models.Lessons.LessonDataViewModel
 @{
     ViewData["Title"] = "LessonDataHomework";
+
+    ViewData["Id"] = Model.Id;
 }
 
 <div class="container-fluid p-5">
     <div class="bg-white">
         <div class="mb-3">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a asp-action="LessonDataSummary" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark" >Summary</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Absences</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Resources</a>
-                </li>
-                <li class="nav-item">
-                    <a  asp-action="LessonDataHomework" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark active" aria-current="page">Homework</a>
-                </li>
-            </ul>
+            <partial name="_LessonDataNav" view-data="ViewData" />
         </div>
+        @if (User.IsInRole("Teacher"))
+        {
+            <div class="mx-3">
+                <form asp-action="LessonDataHomework" method="post">
+                    <input asp-for="Id" type="hidden"/>
+                    <div class="mb-2">
+                        <label asp-for="Homework" class="control-label">Homework</label>
+                        <textarea asp-for="Homework"class="form-control"></textarea>
+                        <span asp-validation-for="Homework" class="text-secondary"></span>
+                    </div>
+                    <div class="mb-2">
+                        <button asp-action="LessonDataHomework" type="submit" class="btn btn-outline-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        } else if (User.IsInRole("Student"))
+        {
+            <div class="m-3">
+                @if(Model.Homework != null)
+                {
+                    <p class="fs-5 m-0">@Model.Homework</p>
+                } else
+                {
+                    <p class="fs-5 m-0">There's no homework for this lesson.</p>
+                }
+            </div>
+        }
     </div>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            $('#homework').addClass("active");
+	    });
+    </script>
+}
