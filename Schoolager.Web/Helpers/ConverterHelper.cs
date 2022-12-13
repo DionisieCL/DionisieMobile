@@ -113,6 +113,7 @@ namespace Schoolager.Web.Helpers
                 TurmaId = student.TurmaId,
                 Grades = student.Grades,
                 UserId = student.UserId,
+                SchoolYear = student.SchoolYear
             };
         }
 
@@ -218,7 +219,7 @@ namespace Schoolager.Web.Helpers
             user.LastName = userEntity.LastName;
             user.UserName = userEntity.Email;
             user.Email = userEntity.Email;
-            user.EmailConfirmed = false;
+            //user.EmailConfirmed = false;
             user.PhoneNumber = userEntity.PhoneNumber;
             user.BlobContainer = blobContainerName;
             user.ImageId = userEntity.ImageId;

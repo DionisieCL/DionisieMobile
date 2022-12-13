@@ -171,6 +171,38 @@ namespace Schoolager.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> ConfirmNewEmail(string userId, string newEmail, string token)
+        {
+            if (string.IsNullOrEmpty(userId) ||
+                string.IsNullOrEmpty(newEmail) ||
+                string.IsNullOrEmpty(token))
+            {
+                // TODO: return new NotFoundViewResult("UserNotFound");
+                return NotFound();
+            }
+            var user = await _userHelper.GetUserByIdAsync(userId);
+
+            if (user != null)
+            {
+                var result = await _userHelper.ChangeEmailAsync(user, newEmail, token);
+
+                if (result.Succeeded)
+                {
+                    user.UserName = newEmail;
+
+                    await _userHelper.UpdateUserAsync(user);
+
+                    ViewData["Message"] = "Your new email was confirmed.";
+                    ViewData["Success"] = true;
+
+                    return View();
+                }
+            }
+            ViewData["Message"] = "There was a problem confirming your new email, please try again.";
+            ViewData["Success"] = false;
+            return View();
+        }
+
         [HttpPost]
         [Route("Account/GetUserAsync")]
         public async Task<JsonResult> GetUserAsync(int countryId)

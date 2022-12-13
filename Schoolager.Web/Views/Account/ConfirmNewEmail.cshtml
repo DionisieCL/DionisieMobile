@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "ConfirmNewEmail";
+}
+
+<div class="content-container d-flex justify-content-center align-items-center pt-5">
+    <div class="form-container mt-5 pt-5">
+        <div class="px-3 pt-3">
+            <p class="fs-1 fw-light mb-2">@ViewData["Message"]</p>
+            @if (!User.Identity.IsAuthenticated && (bool)ViewData["Success"] == true)
+            {
+                <a asp-action="Login" asp-controller="Account">Login</a>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        let isSignedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+	    $(document).ready(function () {
+            if (!isSignedIn)
+            {
+                $("#navbar").addClass("closed");
+            }
+	    });
+    </script>
+}
