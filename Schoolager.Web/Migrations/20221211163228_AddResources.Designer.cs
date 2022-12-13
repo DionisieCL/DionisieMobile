@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schoolager.Web.Data;
 
 namespace Schoolager.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221211163228_AddResources")]
+    partial class AddResources
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,7 +212,8 @@ namespace Schoolager.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("RoomId")
+                        .IsUnique();
 
                     b.HasIndex("SubjectId");
 
@@ -313,9 +316,6 @@ namespace Schoolager.Web.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SchoolYear")
-                        .HasColumnType("int");
 
                     b.Property<int?>("TurmaId")
                         .HasColumnType("int");
@@ -459,9 +459,6 @@ namespace Schoolager.Web.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SchoolYear")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -623,8 +620,8 @@ namespace Schoolager.Web.Migrations
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Lesson", b =>
                 {
                     b.HasOne("Schoolager.Web.Data.Entities.Room", "Room")
-                        .WithMany("Lessons")
-                        .HasForeignKey("RoomId")
+                        .WithOne("Lesson")
+                        .HasForeignKey("Schoolager.Web.Data.Entities.Lesson", "RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -778,7 +775,7 @@ namespace Schoolager.Web.Migrations
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Room", b =>
                 {
-                    b.Navigation("Lessons");
+                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>

@@ -30,6 +30,8 @@ namespace Schoolager.Web.Data.Entities
 
         public int? TurmaId { get; set; }
 
+        public int SchoolYear { get; set; }
+
         public ICollection<Grade> Grades { get; set; }
 
         [Display(Name = "Image")]

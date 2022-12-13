@@ -9,10 +9,10 @@
         <div class="mb-3">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a asp-action="LessonData" asp-controller="Lessons" class="nav-link text-dark active" aria-current="page" >Summary</a>
+                    <a asp-action="LessonDataSummary" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark active" aria-current="page" >Summary</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.LessonId" class="nav-link text-dark">Absences</a>
+                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Absences</a>
                 </li>
                 <li class="nav-item">
                     <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Resources</a>
@@ -23,14 +23,15 @@
             </ul>
         </div>
         <div class="mx-3">
-            <form>
+            <form asp-action="LessonData" method="post">
+                <input asp-for="Id" type="hidden"/>
                 <div class="mb-2">
                     <label asp-for="Summary" class="control-label">Summary</label>
                     <textarea asp-for="Summary"class="form-control"></textarea>
                     <span asp-validation-for="Summary" class="text-secondary"></span>
                 </div>
                 <div class="mb-2">
-                    <button class="btn btn-outline-primary">Save</button>
+                    <button asp-action="LessonData" type="submit" class="btn btn-outline-primary">Save</button>
                 </div>
             </form>
         </div>

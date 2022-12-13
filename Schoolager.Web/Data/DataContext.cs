@@ -19,6 +19,7 @@ namespace Schoolager.Web.Data
         public DbSet<StudentLessonData> StudentLessonDatas { get; set; }
         public DbSet<TeacherTurma> TeacherTurmas { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<LessonResource> LessonResources  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -106,8 +107,13 @@ namespace Schoolager.Web.Data
 
             modelBuilder.Entity<Lesson>()
                 .HasOne(l => l.Room)
-                .WithOne(r => r.Lesson)
-                .HasForeignKey<Lesson>(r => r.RoomId);
+                .WithMany(r => r.Lessons)
+                .HasForeignKey(r => r.RoomId);
+
+            //modelBuilder.Entity<Room>()
+            //    .HasOne(l => l.Room)
+            //    .WithMany(r => r.Lessons)
+            //    .HasForeignKey(r => r.RoomId);
         }
     }
 }

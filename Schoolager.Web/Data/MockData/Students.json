@@ -6,7 +6,8 @@
     "Address": "9 Kropf Terrace",
     "DateOfBirth": "5/13/2022",
     "PhoneNumber": "571-704-2509",
-    "TurmaId": 5
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Dodie",
@@ -15,7 +16,8 @@
     "Address": "06 New Castle Circle",
     "DateOfBirth": "12/7/2022",
     "PhoneNumber": "417-258-4395",
-    "TurmaId": 2
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Fawnia",
@@ -24,7 +26,8 @@
     "Address": "7 Thompson Way",
     "DateOfBirth": "3/20/2022",
     "PhoneNumber": "315-224-6358",
-    "TurmaId": 5
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Gonzales",
@@ -33,7 +36,8 @@
     "Address": "2931 Esch Pass",
     "DateOfBirth": "1/27/2022",
     "PhoneNumber": "128-656-4306",
-    "TurmaId": 3
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Lambert",
@@ -42,7 +46,8 @@
     "Address": "25 Clove Road",
     "DateOfBirth": "7/7/2022",
     "PhoneNumber": "432-422-4624",
-    "TurmaId": 2
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Tiffany",
@@ -51,7 +56,8 @@
     "Address": "6 Boyd Pass",
     "DateOfBirth": "7/23/2022",
     "PhoneNumber": "865-303-4123",
-    "TurmaId": 4
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Ines",
@@ -60,7 +66,8 @@
     "Address": "45652 Coleman Drive",
     "DateOfBirth": "6/6/2022",
     "PhoneNumber": "466-698-4550",
-    "TurmaId": 4
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Evelina",
@@ -69,7 +76,8 @@
     "Address": "48 Larry Avenue",
     "DateOfBirth": "6/27/2022",
     "PhoneNumber": "308-164-6063",
-    "TurmaId": 3
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Shayna",
@@ -78,7 +86,8 @@
     "Address": "5 Orin Trail",
     "DateOfBirth": "12/8/2022",
     "PhoneNumber": "727-211-2994",
-    "TurmaId": 3
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Nina",
@@ -87,7 +96,8 @@
     "Address": "60425 Grasskamp Crossing",
     "DateOfBirth": "10/8/2022",
     "PhoneNumber": "855-972-6956",
-    "TurmaId": 4
+    "TurmaId": 1,
+    "SchoolYear": 5
   },
   {
     "FirstName": "Hasty",
@@ -96,7 +106,8 @@
     "Address": "40 Weeping Birch Junction",
     "DateOfBirth": "11/13/2022",
     "PhoneNumber": "837-715-0033",
-    "TurmaId": 1
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Ania",
@@ -105,7 +116,8 @@
     "Address": "12 Arrowood Crossing",
     "DateOfBirth": "9/20/2022",
     "PhoneNumber": "964-528-7694",
-    "TurmaId": 4
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Timothee",
@@ -114,7 +126,8 @@
     "Address": "50061 Packers Drive",
     "DateOfBirth": "8/14/2022",
     "PhoneNumber": "579-866-3944",
-    "TurmaId": 2
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Vick",
@@ -123,7 +136,8 @@
     "Address": "2 Merrick Drive",
     "DateOfBirth": "12/1/2022",
     "PhoneNumber": "465-651-9754",
-    "TurmaId": 2
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Edvard",
@@ -132,7 +146,8 @@
     "Address": "15 Nelson Place",
     "DateOfBirth": "12/11/2022",
     "PhoneNumber": "459-320-6673",
-    "TurmaId": 5
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Marji",
@@ -141,7 +156,8 @@
     "Address": "09 Bunker Hill Way",
     "DateOfBirth": "1/10/2022",
     "PhoneNumber": "150-230-0989",
-    "TurmaId": 4
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Romonda",
@@ -150,7 +166,8 @@
     "Address": "916 Lakeland Terrace",
     "DateOfBirth": "9/30/2022",
     "PhoneNumber": "569-647-4457",
-    "TurmaId": 3
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Welch",
@@ -159,7 +176,8 @@
     "Address": "6328 Green Ridge Avenue",
     "DateOfBirth": "6/12/2022",
     "PhoneNumber": "933-123-1372",
-    "TurmaId": 2
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Micheal",
@@ -168,7 +186,8 @@
     "Address": "71701 Evergreen Lane",
     "DateOfBirth": "4/29/2022",
     "PhoneNumber": "234-634-3349",
-    "TurmaId": 1
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Emilia",
@@ -177,7 +196,8 @@
     "Address": "6923 Sutherland Court",
     "DateOfBirth": "8/22/2022",
     "PhoneNumber": "827-535-3284",
-    "TurmaId": 3
+    "TurmaId": 2,
+    "SchoolYear": 6
   },
   {
     "FirstName": "Freddie",
@@ -186,7 +206,8 @@
     "Address": "21 Carpenter Lane",
     "DateOfBirth": "10/9/2022",
     "PhoneNumber": "758-181-4789",
-    "TurmaId": 2
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Marjie",
@@ -195,7 +216,8 @@
     "Address": "94379 Mayfield Circle",
     "DateOfBirth": "10/12/2022",
     "PhoneNumber": "738-765-3470",
-    "TurmaId": 2
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Virge",
@@ -204,7 +226,8 @@
     "Address": "6634 Fallview Alley",
     "DateOfBirth": "7/11/2022",
     "PhoneNumber": "724-928-9382",
-    "TurmaId": 3
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Tracie",
@@ -213,7 +236,8 @@
     "Address": "38995 Forest Dale Junction",
     "DateOfBirth": "11/17/2022",
     "PhoneNumber": "474-679-0817",
-    "TurmaId": 2
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Ashien",
@@ -222,7 +246,8 @@
     "Address": "0051 Carioca Way",
     "DateOfBirth": "9/26/2022",
     "PhoneNumber": "389-377-2017",
-    "TurmaId": 1
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Camellia",
@@ -231,7 +256,8 @@
     "Address": "9 North Junction",
     "DateOfBirth": "7/28/2022",
     "PhoneNumber": "135-751-3066",
-    "TurmaId": 2
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Wendy",
@@ -240,7 +266,8 @@
     "Address": "98167 Golf View Plaza",
     "DateOfBirth": "12/14/2022",
     "PhoneNumber": "490-594-6197",
-    "TurmaId": 1
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Prisca",
@@ -249,7 +276,8 @@
     "Address": "83 Elgar Crossing",
     "DateOfBirth": "5/19/2022",
     "PhoneNumber": "758-846-7260",
-    "TurmaId": 4
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Reba",
@@ -258,7 +286,8 @@
     "Address": "7 Summit Road",
     "DateOfBirth": "6/10/2022",
     "PhoneNumber": "417-304-7408",
-    "TurmaId": 3
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Darcy",
@@ -267,7 +296,8 @@
     "Address": "43 Northfield Court",
     "DateOfBirth": "1/12/2022",
     "PhoneNumber": "616-540-7052",
-    "TurmaId": 3
+    "TurmaId": 3,
+    "SchoolYear": 7
   },
   {
     "FirstName": "Concettina",
@@ -276,7 +306,8 @@
     "Address": "7952 South Parkway",
     "DateOfBirth": "2/17/2022",
     "PhoneNumber": "298-707-8321",
-    "TurmaId": 5
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Bogart",
@@ -285,7 +316,8 @@
     "Address": "84614 Crownhardt Parkway",
     "DateOfBirth": "11/9/2022",
     "PhoneNumber": "132-595-2730",
-    "TurmaId": 1
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Kelby",
@@ -294,7 +326,8 @@
     "Address": "325 Leroy Junction",
     "DateOfBirth": "9/3/2022",
     "PhoneNumber": "917-450-3529",
-    "TurmaId": 2
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Candide",
@@ -303,7 +336,8 @@
     "Address": "86650 Hooker Alley",
     "DateOfBirth": "8/11/2022",
     "PhoneNumber": "371-548-8931",
-    "TurmaId": 5
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Briano",
@@ -312,7 +346,8 @@
     "Address": "82909 Sheridan Street",
     "DateOfBirth": "3/27/2022",
     "PhoneNumber": "362-134-1620",
-    "TurmaId": 2
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Vina",
@@ -321,7 +356,8 @@
     "Address": "06 Roxbury Parkway",
     "DateOfBirth": "3/5/2022",
     "PhoneNumber": "234-938-2255",
-    "TurmaId": 5
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Robena",
@@ -330,7 +366,8 @@
     "Address": "0590 Dapin Trail",
     "DateOfBirth": "5/28/2022",
     "PhoneNumber": "729-221-5668",
-    "TurmaId": 4
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Fedora",
@@ -339,7 +376,8 @@
     "Address": "856 Pennsylvania Lane",
     "DateOfBirth": "10/18/2022",
     "PhoneNumber": "618-380-5213",
-    "TurmaId": 5
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Franny",
@@ -348,7 +386,8 @@
     "Address": "14597 Darwin Plaza",
     "DateOfBirth": "9/24/2022",
     "PhoneNumber": "648-934-1591",
-    "TurmaId": 5
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Emmery",
@@ -357,7 +396,8 @@
     "Address": "1 Eggendart Parkway",
     "DateOfBirth": "10/16/2022",
     "PhoneNumber": "642-301-6867",
-    "TurmaId": 2
+    "TurmaId": 4,
+    "SchoolYear": 8
   },
   {
     "FirstName": "Emory",
@@ -366,7 +406,8 @@
     "Address": "45718 Eliot Crossing",
     "DateOfBirth": "11/27/2022",
     "PhoneNumber": "744-521-0128",
-    "TurmaId": 3
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Teriann",
@@ -375,7 +416,8 @@
     "Address": "2029 Carioca Street",
     "DateOfBirth": "5/23/2022",
     "PhoneNumber": "850-949-9940",
-    "TurmaId": 5
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Audrey",
@@ -384,7 +426,8 @@
     "Address": "287 Amoth Center",
     "DateOfBirth": "3/25/2022",
     "PhoneNumber": "194-698-1548",
-    "TurmaId": 5
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Rocky",
@@ -393,7 +436,8 @@
     "Address": "42 Fair Oaks Drive",
     "DateOfBirth": "2/16/2022",
     "PhoneNumber": "897-161-3489",
-    "TurmaId": 3
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Korrie",
@@ -402,7 +446,8 @@
     "Address": "095 Hudson Street",
     "DateOfBirth": "2/22/2022",
     "PhoneNumber": "456-841-7863",
-    "TurmaId": 3
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Neill",
@@ -411,7 +456,8 @@
     "Address": "22950 4th Way",
     "DateOfBirth": "2/19/2022",
     "PhoneNumber": "870-822-5020",
-    "TurmaId": 2
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Kellen",
@@ -420,7 +466,8 @@
     "Address": "47583 Muir Park",
     "DateOfBirth": "4/5/2022",
     "PhoneNumber": "453-204-6477",
-    "TurmaId": 4
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Adrianne",
@@ -429,7 +476,8 @@
     "Address": "5515 Marquette Way",
     "DateOfBirth": "12/2/2022",
     "PhoneNumber": "755-733-6307",
-    "TurmaId": 2
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Becki",
@@ -438,7 +486,8 @@
     "Address": "84214 Shasta Street",
     "DateOfBirth": "12/11/2021",
     "PhoneNumber": "732-236-1217",
-    "TurmaId": 3
+    "TurmaId": 5,
+    "SchoolYear": 9
   },
   {
     "FirstName": "Doralia",
@@ -447,6 +496,7 @@
     "Address": "7753 Sunfield Pass",
     "DateOfBirth": "2/2/2022",
     "PhoneNumber": "396-363-6001",
-    "TurmaId": 1
+    "TurmaId": 5,
+    "SchoolYear": 9
   }
 ]

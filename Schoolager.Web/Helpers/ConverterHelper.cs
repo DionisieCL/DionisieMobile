@@ -68,6 +68,7 @@ namespace Schoolager.Web.Helpers
                 TurmaId = model.TurmaId,
                 Grades = model.Grades,
                 UserId = model.UserId,
+                SchoolYear = model.SchoolYear,
             };
 
             return student;
@@ -89,6 +90,7 @@ namespace Schoolager.Web.Helpers
                 Grades = model.Grades,
                 User = model.User,
                 ImageId = model.ImageId,
+                SchoolYear = model.SchoolYear,
             };
 
             return student;

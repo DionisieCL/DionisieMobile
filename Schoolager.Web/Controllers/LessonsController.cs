@@ -25,6 +25,8 @@ namespace Schoolager.Web.Controllers
         private readonly IRecurrenceHelper _recurrenceHelper;
         private readonly ILessonDataRepository _lessonDataRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IBlobHelper _blobHelper;
 
         public LessonsController(
             ILessonRepository lessonRepository,
@@ -34,7 +36,9 @@ namespace Schoolager.Web.Controllers
             ITurmaRepository turmaRepository,
             IRecurrenceHelper recurrenceHelper,
             ILessonDataRepository lessonDataRepository,
-            IStudentRepository studentRepository)
+            IStudentRepository studentRepository,
+            IRoomRepository roomRepository,
+            IBlobHelper blobHelper)
         {
             _lessonRepository = lessonRepository;
             _converterHelper = converterHelper;
@@ -44,6 +48,8 @@ namespace Schoolager.Web.Controllers
             _recurrenceHelper = recurrenceHelper;
             _lessonDataRepository = lessonDataRepository;
             _studentRepository = studentRepository;
+            _roomRepository = roomRepository;
+            _blobHelper = blobHelper;
         }
 
         public async Task<IActionResult> TurmaSchedule(int id)
@@ -122,7 +128,7 @@ namespace Schoolager.Web.Controllers
             // If the user clicks the new appointment button
             if (date == null)
             {
-                // Make sure slected time is 7 am
+                // Make sure slected time is 8 am
                 TimeSpan time = new TimeSpan(8, 0, 0);
 
                 // TODO: Change to first day of school
@@ -139,7 +145,6 @@ namespace Schoolager.Web.Controllers
                 dateTime = new DateTime(2022, 9, 15).Date + time;
             }
 
-
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjectsByTurmaId(id);
             ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
             ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -151,6 +156,7 @@ namespace Schoolager.Web.Controllers
                 EndTime = dateTime,
             };
 
+            //ViewData["RoomId"] = _roomRepository.GetComboAvailableRooms((DateTime)lessonViewModel.StartTime, (DateTime)lessonViewModel.EndTime, lessonViewModel.WeekDay);
             return View(lessonViewModel);
         }
 
@@ -214,7 +220,7 @@ namespace Schoolager.Web.Controllers
 
             var model = _converterHelper.ToLessonViewModel(lesson);
 
-
+            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -236,6 +242,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -336,8 +343,6 @@ namespace Schoolager.Web.Controllers
 
             var lessonData = await _lessonRepository.GetLessonData(lessonId, lessonDate);
 
-            LessonDataViewModel model = new LessonDataViewModel();
-
             if (lessonData == null)
             {
                 lessonData = new LessonData()
@@ -350,59 +355,237 @@ namespace Schoolager.Web.Controllers
                 {
                     await _lessonDataRepository.CreateAsync(lessonData);
 
-                    model.Id = lessonData.Id;
-                    model.LessonId = lessonId;
-
-                    return View(model);
+                    return RedirectToAction(nameof(LessonDataSummary), new {id = lessonData.Id});
                 }
                 catch (Exception ex)
                 {
                     return RedirectToAction(nameof(TeacherIndex));
                 }
-
-                // TODO: return create new View
-                return RedirectToAction(nameof(CreateLessonData), new { id = lessonId});
             }
 
-            model.Id = lessonData.Id;
-            model.LessonId = lessonData.LessonId;
-            model.Summary = lessonData.Summary;
+            return RedirectToAction(nameof(LessonDataSummary), new { id = lessonData.Id });
+        }
 
-            // TODO: return create new View
+        public async Task<IActionResult> LessonDataSummary(int id)
+        {
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
+
+            LessonDataViewModel model = new LessonDataViewModel
+            {
+                Id = lessonData.Id,
+                LessonId = lessonData.LessonId,
+                Summary = lessonData.Summary,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LessonDataSummary(LessonDataViewModel model)
+        {
+            var lessonData = await _lessonDataRepository.GetByIdAsync(model.Id);
+
+            if(lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound(model);
+            }
+
+            lessonData.Summary = model.Summary;
+
+            try
+            {
+                await _lessonDataRepository.UpdateAsync(lessonData);
+            }
+            catch (Exception ex)
+            {
+                // _flashMessage.Danger("Could not update the lesson's summary.");
+                return View(model);
+            }
+
+            // _flashMessage.Confirmation("The lesson's summary was updated.");
+
             return View(model);
         }
 
 
         public async Task<IActionResult> LessonDataAbsences(int id)
         {
-            var lesson = await _lessonRepository.GetByIdAsync(id);
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
 
-            if(lesson == null)
+            if (lessonData == null)
             {
-                // NotFoundViewResult("AppointmentNotFound");
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
                 return NotFound();
             }
 
+            var lesson = await _lessonRepository.GetByIdAsync(lessonData.LessonId);
+
+            if(lesson == null)
+            {
+                // return new NotFoundViewResult("LessonDataNotFound");
+                return NotFound();
+            }
+
+            // get all the students in turma, whose lesson we're trying to check
+            // then get their ids
             var students = _studentRepository.GetByTurmaId(lesson.TurmaId);
+            List<int> studentIds = students.Select(a => a.Id).ToList();
 
+            // Get existing lesson datas 
+            var studentLessonDatasDb = await _lessonDataRepository.GetByLessonDatasAndStudentIdsAsync(id, studentIds);
+
+            // Fill the model from the students and if the absences have already been inserted set the WasPresent
             LessonDataViewModel model = new LessonDataViewModel();
-
             model.Attendances = new List<AttendanceViewModel>();
 
-            foreach (var student in students)
+            for (int i = 0; i < students.Count; i++)
             {
+                bool wasPresent = studentLessonDatasDb.Count == 0 ? false : studentLessonDatasDb[i].WasPresent;
+
                 model.Attendances.Add(new AttendanceViewModel()
                 {
-                    StudentViewModel = _converterHelper.ToStudentViewModel(student),
+                    StudentViewModel = _converterHelper.ToStudentViewModel(students[i]),
+                    WasPresent = wasPresent,
                 });
+            }
+
+            model.LessonId = lesson.Id;
+            model.Id = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LessonDataAbsences(LessonDataViewModel model)
+        {
+            List<int> studentIds = model.Attendances.Select(a => a.StudentId).ToList();
+
+            var studentLessonDatasDb = await _lessonDataRepository.GetByLessonDatasAndStudentIdsAsync(model.Id, studentIds);
+
+            if (studentLessonDatasDb.Count == 0)
+            {
+                List<StudentLessonData> studentLessonDatas = new List<StudentLessonData>();
+
+                foreach(var attendance in model.Attendances)
+                {
+                    studentLessonDatas.Add(new StudentLessonData
+                    {
+                        StudentId = attendance.StudentId,
+                        LessonDataId = model.Id,
+                        WasPresent = attendance.WasPresent
+                    });
+                }
+                // TODO: flashMessage
+                await _lessonDataRepository.InsertStudentLessonDataRangeAsync(studentLessonDatas);
+            } else
+            {
+                for (int i = 0; i < studentLessonDatasDb.Count; i++)
+                {
+                    studentLessonDatasDb[i].WasPresent = model.Attendances[i].WasPresent;
+                }
+
+                // TODO: flashMessage
+                await _lessonDataRepository.UpdateStudentLessonDataRangeAsync(studentLessonDatasDb);
+            }
+            var lesson = await _lessonRepository.GetByIdAsync(model.LessonId);
+            var students = _studentRepository.GetByTurmaId(lesson.TurmaId);
+
+            for (int i = 0; i < students.Count; i++)
+            {
+                model.Attendances[i].StudentViewModel = _converterHelper.ToStudentViewModel(students[i]);
             }
 
             return View(model);
         }
 
-        public IActionResult LessonDataResources(int id)
+        public async Task<IActionResult> LessonDataResources(int id)
         {
-            return View();
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            var lesson = await _lessonRepository.GetByIdAsync(lessonData.LessonId);
+
+            if (lesson == null)
+            {
+                // return new NotFoundViewResult("LessonDataNotFound");
+                return NotFound();
+            }
+
+            LessonDataViewModel model = new LessonDataViewModel();
+
+            var lessonResourse = await _lessonDataRepository.GetLessonResourceByLessonDataIdAsync(id);
+
+            if(lessonResourse == null)
+            {
+                model.LessonResource = new LessonResourceViewModel();
+            }
+            else
+            {
+                model.LessonResource = new LessonResourceViewModel()
+                {
+                    FileId = lessonResourse.FileId,
+                    Id = lessonResourse.Id,
+                    Name = lessonResourse.Name,
+                    LessonDataId = lessonResourse.LessonDataId,
+                };
+            }
+
+
+            model.Id = lessonData.Id;
+            model.LessonId = lessonData.LessonId;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LessonDataResources(LessonDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.LessonResource.FormFile != null && model.LessonResource.FormFile.Length > 0)
+                {
+                    string contentType = model.LessonResource.FormFile.ContentType;
+
+                    if(contentType != "application/pdf")
+                    {
+                        // _flashMessage.Danger("That file type is not allowed");
+                        return View(model);
+                    }
+
+                    //model.LessonResource.Name = model.LessonResource.FormFile.Name;
+
+                    Guid fileId = await _blobHelper.UploadBlobAsync(model.LessonResource.FormFile, "teachers");
+
+                    model.LessonResource.FileId = fileId;
+
+                    var lessonResource = new LessonResource();
+
+                    lessonResource.Name = model.LessonResource.Name;
+                    lessonResource.FileId = model.LessonResource.FileId;
+                    lessonResource.LessonDataId = model.Id;
+
+                    if(model.LessonResource.Id == 0)
+                    {
+                        // _flashMessage.Confirmation("Resource was added.");
+                        await _lessonDataRepository.InsertLessonResourceAsync(lessonResource);
+
+                        model.LessonResource.Id = lessonResource.Id;
+                    } else
+                    {
+                        lessonResource.Id = model.LessonResource.Id;
+                        // _flashMessage.Confirmation("Resource was updated.");
+                        await _lessonDataRepository.UpdateLessonResourceAsync(lessonResource);
+                    }
+                }
+            }
+
+            return View(model);
         }
 
         public IActionResult LessonDataHomework(int id)

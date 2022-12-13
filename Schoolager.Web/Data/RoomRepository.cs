@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Schoolager.Web.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,33 +23,34 @@ namespace Schoolager.Web.Data
                 Value = r.Id.ToString(),
             }).OrderBy(r => r.Text).ToList();
 
-            list.Insert(0, new SelectListItem
-            {
-                Text = "< Select a Room >",
-                Value = null,
-            });
-
+            //list.Insert(0, new SelectListItem
+            //{
+            //    Text = "< Select a Room >",
+            //    Value = null,
+            //});
+            //
             return list;
         }
 
-        //public IEnumerable<SelectListItem> GetComboAvailableRooms()
-        //{
-        //    var list = _context.Rooms
-        //        .Where()
-        //        .Select(r => new SelectListItem
-        //        {
-        //        Text = r.Name,
-        //        Value = r.Id.ToString(),
-        //    }).OrderBy(r => r.Text).ToList();
+        public IEnumerable<SelectListItem> GetComboAvailableRooms(DateTime startTime, DateTime endTime, int weekDay)
+        {
+            var salasTodas = _context.Rooms.ToList();
 
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "< Select a Room >",
-        //        Value = null,
-        //    });
+            var salasASerUsadas = _context.Lessons
+                .Where(l => l.StartTime != startTime && l.EndTime != endTime && l.WeekDay == weekDay)
+                .Select(r => r.Room);
 
-        //    return list;
-        //}
+            List<Room> available = salasTodas.Where(st => !salasASerUsadas.Any(al => al.Id == st.Id)).ToList();
+
+            var list = _context.Rooms
+                .Select(r => new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString(),
+                }).OrderBy(r => r.Text).ToList();
+
+            return list;
+        }
 
     }
 }

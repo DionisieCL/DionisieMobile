@@ -8,10 +8,10 @@
         <div class="mb-3">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a asp-action="LessonData" asp-controller="Lessons" class="nav-link text-dark" >Summary</a>
+                    <a asp-action="LessonDataSummary" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark" >Summary</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.LessonId" class="nav-link text-dark">Absences</a>
+                    <a asp-action="LessonDataAbsences" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Absences</a>
                 </li>
                 <li class="nav-item">
                     <a asp-action="LessonDataResources" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark active" aria-current="page">Resources</a>
@@ -20,6 +20,33 @@
                     <a  asp-action="LessonDataHomework" asp-controller="Lessons" asp-route-id="@Model.Id" class="nav-link text-dark">Homework</a>
                 </li>
             </ul>
+        </div>
+        <div class="mx-3">
+            @if(@Model.LessonResource.Id != 0)
+            {
+                <div class="mb-2">
+                    <a class="text-primary" href="@Model.LessonResource.FileFullPath">@Model.LessonResource.Name</a>
+                </div>
+            }
+
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for="Id" type="hidden"/>
+                <input asp-for="LessonId" type="hidden"/>
+                <input asp-for="LessonResource.Id" type="hidden"/>
+                <div class="mb-2">
+                    <label asp-for="LessonResource.Name">Resource Name</label>
+                    <input asp-for="LessonResource.Name" class="form-control" accept="application/pdf"/>
+                    <span asp-validation-for="LessonResource.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-2">
+                    <label asp-for="LessonResource.FormFile">Resource File</label>
+                    <input asp-for="LessonResource.FormFile" class="form-control" accept="application/pdf"/>
+                    <span asp-validation-for="LessonResource.FormFile" class="text-danger"></span>
+                </div>
+                <div class="mb-2">
+                    <button asp-action="LessonDataResources" type="submit" class="btn btn-outline-primary">Upload File</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
