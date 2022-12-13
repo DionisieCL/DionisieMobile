@@ -7,7 +7,7 @@ namespace Schoolager.Prism.Models
     public class UserResponse
     {
         
-      /*  public string FirstName { get; set; }
+       public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
@@ -24,6 +24,6 @@ namespace Schoolager.Prism.Models
 
         public string ImageFullPath => ImageId == Guid.Empty
              ? $"https://vetmanage.azurewebsites.net/images/noimage.png"
-             : $"https://vetmanagestorage.blob.core.windows.net/{BlobContainer}/{ImageId}";*/
+             : $"https://vetmanagestorage.blob.core.windows.net/{BlobContainer}/{ImageId}";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
+using Schoolager.Prism.Services;
 
 namespace Schoolager.Prism.ViewModels
 {
@@ -12,5 +13,6 @@ namespace Schoolager.Prism.ViewModels
 
         public string Title { get; set; }
         public INavigationService NavigationService { get; }
+
     }
 }

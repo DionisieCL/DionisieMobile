@@ -1,10 +1,12 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Schoolager.Prism.Models;
+using Schoolager.Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Xamarin.Forms;
 
 namespace Schoolager.Prism.ViewModels
 {
@@ -15,10 +17,17 @@ namespace Schoolager.Prism.ViewModels
         private bool _isEnable;
         private DelegateCommand _loginCommand;
 
-        public LogInPageViewModel(INavigationService navigationService) : base(navigationService)
+        private readonly IApiServices _apiService;
+
+        
+
+        public LogInPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
             Title = "Login";
             IsEnable= true;
+
+            _apiService = apiService;
+
         }
         public string Email { get; set; }
         public string Password
@@ -58,7 +67,21 @@ namespace Schoolager.Prism.ViewModels
 
             }
 
-            await App.Current.MainPage.DisplayAlert("Ok", "You're logged", "Accept");
+            string url = App.Current.Resources["UrlAPI"].ToString();
+
+            Response response = await _apiService.Login(url, "api", "/Users", Email, Password);
+
+            UserResponse userResponse = (UserResponse)response.Result;
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "E-mail or Password wrong!", "Accept");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Ok", userResponse.FirstName, "Accept");
+            }
+
         }
 
     }

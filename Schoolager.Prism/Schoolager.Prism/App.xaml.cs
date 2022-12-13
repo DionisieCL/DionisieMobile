@@ -29,6 +29,8 @@ namespace Schoolager.Prism
             containerRegistry.Register<IApiServices, ApiServicescs>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LogInPage, LogInPageViewModel>();
+            containerRegistry.RegisterForNavigation<MenuPage, MenuPageViewModel>();
+
         }
     } 
 }

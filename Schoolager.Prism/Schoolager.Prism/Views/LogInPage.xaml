@@ -15,6 +15,7 @@
             Placeholder="Enter your email"
             Text="{Binding Email}"/>
         <Label Text="Password"/>
+        <Label Text="Test"/>
         <Entry
             IsPassword="True"
             Placeholder="Enter your Password"
