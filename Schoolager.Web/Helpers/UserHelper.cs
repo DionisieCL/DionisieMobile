@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Models.Account;
 using System.Linq;
@@ -31,6 +32,11 @@ namespace Schoolager.Web.Helpers
             await _userManager.AddToRoleAsync(user, roleName);
         }
 
+        public async Task<IdentityResult> ChangeEmailAsync(User user, string newEmail, string token)
+        {
+            return await _userManager.ChangeEmailAsync(user, newEmail, token);
+        }
+
         public async Task CheckRoleAsync(string roleName)
         {
             var roleExists = await _roleManager.RoleExistsAsync(roleName);
@@ -47,6 +53,16 @@ namespace Schoolager.Web.Helpers
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<IdentityResult> DeleteUserAsync(User user)
+        {
+            return await _userManager.DeleteAsync(user);
+        }
+
+        public async Task<string> GenerateChangeEmailTokenAsync(User user, string email)
+        {
+            return await _userManager.GenerateChangeEmailTokenAsync(user, email);
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
@@ -72,6 +88,11 @@ namespace Schoolager.Web.Helpers
         public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            return await _userManager.IsInRoleAsync(user, roleName);
         }
 
         public async Task<SignInResult> LoginAsync(LoginViewModel model)

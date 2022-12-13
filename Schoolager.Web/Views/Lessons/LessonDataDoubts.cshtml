@@ -1,0 +1,92 @@
+﻿@model Schoolager.Web.Models.Lessons.LessonDataViewModel
+
+@{
+    ViewData["Title"] = "LessonDataDoubts";
+
+    ViewData["Id"] = Model.Id;
+}
+
+<div class="container-fluid p-5">
+    <div class="bg-white">
+        <div class="mb-3">
+            <partial name="_LessonDataNav" view-data="ViewData" />
+        </div>
+        @if (User.IsInRole("Student"))
+        {
+            <div class="m-3">
+                <a asp-action="RaiseDoubt" asp-route-id="@Model.Id" class="btn btn-outline-primary me-2">New Doubt</a>
+            </div>
+        }
+        <div class="mx-3">
+            <table class="table table-bordered table-hover" id="tableStudents">
+                <thead>
+                    <tr>
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <th>
+                                Student
+                            </th>
+                        }
+                        <th>
+                            Doubt
+                        </th>
+                        <th>
+                            Answer
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Doubts) {
+                        <tr>
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.Student.FullName)
+                                </td>
+                            }
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            @if(item.Answer != null)
+                            {
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.Answer)
+                                </td>
+                            } else
+                            {
+                                <td class="align-middle">
+                                    N/A
+                                </td> 
+                            }
+                            <td class="align-middle">
+                                <div class="d-flex flex-row">
+                                    
+                                    <a asp-action="AnswerDoubt" asp-route-id="@item.Id" class="btn btn-outline-primary me-2"> 
+                                        @if (User.IsInRole("Teacher"))
+                                        {
+                                            <span>Answer</span> 
+                                        } else if (User.IsInRole("Student"))
+                                        {
+                                            <span>Check Answer</span> 
+                                        }
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            $('#doubts').addClass("active");
+	    });
+    </script>
+}

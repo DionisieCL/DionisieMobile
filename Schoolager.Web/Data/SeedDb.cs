@@ -139,6 +139,8 @@ namespace Schoolager.Web.Data
                 {
                     user = _converterHelper.ToUser(teacher, new User(), "teachers");
 
+                    user.PasswordChanged = true;
+
                     var result = await _userHelper.AddUserAsync(user, "123456");
 
                     // check if adding user was successful
@@ -147,7 +149,7 @@ namespace Schoolager.Web.Data
                         throw new InvalidOperationException("Could not add user");
                     }
 
-                    await _userHelper.AddUserToRoleAsync(user, "Student");
+                    await _userHelper.AddUserToRoleAsync(user, "Teacher");
 
                     var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
@@ -208,7 +210,7 @@ namespace Schoolager.Web.Data
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
-                await _userHelper.AddUserToRoleAsync(user, "Employee");
+                //await _userHelper.AddUserToRoleAsync(user, "Employee");
 
                 var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
@@ -237,6 +239,8 @@ namespace Schoolager.Web.Data
                 if (user == null)
                 {
                     user = _converterHelper.ToUser(student, new User(), "students");
+
+                    user.PasswordChanged = true;
 
                     var result = await _userHelper.AddUserAsync(user, "123456");
 

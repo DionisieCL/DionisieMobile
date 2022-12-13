@@ -33,7 +33,8 @@ namespace Schoolager.Web
         {
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-                cfg.SignIn.RequireConfirmedEmail = false;
+                // TODO: Change to true
+                cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
                 cfg.Password.RequiredUniqueChars = 0;
@@ -86,6 +87,11 @@ namespace Schoolager.Web
             services.AddScoped<IBlobHelper, BlobHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
 
             services.AddControllersWithViews();
         }

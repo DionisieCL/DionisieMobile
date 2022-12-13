@@ -24,9 +24,18 @@
     }
 
     <div class="container-fluid p-0">
-        <main role="main" class="content bg-light-gray" id="mainContent">
-            @RenderBody()
-        </main>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <main role="main" class="content bg-light-gray" id="mainContent">
+                @RenderBody()
+            </main>
+        }
+        else
+        {
+            <main role="main" class="content bg-light-gray closed" id="mainContent">
+                @RenderBody()
+            </main>
+        }
     </div>
 
     <footer class="border-top footer text-muted">
@@ -38,6 +47,7 @@
     <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/menu.js" asp-append-version="true"></script>
+    <script src="~/js/navbar.js" asp-append-version="true"></script>
 
     <script type="text/javascript" src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>

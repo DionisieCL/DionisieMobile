@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
+    [Authorize(Roles = "Employee,Admin")]
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _studentRepository;
@@ -146,6 +148,7 @@ namespace Schoolager.Web.Controllers
             }
 
             var student = await  _studentRepository.GetByIdAsync(id.Value);
+
             if (student == null)
             {
                 // return new NotFoudnViewModel("StudentNotFound");
@@ -188,16 +191,29 @@ namespace Schoolager.Web.Controllers
                         return NotFound();
                     }
 
+                    string email = user.Email;
+
                     var student = _converterHelper.ToStudent(model, imageId, false);
 
                     user = _converterHelper.ToUser(student, user, "students");
+
+                    if (email != user.Email)
+                    {
+                        user.EmailConfirmed = false;
+
+                        Response emailResponse = await SendConfirmNewEmailAsync(user, user.Email);
+
+                        if (emailResponse.IsSuccess)
+                        {
+                            _flashMessage.Confirmation("The email to confirm the new username has been sent.");
+                        }
+                    }
 
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)
                     {
                         model.User = user;
-
                         student.UserId = user.Id;
 
                         await _studentRepository.UpdateAsync(student);
@@ -228,6 +244,7 @@ namespace Schoolager.Web.Controllers
 
             return View(model);
         }
+
 
         // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -276,6 +293,29 @@ namespace Schoolager.Web.Controllers
                 "Activate Account",
                 $"<h1>Email Confirmation</h1>" +
                 $"To activate your account please click the link and set up a new password:</br></br><a href = \"{tokenLink}\">Confirm Account</a>");
+
+            return response;
+        }
+
+        private async Task<Response> SendConfirmNewEmailAsync(User user, string newEmail)
+        {
+            var myToken = await _userHelper.GenerateChangeEmailTokenAsync(user, newEmail);
+
+            var link = this.Url.Action(
+                "ConfirmNewEmail",
+                "Account",
+                new
+                {
+                    userId = user.Id,
+                    newEmail = newEmail,
+                    token = myToken
+                }, protocol: HttpContext.Request.Scheme);
+
+            Response response = _mailHelper.SendEmail(newEmail,
+                "Confirm New Email",
+                $"<h1>Changed email</h1>" +
+            $"To confirm your new email click in this link:</br></br>" +
+            $"<a href = \"{link}\">Confirm new email</a>");
 
             return response;
         }

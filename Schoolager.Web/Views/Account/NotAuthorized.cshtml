@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "NotAuthorized";
+}
+
+<h1>NotAuthorized</h1>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="m-3">
+        <p class="fs-5">You are not logged in click <a asp-action="Login" asp-controller="Account">here</a> to do so.</p>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        let isSignedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+	    $(document).ready(function () {
+            if (!isSignedIn)
+            {
+                $("#navbar").addClass("closed");
+            }
+	    });
+    </script>
+}

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using Schoolager.Web.Models.Lessons;
 
 namespace Schoolager.Web.Controllers
 {
+    [Authorize]
     public class LessonsController : Controller
     {
         private readonly ILessonRepository _lessonRepository;
@@ -72,21 +74,39 @@ namespace Schoolager.Web.Controllers
 
         public async Task<IActionResult> TeacherIndex()
         {
-            // Get the logged in user to check if it's an owner
+            // Get the logged in user to check if it's a teacher or a student
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var teacher = await _teacherRepository.GetByUserIdAsync(userId);
-
-            if (teacher == null)
+            if (User.IsInRole("Teacher"))
             {
-                //TODO: return new NotFoundViewresult("TeacherNotFound");
-                return NotFound();
+                var teacher = await _teacherRepository.GetByUserIdAsync(userId);
+
+                if (teacher == null)
+                {
+                    //TODO: return new NotFoundViewresult("TeacherNotFound");
+                    return NotFound();
+                }
+
+                var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
+
+                return View(lessons);
+            } 
+            else if(User.IsInRole("Student"))
+            {
+                var student = await _studentRepository.GetByUserIdAsync(userId);
+
+                if (student == null)
+                {
+                    //TODO: return new NotFoundViewresult("StudentNotFound");
+                    return NotFound();
+                }
+
+                List<Lesson> lessons = await _lessonRepository.GetLessonByStudentIdAsync(student.Id);
+
+                return View(lessons);
             }
 
-            var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
-            //var lessonsList = await lessons.ToListAsync();
-
-            return View(lessons);
+            return NotFound();
         }
 
 
@@ -157,6 +177,8 @@ namespace Schoolager.Web.Controllers
             };
 
             //ViewData["RoomId"] = _roomRepository.GetComboAvailableRooms((DateTime)lessonViewModel.StartTime, (DateTime)lessonViewModel.EndTime, lessonViewModel.WeekDay);
+            ViewData["RoomId"] = _roomRepository.GetComboRooms();
+
             return View(lessonViewModel);
         }
 
@@ -242,7 +264,7 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
+            ViewData["RoomId"] = _roomRepository.GetComboRooms();
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
             ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -408,7 +430,7 @@ namespace Schoolager.Web.Controllers
             return View(model);
         }
 
-
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> LessonDataAbsences(int id)
         {
             var lessonData = await _lessonDataRepository.GetByIdAsync(id);
@@ -437,6 +459,7 @@ namespace Schoolager.Web.Controllers
 
             // Fill the model from the students and if the absences have already been inserted set the WasPresent
             LessonDataViewModel model = new LessonDataViewModel();
+
             model.Attendances = new List<AttendanceViewModel>();
 
             for (int i = 0; i < students.Count; i++)
@@ -560,7 +583,7 @@ namespace Schoolager.Web.Controllers
 
                     //model.LessonResource.Name = model.LessonResource.FormFile.Name;
 
-                    Guid fileId = await _blobHelper.UploadBlobAsync(model.LessonResource.FormFile, "teachers");
+                    Guid fileId = await _blobHelper.UploadBlobAsync(model.LessonResource.FormFile, "teachers", "pdf");
 
                     model.LessonResource.FileId = fileId;
 
@@ -588,11 +611,236 @@ namespace Schoolager.Web.Controllers
             return View(model);
         }
 
-        public IActionResult LessonDataHomework(int id)
+        public async Task<IActionResult> LessonDataHomework(int id)
         {
-            return View();
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            LessonDataViewModel model = new LessonDataViewModel
+            {
+                Id = lessonData.Id,
+                LessonId = lessonData.LessonId,
+                Homework = lessonData.Homework,
+            };
+
+            return View(model);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> LessonDataHomework(LessonDataViewModel model)
+        {
+            var lessonData = await _lessonDataRepository.GetByIdAsync(model.Id);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            lessonData.Homework = model.Homework;
+
+            try
+            {
+                await _lessonDataRepository.UpdateAsync(lessonData);
+            }
+            catch (Exception ex)
+            {
+                // _flashMessage.Danger("Could not update the lesson's summary.");
+                return View(model);
+            }
+
+            // _flashMessage.Confirmation("The lesson's summary was updated.");
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> LessonDataDoubts(int id)
+        {
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            // Get the logged in user to check if it's a teacher or a student
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            List<Doubt> doubts = new List<Doubt>();
+
+            if (User.IsInRole("Teacher"))
+            {
+                var teacher = await _teacherRepository.GetByUserIdAsync(userId);
+
+                if (teacher == null)
+                {
+                    //TODO: return new NotFoundViewresult("TeacherNotFound");
+                    return NotFound();
+                }
+
+                doubts = await _lessonDataRepository.GetDoubtsByLessonDataIdAsync(id);
+            }
+            else if (User.IsInRole("Student"))
+            {
+                var student = await _studentRepository.GetByUserIdAsync(userId);
+
+                if (student == null)
+                {
+                    //TODO: return new NotFoundViewresult("StudentNotFound");
+                    return NotFound();
+                }
+
+                doubts = await _lessonDataRepository.GetDoubtsByLessonDataAndStudentIdsAsync(id, student.Id);
+            }
+
+            List<DoubtViewModel> doubtViewModels = new List<DoubtViewModel>();
+
+            foreach (var doubt in doubts)
+            {
+                doubtViewModels.Add(new DoubtViewModel
+                {
+                    Description = doubt.Description,
+                    StudentId = doubt.StudentId,
+                    Student = doubt.Student,
+                    LessonDataId = doubt.LessonDataId,
+                    Answer = doubt.Answer,
+                    Id = doubt.Id,
+                });
+            }
+
+            LessonDataViewModel model = new LessonDataViewModel
+            {
+                Id = lessonData.Id,
+                LessonId = lessonData.LessonId,
+                Doubts = doubtViewModels,
+            };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Teacher,Student")]
+        public async Task<IActionResult> AnswerDoubt(int id)
+        {
+            var doubt = await _lessonDataRepository.GetDoubtByIdAsync(id);
+
+            if(doubt == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            var lessonData = await _lessonDataRepository.GetByIdAsync(doubt.LessonDataId);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            var model = new DoubtViewModel
+            {
+                Student = doubt.Student,
+                StudentId = doubt.StudentId,
+                Description = doubt.Description,
+                Answer = doubt.Answer,
+                LessonDataId = doubt.LessonDataId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AnswerDoubt(DoubtViewModel model)
+        {
+            var doubt = await _lessonDataRepository.GetDoubtByIdAsync(model.Id);
+
+            if (doubt == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            doubt.Answer = model.Answer;
+            model.Student = doubt.Student;
+
+            try
+            {
+                await _lessonDataRepository.UpdateDoubtAsync(doubt);
+            }
+            catch (Exception ex)
+            {
+                // _flashMessage.Danger("Could not update the lesson's summary.");
+            }
+
+            // _flashMessage.Danger("Could not update the lesson's summary.");
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> RaiseDoubt(int id)
+        {
+            var lessonData = await _lessonDataRepository.GetByIdAsync(id);
+
+            if (lessonData == null)
+            {
+                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                return NotFound();
+            }
+
+            // Get the logged in user to check if it's a teacher or a student
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var student = await _studentRepository.GetByUserIdAsync(userId);
+
+            if (student == null)
+            {
+                //TODO: return new NotFoundViewresult("StudentNotFound");
+                return NotFound();
+            }
+
+            var model = new DoubtViewModel
+            {
+                Student = student,
+                StudentId = student.Id,
+                LessonDataId = id,
+            };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        public async Task<IActionResult> RaiseDoubt(DoubtViewModel model)
+        {
+            Doubt doubt = new Doubt
+            {
+                Description = model.Description,
+                StudentId = model.StudentId,
+                LessonDataId = model.LessonDataId,
+            };
+
+            try
+            {
+                await _lessonDataRepository.InsertDoubt(doubt);
+
+                // _flashMessage.Danger("Could not update the lesson's summary.");
+                return RedirectToAction(nameof(LessonDataDoubts), new { id = model.LessonDataId });
+            }
+            catch (Exception ex)
+            {
+                // _flashMessage.Danger("Could not update the lesson's summary.");
+            }
+
+            return View(model);
+        }
 
         public async Task<IActionResult> CreateLessonData(int id)
         {

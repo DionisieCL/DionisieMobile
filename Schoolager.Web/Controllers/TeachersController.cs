@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
+    [Authorize(Roles = "Employee,Admin")]
     public class TeachersController : Controller
     {
         private readonly ITeacherRepository _teacherRepository;
@@ -128,6 +130,7 @@ namespace Schoolager.Web.Controllers
                         {
                             _flashMessage.Confirmation("The teacher has been created and confirmation email has been sent to user.");
                         }
+
                         return RedirectToAction(nameof(Index));
                     }
                     _flashMessage.Danger("That email is already being used by another user.");
@@ -198,16 +201,29 @@ namespace Schoolager.Web.Controllers
                         return NotFound();
                     }
 
+                    string email = user.Email;
+
                     var teacher = _converterHelper.ToTeacher(model, imageId, false);
 
                     user = _converterHelper.ToUser(teacher, user, "teachers");
+
+                    if(email != user.Email)
+                    {
+                        user.EmailConfirmed = false;
+
+                        Response emailResponse = await SendConfirmNewEmailAsync(user, user.Email);
+
+                        if (emailResponse.IsSuccess)
+                        {
+                            _flashMessage.Confirmation("The email to confirm the new username has been sent.");
+                        }
+                    }
 
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)
                     {
                         model.User = user;
-
                         teacher.UserId = user.Id;
 
                         await _teacherRepository.UpdateAsync(teacher);
@@ -246,13 +262,43 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var teacher = await _teacherRepository.GetByIdAsync(id.Value);
-            if (teacher == null)
+            var teacher = await _teacherRepository.GetWithUserByIdAsync(id.Value);
+
+            if (teacher == null || teacher.User == null)
             {
+                // TODO: return new NotFoundViewResult("TeacherNotFound");
                 return NotFound();
+
             }
 
-            return View(teacher);
+            try
+            {
+                var user = await _userHelper.GetUserByIdAsync(teacher.User.Id);
+
+                await _userHelper.DeleteUserAsync(user);
+
+                _flashMessage.Confirmation("Teacher deleted successfully");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // TODO: Vet could not be deleted
+                if (!await _teacherRepository.ExistAsync(id.Value))
+                {
+                    // TODO: return new NotFoundViewResult("TeacherNotFound");
+                    return NotFound();
+                }
+
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"You can't delete {teacher.FullName}. Too much depends on it";
+                    ViewBag.ErrorMessage = $"You can't delete this teacher because there are classes and lessons associated with it.</br></br>" +
+                        $"Delete all lessons associated with this user and try again.</br></br>";
+                }
+
+                return View("Error");
+            }
         }
 
         // POST: Teachers/Delete/5
@@ -293,6 +339,29 @@ namespace Schoolager.Web.Controllers
                 "Activate Account",
                 $"<h1>Email Confirmation</h1>" +
                 $"To activate your account please click the link and set up a new password:</br></br><a href = \"{tokenLink}\">Confirm Account</a>");
+
+            return response;
+        }
+
+        public async Task<Response> SendConfirmNewEmailAsync(User user, string newEmail)
+        {
+            var myToken = await _userHelper.GenerateChangeEmailTokenAsync(user, newEmail);
+
+            var link = this.Url.Action(
+                "ConfirmNewEmail",
+                "Account",
+                new
+                {
+                    userId = user.Id,
+                    newEmail = newEmail,
+                    token = myToken
+                }, protocol: HttpContext.Request.Scheme);
+
+            Response response = _mailHelper.SendEmail(newEmail,
+                "Confirm New Email",
+                $"<h1>Changed email</h1>" +
+            $"To confirm your new email click in this link:</br></br>" +
+            $"<a href = \"{link}\">Confirm new email</a>");
 
             return response;
         }

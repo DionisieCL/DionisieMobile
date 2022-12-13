@@ -31,6 +31,13 @@ namespace Schoolager.Web.Data
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
+        public async Task<List<Lesson>> GetLessonByStudentIdAsync(int id)
+        {
+            return await _context.Lessons
+                .Where(l => l.Turma.Students.Any(s => s.Id == id))
+                .ToListAsync();
+        }
+
         public async Task<List<Lesson>> GetLessonByTeacherIdAsync(int id)
         {
             return await _context.Lessons
