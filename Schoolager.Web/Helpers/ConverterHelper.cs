@@ -25,7 +25,7 @@ namespace Schoolager.Web.Helpers
                 LastName = model.LastName,
                 PhoneNumber = model.PhoneNumber,
                 Subject = model.Subject,
-                SubjectId = model.SubjectId,
+                SubjectId = model.SubjectId == 0 ? null : model.SubjectId,
                 User = model.User,
                 UserId = model.UserId,
             };

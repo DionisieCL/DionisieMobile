@@ -25,6 +25,7 @@ namespace Schoolager.Web.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task CheckRoleAsync(string roleName);
+
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
         Task<User> GetUserByIdAsync(string userId);

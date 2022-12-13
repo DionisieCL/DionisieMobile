@@ -81,5 +81,18 @@ namespace Schoolager.Web.Data
                 .ToListAsync();
         }
 
+        public async Task<Student> GetWithUserByIdAsync(int id)
+        {
+            return await _context.Students
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<List<Student>> GetAllWithTurmas()
+        {
+            return await _context.Students
+                .Include(s => s.Turma)
+                .ToListAsync();
+        }
     }
 }
