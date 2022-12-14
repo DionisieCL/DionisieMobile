@@ -91,6 +91,8 @@ namespace Schoolager.Web.Controllers
 
             model.GradeViewModels = new List<GradeViewModel>();
 
+            model.TurmaId = id.Value;
+
             var students = _studentRepository.GetByTurmaId(id.Value);
 
             List<int> studentIds = students.Select(s => s.Id).ToList();
