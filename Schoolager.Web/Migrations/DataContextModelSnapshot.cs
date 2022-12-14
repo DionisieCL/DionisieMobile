@@ -150,6 +150,34 @@ namespace Schoolager.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.Doubt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LessonDataId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonDataId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Doubts");
+                });
+
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Grade", b =>
                 {
                     b.Property<int>("StudentId")
@@ -177,6 +205,28 @@ namespace Schoolager.Web.Migrations
                     b.ToTable("Grades");
                 });
 
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.Holiday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holidays");
+                });
+
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Lesson", b =>
                 {
                     b.Property<int>("Id")
@@ -186,6 +236,9 @@ namespace Schoolager.Web.Migrations
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecurrenceException")
                         .HasColumnType("nvarchar(max)");
@@ -233,6 +286,9 @@ namespace Schoolager.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Homework")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LessonDate")
                         .HasColumnType("datetime2");
@@ -287,6 +343,24 @@ namespace Schoolager.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.SchoolYear", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchoolYears");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Student", b =>
@@ -503,6 +577,9 @@ namespace Schoolager.Web.Migrations
                     b.Property<Guid>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -605,6 +682,25 @@ namespace Schoolager.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Schoolager.Web.Data.Entities.Doubt", b =>
+                {
+                    b.HasOne("Schoolager.Web.Data.Entities.LessonData", "LessonData")
+                        .WithMany()
+                        .HasForeignKey("LessonDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Schoolager.Web.Data.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LessonData");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Grade", b =>

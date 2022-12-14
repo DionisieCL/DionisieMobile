@@ -4,41 +4,46 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Turma</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-             <label asp-for="SchoolYear" class="control-label"></label>
-                <select asp-for="SchoolYear" class ="form-control">
-                    <option value="0">< Select a school year ></option>
-                    <option value="5">Year 5</option>
-                    <option value="6">Year 6</option>
-                    <option value="7">Year 7</option>
-                    <option value="8">Year 8</option>
-                    <option value="9">Year 9</option>
-                </select>
-                <span asp-validation-for="SchoolYear" class="text-secondary"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
-            </div>
-        </form>
+<div class="container-fluid p-5">
+    <div class="row mb-3 bg-white">
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+            <h2>New Teacher</h2>
+        </div>
+        <div class="p-3">
+            <form asp-action="Create" method="post" enctype="multipart/form-data" class="flex-fill">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="col-8">
+                        <div class="row mb-4">
+                            <div class="col">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                     </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                         <label asp-for="SchoolYear" class="control-label"></label>
+                            <select asp-for="SchoolYear" class ="form-control">
+                                <option value="0">< Select a school year ></option>
+                                <option value="5">Year 5</option>
+                                <option value="6">Year 6</option>
+                                <option value="7">Year 7</option>
+                                <option value="8">Year 8</option>
+                                <option value="9">Year 9</option>
+                            </select>
+                            <span asp-validation-for="SchoolYear" class="text-secondary"></span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
+                            <button asp-action="Edit" type="submit" value="Save" class="btn btn-outline-success">Save</button>
+                        </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

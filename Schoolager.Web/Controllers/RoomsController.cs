@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
@@ -15,10 +16,16 @@ namespace Schoolager.Web.Controllers
     public class RoomsController : Controller
     {
         private readonly DataContext _context;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IFlashMessage _flashMessage;
 
-        public RoomsController(DataContext context)
+        public RoomsController(DataContext context,
+            IRoomRepository roomRepository,
+            IFlashMessage flashMessage)
         {
             _context = context;
+            _roomRepository = roomRepository;
+            _flashMessage = flashMessage;
         }
 
         // GET: Rooms
@@ -62,6 +69,9 @@ namespace Schoolager.Web.Controllers
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
+
+                _flashMessage.Confirmation("Room Created.");
+
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
@@ -101,8 +111,9 @@ namespace Schoolager.Web.Controllers
                 {
                     _context.Update(room);
                     await _context.SaveChangesAsync();
+                    _flashMessage.Confirmation("Room Updated.");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!RoomExists(room.Id))
                     {
@@ -110,7 +121,7 @@ namespace Schoolager.Web.Controllers
                     }
                     else
                     {
-                        throw;
+                        _flashMessage.Danger(ex.Message);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -126,26 +137,40 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _roomRepository.GetByIdAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            try
+            {
+                await _roomRepository.DeleteAsync(room);
+
+                _flashMessage.Confirmation("Room Deleted Successfully.");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"Something went wrong while trying to delete the room {room.Name}.";
+                    ViewBag.ErrorMessage = $"Please try again in a few moments or contact the system administrators.</br></br>";
+                }
+
+                return View("Error");
+            }
+
         }
 
-        // POST: Rooms/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var room = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Rooms/Delete/5
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var room = await _roomRepository.GetByIdAsync(id);
+            
+        //}
 
         private bool RoomExists(int id)
         {

@@ -22,11 +22,17 @@
                                 <li>
                                     <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="RecoverPassword">Recover Password</a>
                                 </li>
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <li>
+                                        <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Lessons" asp-action="SetSchoolYear">School Year</a>
+                                    </li>
+                                }
                                 <li>
                                     <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="Logout">
                                 Logout
                                     </a>
-                                    </li>
+                                </li>
                             </ul>
 	                    </div>
                     </li>

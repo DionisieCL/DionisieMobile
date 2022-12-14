@@ -21,6 +21,8 @@ namespace Schoolager.Web.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<LessonResource> LessonResources  { get; set; }
         public DbSet<Doubt> Doubts { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<SchoolYear> SchoolYears { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -110,6 +112,9 @@ namespace Schoolager.Web.Data
                 .HasOne(l => l.Room)
                 .WithMany(r => r.Lessons)
                 .HasForeignKey(r => r.RoomId);
+
+
+            // TODO: remove cascade delete from turma to lesson
 
             //modelBuilder.Entity<Teacher>()
             //    .HasOne(t => t.User)

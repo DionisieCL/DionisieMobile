@@ -29,6 +29,7 @@ namespace Schoolager.Web.Controllers
         private readonly IStudentRepository _studentRepository;
         private readonly IRoomRepository _roomRepository;
         private readonly IBlobHelper _blobHelper;
+        private readonly IHolidayRepository _holidayRepository;
 
         public LessonsController(
             ILessonRepository lessonRepository,
@@ -40,7 +41,8 @@ namespace Schoolager.Web.Controllers
             ILessonDataRepository lessonDataRepository,
             IStudentRepository studentRepository,
             IRoomRepository roomRepository,
-            IBlobHelper blobHelper)
+            IBlobHelper blobHelper,
+            IHolidayRepository holidayRepository)
         {
             _lessonRepository = lessonRepository;
             _converterHelper = converterHelper;
@@ -52,6 +54,7 @@ namespace Schoolager.Web.Controllers
             _studentRepository = studentRepository;
             _roomRepository = roomRepository;
             _blobHelper = blobHelper;
+            _holidayRepository = holidayRepository;
         }
 
         public async Task<IActionResult> TurmaSchedule(int id)
@@ -69,6 +72,14 @@ namespace Schoolager.Web.Controllers
 
             var lessons = await _lessonRepository.GetLessonByTurmaIdAsync(id);
 
+            var holidays = await _holidayRepository.GetAll().ToListAsync();
+
+            var schoolYear = await _lessonRepository.GetSchoolYearAsync();
+
+            lessons = _recurrenceHelper.SetRecurrenceExceptions(lessons, holidays, schoolYear);
+            lessons = _recurrenceHelper.SetRecurence(lessons, schoolYear);
+            lessons = _converterHelper.AllToLesson(lessons, false);
+
             return View(lessons);
         }
 
@@ -76,6 +87,8 @@ namespace Schoolager.Web.Controllers
         {
             // Get the logged in user to check if it's a teacher or a student
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var schoolYear = await _lessonRepository.GetSchoolYearAsync();
 
             if (User.IsInRole("Teacher"))
             {
@@ -89,6 +102,12 @@ namespace Schoolager.Web.Controllers
 
                 var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
 
+                var holidays = await _holidayRepository.GetAll().ToListAsync();
+
+                lessons = _recurrenceHelper.SetRecurrenceExceptions(lessons, holidays, schoolYear);
+                lessons = _recurrenceHelper.SetRecurence(lessons, schoolYear);
+                lessons = _converterHelper.AllToLesson(lessons, false);
+
                 return View(lessons);
             } 
             else if(User.IsInRole("Student"))
@@ -101,7 +120,13 @@ namespace Schoolager.Web.Controllers
                     return NotFound();
                 }
 
-                List<Lesson> lessons = await _lessonRepository.GetLessonByStudentIdAsync(student.Id);
+                var lessons = await _lessonRepository.GetLessonByStudentIdAsync(student.Id);
+
+                var holidays = await _holidayRepository.GetAll().ToListAsync();
+
+                lessons = _recurrenceHelper.SetRecurrenceExceptions(lessons, holidays, schoolYear);
+                lessons = _recurrenceHelper.SetRecurence(lessons, schoolYear);
+                lessons = _converterHelper.AllToLesson(lessons, false);
 
                 return View(lessons);
             }
@@ -143,6 +168,9 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            // Get final day of school
+            var schoolYear = await _lessonRepository.GetSchoolYearAsync();
+
             DateTime dateTime;
 
             // If the user clicks the new appointment button
@@ -151,8 +179,8 @@ namespace Schoolager.Web.Controllers
                 // Make sure slected time is 8 am
                 TimeSpan time = new TimeSpan(8, 0, 0);
 
-                // TODO: Change to first day of school
-                dateTime = new DateTime(2022, 9, 15).Date + time;
+                // Set first day of school
+                dateTime = schoolYear.StartDate.Date + time;
                 //dateTime = dateTime.Date + time;
             }
             else
@@ -161,14 +189,15 @@ namespace Schoolager.Web.Controllers
                 dateTime = DateTime.Parse(date);
                 TimeSpan time = dateTime.TimeOfDay;
 
-                // TODO: Change to first day of school
-                dateTime = new DateTime(2022, 9, 15).Date + time;
+                // Set first day of school
+                dateTime = schoolYear.StartDate.Date + time;
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjectsByTurmaId(id);
             ViewData["DateString"] = dateTime.ToString("yyyy-MM-dd");
             ViewData["Date"] = dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
             ViewData["TurmaId"] = id;
+            ViewData["TurmaName"] = turma.Name;
 
             LessonViewModel lessonViewModel = new LessonViewModel
             {
@@ -201,12 +230,30 @@ namespace Schoolager.Web.Controllers
                         return NotFound();
                     }
 
-                    // TODO: Change to final day of school
-                    model.RecurrenceRule = _recurrenceHelper.GetRecurrenceRule(new DateTime(2023, 12 ,1));
+                    // Get final day of school
+                    var schoolYear = await _lessonRepository.GetSchoolYearAsync();
+                    model.RecurrenceRule = _recurrenceHelper.GetRecurrenceRule(schoolYear.EndDate);
                     model.RecurrenceException = Holidays.GetStaticHolidays();
                     model.SubjectName = subject.Name;
+                    model.Location = _roomRepository.GetRoomNameById(model.RoomId);
 
                     var lesson = _converterHelper.ToLesson(model, true);
+
+                    var roomValidation = await _lessonRepository.CheckRoomAvailabilityAsync(lesson);
+
+                    if(roomValidation != null)
+                    {
+                        // TODO: failure message
+                        return RedirectToAction(nameof(Create), new { id = model.TurmaId });
+                    }
+
+                    var lessonValidate = await _lessonRepository.CheckTeacherAvailabilityAsync(lesson);
+
+                    if(lessonValidate != null)
+                    {
+                        // TODO: failure message
+                        return RedirectToAction(nameof(Create), new { id = model.TurmaId });
+                    }
 
                     await _lessonRepository.CreateAsync(lesson);
 
@@ -240,14 +287,24 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            var turma = await _turmaRepository.GetByIdAsync(lesson.TurmaId);
+
+            if (turma == null)
+            {
+                // new NotFoundViewResult("TurmaNotFound");
+                return NotFound();
+            }
+
             var model = _converterHelper.ToLessonViewModel(lesson);
 
-            //ViewData["RoomId"] = _roomRepository.GetComboRooms();
-            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
-            ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
+            ViewData["RoomId"] = _roomRepository.GetComboRooms();
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjectsByTurmaId(lesson.TurmaId);
+            //ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
             ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
             ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-            
+            ViewData["TurmaId"] = lesson.TurmaId;
+            ViewData["TurmaName"] = turma.Name;
+
             return View(model);
         }
 
@@ -264,25 +321,35 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            ViewData["RoomId"] = _roomRepository.GetComboRooms();
-            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
-            ViewData["TeacherId"] = _teacherRepository.GetComboTeachersBySubjectId(model.SubjectId);
-            ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-            ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    model.Location = _roomRepository.GetRoomNameById(model.RoomId);
+
                     var lesson = _converterHelper.ToLesson(model, false);
+
+                    var roomValidation = await _lessonRepository.CheckRoomAvailabilityAsync(lesson);
+
+                    if (roomValidation != null && lesson.Id != roomValidation.Id)
+                    {
+                        // TODO: failure message
+                        return RedirectToAction(nameof(Create), new { id = model.TurmaId });
+                    }
+
+                    var lessonValidate = await _lessonRepository.CheckTeacherAvailabilityAsync(lesson);
+
+                    if (lessonValidate != null && lesson.Id != roomValidation.Id)
+                    {
+                        // TODO: failure message
+                        return RedirectToAction(nameof(Create), new { id = model.TurmaId });
+                    }
 
                     await _lessonRepository.UpdateAsync(lesson);
 
-                    ViewData["StartDate"] = model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-                    ViewData["EndDate"] = model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-
                     // TODO: success message
-                    return View(model);
+                    return RedirectToAction(nameof(Edit), new { id = lesson.Id});
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -295,7 +362,7 @@ namespace Schoolager.Web.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction(nameof(Edit), new { id = model.Id });
         }
 
 
@@ -306,7 +373,7 @@ namespace Schoolager.Web.Controllers
             TimeSpan startTime = model.StartTime.Value.TimeOfDay;
             TimeSpan endTime = model.EndTime.Value.TimeOfDay;
 
-            // Get first day of school
+            //TODO: Get first day of school
             model.StartTime = new DateTime(2022, 9, 15).Date + startTime;
             model.EndTime = new DateTime(2022, 9, 15).Date + endTime;
 
@@ -314,8 +381,15 @@ namespace Schoolager.Web.Controllers
 
             var lesson = _converterHelper.ToLesson(model, false);
             //TODO: Get Recurrence exception
+            try
+            {
+                await _lessonRepository.UpdateAsync(lesson);
+            }
+            catch (Exception ex)
+            {
 
-            await _lessonRepository.UpdateAsync(lesson);
+                throw;
+            }
 
             return Json(model);
         }
@@ -342,7 +416,7 @@ namespace Schoolager.Web.Controllers
 
                 //_flashMessage.Confirmation("Appointment deleted successfully.");
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(TurmaSchedule), new { id = lesson.TurmaId });
             }
             catch (Exception ex)
             {
@@ -355,7 +429,7 @@ namespace Schoolager.Web.Controllers
 
             //_flashMessage.Danger("Could not delete appointment.");
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(TurmaSchedule), new { id = lesson.TurmaId });
         }
 
         //[HttpGet("details")]
@@ -838,6 +912,35 @@ namespace Schoolager.Web.Controllers
             {
                 // _flashMessage.Danger("Could not update the lesson's summary.");
             }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> SetSchoolYear()
+        {
+            var schoolYear = await _lessonRepository.GetSchoolYearAsync();
+
+            if(schoolYear == null)
+            {
+                return NotFound();
+            }
+
+            return View(schoolYear);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetSchoolYear(SchoolYear model)
+        {
+            var schoolYear = await _lessonRepository.GetSchoolYearAsync();
+
+            schoolYear.StartDate = model.StartDate;
+            schoolYear.EndDate = model.EndDate;
+
+            try
+            {
+                await _lessonRepository.UpdateSchoolYearAsync(schoolYear);
+            }
+            catch (Exception ex) { }
 
             return View(model);
         }

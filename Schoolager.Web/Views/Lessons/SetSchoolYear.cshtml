@@ -1,0 +1,29 @@
+﻿@model Schoolager.Web.Data.Entities.SchoolYear
+@{
+    ViewData["Title"] = "SetSchoolYear";
+}
+
+<div class="container-fluid p-5">
+    <div class="row mb-3 bg-white">
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <h2 class="m-0">Set School Year</h2>
+        </div>
+        <div class="p-3">
+            <form method="post">
+                <input asp-for="Id" type="hidden" />
+                <div class="mb-4">
+                    <label asp-for="StartDate" class="control-label">Start Date</label>
+                    <input asp-for="StartDate" type="date" class="form-control"/>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="EndDate" class="control-label">End Date</label>
+                    <input asp-for="EndDate" type="date" class="form-control"/>
+                </div>
+                <div class="">
+                    <button asp-action="SetSchoolYear" asp-controller="Lessons" type="submit" class="btn btn-outline-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

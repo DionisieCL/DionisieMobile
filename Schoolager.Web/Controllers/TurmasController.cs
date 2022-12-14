@@ -11,6 +11,7 @@ using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Helpers;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Turmas;
+using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace Schoolager.Web.Controllers
         private readonly ISubjectTurmaRepository _subjectTurmaRepository;
         private readonly ITeacherRepository _teacherRepositry;
         private readonly ITeacherTurmaRepository _teacherTurmaRepository;
+        private readonly IFlashMessage _flashMessage;
 
         public TurmasController(
             ITurmaRepository turmaRepository,
@@ -33,7 +35,8 @@ namespace Schoolager.Web.Controllers
             ISubjectRepository subjectRepository,
             ISubjectTurmaRepository subjectTurmaRepository,
             ITeacherRepository teacherRepositry,
-            ITeacherTurmaRepository teacherTurmaRepository)
+            ITeacherTurmaRepository teacherTurmaRepository,
+            IFlashMessage flashMessage)
         {
             _turmaRepository = turmaRepository;
             _studentRepository = studentRepository;
@@ -42,6 +45,7 @@ namespace Schoolager.Web.Controllers
             _subjectTurmaRepository = subjectTurmaRepository;
             _teacherRepositry = teacherRepositry;
             _teacherTurmaRepository = teacherTurmaRepository;
+            _flashMessage = flashMessage;
         }
 
         // GET: Turmas
@@ -85,6 +89,8 @@ namespace Schoolager.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _turmaRepository.CreateAsync(turma);
+
+                _flashMessage.Confirmation("Turma Created.");
 
                 return RedirectToAction(nameof(Index));
             }
@@ -176,8 +182,9 @@ namespace Schoolager.Web.Controllers
                 try
                 {
                     await _turmaRepository.UpdateAsync(turma);
+                    _flashMessage.Confirmation("Turma updated.");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!await _turmaRepository.ExistAsync(turma.Id))
                     {
@@ -185,7 +192,7 @@ namespace Schoolager.Web.Controllers
                     }
                     else
                     {
-                        throw;
+                        _flashMessage.Danger(ex.Message);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -207,17 +214,23 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            return View(turma);
-        }
+            try
+            {
+                await _turmaRepository.DeleteAsync(turma);
+                _flashMessage.Danger("Turma deleted.");
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"Something went wrong while trying to delete the Turma {turma.Name}.";
+                    ViewBag.ErrorMessage = $"Turma already contains Lessons associated with it please delete the related relationships first.</br></br>";
+                }
 
-        // POST: Turmas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var turma = await _turmaRepository.GetByIdAsync(id);
-            await _turmaRepository.DeleteAsync(turma);
-            return RedirectToAction(nameof(Index));
+                return View("Error");
+            }
+
         }
 
         //Teste adicionar Subjects a uma Turma

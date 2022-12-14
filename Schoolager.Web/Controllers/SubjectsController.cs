@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
@@ -16,12 +17,15 @@ namespace Schoolager.Web.Controllers
     {
         private readonly DataContext _context;
         private readonly ISubjectRepository _subjectRepository;
+        private readonly IFlashMessage _flashMessage;
 
         public SubjectsController(DataContext context,
-                                  ISubjectRepository subjectRepository)
+                                  ISubjectRepository subjectRepository,
+                                  IFlashMessage flashMessage)
         {
             _context = context;
             _subjectRepository = subjectRepository;
+            _flashMessage = flashMessage;
         }
 
         // GET: Subjects
@@ -63,6 +67,7 @@ namespace Schoolager.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _subjectRepository.CreateAsync(subject);
+                _flashMessage.Confirmation("Subject Created.");
                 return RedirectToAction(nameof(Index));
             }
             return View(subject);
@@ -102,8 +107,9 @@ namespace Schoolager.Web.Controllers
                 try
                 {
                     await _subjectRepository.UpdateAsync(subject);
+                    _flashMessage.Confirmation("Subject Updated.");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (! await _subjectRepository.ExistAsync(subject.Id))
                     {
@@ -111,7 +117,7 @@ namespace Schoolager.Web.Controllers
                     }
                     else
                     {
-                        throw;
+                        _flashMessage.Danger(ex.Message);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -133,17 +139,22 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            return View(subject);
-        }
+            try
+            {
+                await _subjectRepository.DeleteAsync(subject);
+                _flashMessage.Confirmation("Subject Deleted.");
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"Something went wrong while trying to delete the subject {subject.Name}.";
+                    ViewBag.ErrorMessage = $"The subject is already beeing used to assign a Grade please delete Grades associated with it first.</br></br>";
+                }
 
-        // POST: Subjects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var subject = await _subjectRepository.GetByIdAsync(id);
-            await _subjectRepository.DeleteAsync(subject);
-            return RedirectToAction(nameof(Index));
+                return View("Error");
+            }
         }
 
     }

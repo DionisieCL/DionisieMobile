@@ -91,7 +91,7 @@ namespace Schoolager.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult ConfirmEmail(string userId, string confirmationToken, string passwordToken)
         {
             if (string.IsNullOrEmpty(userId) ||

@@ -2,6 +2,7 @@
 using Schoolager.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Schoolager.Web.Data
 {
@@ -10,5 +11,7 @@ namespace Schoolager.Web.Data
         IEnumerable<SelectListItem> GetComboAvailableRooms(DateTime startTime, DateTime endTime, int weekDay);
 
         IEnumerable<SelectListItem> GetComboRooms();
+
+        string GetRoomNameById(int id);
     }
 }

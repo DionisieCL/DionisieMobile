@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Models.Lessons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,28 @@ namespace Schoolager.Web.Data
         public LessonRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<Lesson> CheckTeacherAvailabilityAsync(Lesson lesson)
+        {
+            return await _context.Lessons
+                .Where(l => l.TeacherId == lesson.TeacherId
+                && l.WeekDay == lesson.WeekDay
+                && (l.StartTime.Value.TimeOfDay < lesson.EndTime.Value.TimeOfDay
+                    && lesson.StartTime.Value.TimeOfDay < l.EndTime.Value.TimeOfDay))
+                .AsNoTrackingWithIdentityResolution()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Lesson> CheckRoomAvailabilityAsync(Lesson lesson)
+        {
+            return await _context.Lessons
+                .Where(l => l.RoomId == lesson.RoomId
+                && l.WeekDay == lesson.WeekDay
+                && (l.StartTime.Value.TimeOfDay < lesson.EndTime.Value.TimeOfDay
+                    && lesson.StartTime.Value.TimeOfDay < l.EndTime.Value.TimeOfDay))
+                .AsNoTrackingWithIdentityResolution()
+                .FirstOrDefaultAsync();
         }
 
         public IQueryable<Lesson> GetAllWithMembers()
@@ -59,5 +82,17 @@ namespace Schoolager.Web.Data
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<SchoolYear> GetSchoolYearAsync()
+        {
+            return await _context.SchoolYears
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateSchoolYearAsync(SchoolYear schoolYear)
+        {
+            _context.SchoolYears.Update(schoolYear);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

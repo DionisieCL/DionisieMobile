@@ -74,10 +74,13 @@
 
 <div class="container-fluid p-5">
     <div class="bg-white">
-        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+        <div class="p-3 d-flex justify-content-between align-items-center">
             <a asp-action="Index" asp-controller="Turmas" class="btn btn-outline-secondary">Back</a>
             <h2>@ViewData["TurmaName"]</h2>
             <a id="newLessonBtn" class="btn btn-outline-primary">New Lesson</a>
+        </div>
+        <div class="px-3 pt-3">
+            <flash dismissable="true"/>
         </div>
         <ejs-schedule id="schedule" showWeekend="false" views="viewOptions" workDays="workDays" workHours="workHours" popupOpen="onPopupOpen" resizeStop="onDragStop" dragStart="onDragStart" dragStop="onDragStop" showQuickInfo="false">
             <e-schedule-eventsettings dataSource="@Model" enableTooltip="true">
@@ -151,6 +154,7 @@
             "SubjectId" : args.data.SubjectId,
             "TeacherId" : args.data.TeacherId,
             "Location" : args.data.Location,
+            "RoomId" : args.data.RoomId
         }
 
         $.ajax({
@@ -160,25 +164,25 @@
             //contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-//                $("#toastContainer").html(
-//                    `<div class="alert alert-success alert-dismissible" role="alert">
-//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//Appointment updated successfully.</div>`
-//                )
+                $("#toastContainer").html(
+                    `<div class="alert alert-success alert-dismissible" role="alert">
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+Appointment updated successfully.</div>`
+                )
             },
             failure: function (response) {
-//                $("#toastContainer").html(
-//                    `<div class="alert alert-success alert-dismissible" role="alert">
-//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//Appointment could not be updated.</div>`
-//                )
+                $("#toastContainer").html(
+                    `<div class="alert alert-success alert-dismissible" role="alert">
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+Appointment could not be updated.</div>`
+                )
             },
             error: function (response) {
-//                $("#toastContainer").html(
-//                    `<div class="alert alert-success alert-dismissible" role="alert">
-//<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//Appointment could not be updated.</div>`
-//                )
+                $("#toastContainer").html(
+                    `<div class="alert alert-success alert-dismissible" role="alert">
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+Appointment could not be updated.</div>`
+                )
             }
         });
     }

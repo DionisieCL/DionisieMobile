@@ -9,12 +9,15 @@ namespace Schoolager.Web.Data.Entities
         public int Id { get; set; }
         public string SubjectName { get; set; }
         public Room Room { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "You must select a Room")]
         public int RoomId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "You must select a day")]
         public int WeekDay { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public string Location { get; set; }
         public string RecurrenceRule { get; set; }
         public string RecurrenceException { get; set; }
         public Subject Subject { get; set; }
