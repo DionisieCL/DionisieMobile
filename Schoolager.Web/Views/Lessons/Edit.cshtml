@@ -6,12 +6,12 @@
 
 <<div class="container-fluid p-5">
     <div class="bg-white">
-        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
-
-            <a asp-action="TurmaSchedule" asp-route-id="@Model.TurmaId" class="btn btn-outline-secondary">Back</a>
-            <h2>New Lesson</h2>
+        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+            <a asp-action="TurmaSchedule" asp-route-id="@ViewData["TurmaId"]" class="btn btn-outline-secondary">Back</a>
+            <h2>@ViewData["TurmaName"]</h2>
+            <h2>Edit Lesson</h2>
         </div>
-        <div class="d-flex justify-content-center align-items-center w-100">
+        <div class="p-3 d-flex justify-content-center align-items-center w-100">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
@@ -30,14 +30,18 @@
                     </div>
                     <div class="col">
                         <label asp-for="TeacherId" class="control-label"></label>
-                        <select asp-for="TeacherId" class ="form-control" asp-items="ViewBag.TeacherId"></select>
+                        <select asp-for="TeacherId" class ="form-control">
+                            <option value="0">< Select a teacher ></option>
+                        </select>
                         <span asp-validation-for="SubjectId" class="text-secondary"></span>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col">
                         <label asp-for="RoomId" class="control-label"></label>
-                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"/>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId">
+                           <option value="0">< Select a room ></option>
+                        </select>
                         <span asp-validation-for="RoomId" class="text-secondary"></span>
                     </div>
                     <div class="col">
@@ -71,7 +75,7 @@
                 <div class="mb-2">
                     <div class="d-grid gap-2 d-flex justify-content-between">
                         <div>
-                            <button asp-action="Delete" type="submit" value="Delete" class="btn btn-outline-danger">Delete</button>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
                         </div>
                         <div>
                             <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
@@ -89,37 +93,48 @@
 
     <script type="text/javascript">
 	    $(document).ready(function () {
-            
+            let turmaId = @ViewData["TurmaId"];
             let selectedDateString = '@ViewData["DateString"]';
             let startDate = '@ViewData["StartDate"]';
             let endDate = '@ViewData["EndDate"]';
 
             setDropdownTimes(startDate, endDate);
 
-		    $("#SubjectId").change(function () {
-			    $("#TeacherId").empty();
-			    $.ajax({
-				    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
-				    type: 'POST',
-				    dataType: 'json',
-				    data: {subjectId:$("#SubjectId").val()},
-				    success: function (teachers) {
-					    debugger;
-					    $("#TeacherId").append('<option value="0">< Select a teacher ></option>');
-					    $.each(teachers, function (i, teacher) {
-                            console.log(teacher);
-						    $("#TeacherId").append('<option value="'
-							    + teacher.id + '">'
-							    + teacher.fullName + '</option>');
-					    });
-				    },
-				    error: function (ex) {
-					    debugger;
-					    alert('Failed to retrieve teachers.' + ex);
-				    }
-			    });
-			    return false;
-		    })
+            GetTeacher();
+
+            $("#SubjectId").change(function() {
+                GetTeacher();
+            });
+
+            function GetTeacher(){
+                console.log("I was called.");
+                $("#TeacherId").empty();
+                $.ajax({
+                    url: '@Url.Action("GetTeachersBySubjectIdAsync","Teachers")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data:
+                    {
+                        subjectId: $("#SubjectId").val(),
+                        turmaId: turmaId,
+                    },
+                    success: function(teacher) {
+                        $("#TeacherId").append(`<option value="${teacher.id}">${teacher.fullName}</option>`);
+
+                        //$.each(teachers, function (i, teacher) {
+                        //                   console.log(teacher);
+                        // $("#TeacherId").append('<option value="'
+                        //  + teacher.id + '">'
+                        //  + teacher.fullName + '</option>');
+                        //});
+                    },
+                    error: function(ex) {
+                        debugger;
+                        alert('Failed to retrieve teachers.' + ex);
+                    }
+                });
+                return false;
+            }
 	    });
 
     </script>

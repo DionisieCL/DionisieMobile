@@ -20,11 +20,11 @@ namespace Schoolager.Web.Helpers
         List<StudentViewModel> AllToStudentViewModel(List<Student> students);
         List<Student> AllToStudent(List<StudentViewModel> model, int? turmaId);
 
-
         Lesson ToLesson(LessonViewModel model, bool isNew);
         LessonViewModel ToLessonViewModel(Lesson lesson);
         ICollection<LessonViewModel> AllToLessonViewModel(IQueryable lessons);
 
         User ToUser(IIsUser userEntity, User user, string blobContainerName);
+        List<Lesson> AllToLesson(List<Lesson> lessons, bool v);
     }
 }

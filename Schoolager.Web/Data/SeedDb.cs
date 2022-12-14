@@ -31,6 +31,16 @@ namespace Schoolager.Web.Data
         {
             await _context.Database.MigrateAsync();
 
+            if (!_context.SchoolYears.Any())
+            {
+                await SetSchoolYear();
+            }
+
+            if (!_context.Holidays.Any())
+            {
+                //await AddHolidays();
+            }
+
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Employee");
             await _userHelper.CheckRoleAsync("Student");
@@ -45,31 +55,55 @@ namespace Schoolager.Web.Data
 
             if (!_context.Subjects.Any())
             {
-                await AddSubjects();
+                await AddSubjectsAsync();
             }
 
             if (!_context.Teachers.Any())
             {
-                await AddTeachers();
+                await AddTeachersAsync();
             }
 
             if (!_context.TeacherTurmas.Any()) 
             {
-                await AddTeacherTurmas();
+                await AddTeacherTurmasAsync();
             }
 
             if (!_context.Students.Any())
             {
-                await AddStudents();
+                await AddStudentsAsync();
             }
 
             if (!_context.Rooms.Any())
             {
-                await AddRooms();
+                await AddRoomsAsync();
             }
         }
 
-        private async Task AddRooms()
+        private Task AddHolidays()
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task SetSchoolYear()
+        {
+            DateTime startDate = DateTime.Now;
+
+            startDate = new DateTime(startDate.Year, 9, 15);
+
+            DateTime endDate = new DateTime(startDate.AddYears(1).Year, 6, 15);
+
+            SchoolYear schoolYear = new SchoolYear
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+            };
+
+            _context.Add(schoolYear);
+
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task AddRoomsAsync()
         {
             // Load data from json file
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\MockData", "Rooms.json");
@@ -104,7 +138,7 @@ namespace Schoolager.Web.Data
         }
 
 
-        private async Task AddSubjects()
+        private async Task AddSubjectsAsync()
         {
             // Load data from json file
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\MockData", "Subjects.json");
@@ -121,7 +155,7 @@ namespace Schoolager.Web.Data
             await _context.SaveChangesAsync();
         }
 
-        private async Task AddTeachers()
+        private async Task AddTeachersAsync()
         {
             // Load data from json file
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\MockData", "Teachers.json");
@@ -164,7 +198,7 @@ namespace Schoolager.Web.Data
             await _context.SaveChangesAsync();
         }
 
-        private async Task AddTeacherTurmas()
+        private async Task AddTeacherTurmasAsync()
         {
             List<TeacherTurma> teacherTurmas = new List<TeacherTurma>();
 
@@ -221,7 +255,7 @@ namespace Schoolager.Web.Data
         }
 
 
-        private async Task AddStudents()
+        private async Task AddStudentsAsync()
         {
             // Load data from json file
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"Data\\MockData", "Students.json");

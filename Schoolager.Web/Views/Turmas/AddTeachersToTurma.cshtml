@@ -2,7 +2,7 @@
 
 <div class="container-fluid p-5">
     <div class="bg-white">
-        <div class="px-3 p-3 d-flex justify-content-between align-items-center">
+        <div class="px-3 p-3 d-flex justify-content-between align-items-center border-bottom">
             <a asp-action="Index" asp-controller="Turmas" class="btn btn-outline-secondary">Back</a>
             <h2>@ViewData["TurmaName"]</h2>
             <a asp-action="TurmaSchedule" asp-controller="Lessons" asp-route-id="@ViewData["TurmaId"]" class="btn btn-outline-primary">Schedule</a>
@@ -10,7 +10,6 @@
         <div class="px-3 pb-3">
             <form asp-action="AddTeachersToTurma" method="post">
                 <input asp-for="TurmaId" value="@ViewData["TurmaId"]" type="hidden"/>
-
                 <div class="mb-2">
                     <table class="table table-bordered table-hover" id="gradesTable">
                         <thead>

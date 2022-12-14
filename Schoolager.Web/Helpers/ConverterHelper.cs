@@ -169,7 +169,7 @@ namespace Schoolager.Web.Helpers
                 TurmaId = model.TurmaId,
                 StartTime = model.StartTime.Value,
                 EndTime = model.EndTime.Value,
-                //Location = model.Location,
+                Location = model.Location,
                 RoomId = model.RoomId,
                 RecurrenceRule = model.RecurrenceRule,
                 RecurrenceException = model.RecurrenceException,
@@ -188,10 +188,10 @@ namespace Schoolager.Web.Helpers
                 StartTime = lesson.StartTime,
                 EndTime = lesson.EndTime,
                 SubjectId = lesson.SubjectId,
-                TeacherId = lesson.SubjectId,
+                TeacherId = lesson.TeacherId,
                 TurmaId = lesson.TurmaId,
                 SubjectName = lesson.SubjectName,
-                //Location = lesson.Location == null ? "" : lesson.Location,
+                Location = lesson.Location,
                 RoomId = lesson.RoomId,
                 RecurrenceRule = lesson.RecurrenceRule,
                 RecurrenceException = lesson.RecurrenceException,
@@ -199,6 +199,18 @@ namespace Schoolager.Web.Helpers
                 StartTimeString = startTimeString,
                 EndTimeString = endTimeString,
             };
+        }
+
+        public List<Lesson> AllToLesson(List<Lesson> lessons, bool isNew)
+        {
+            List<Lesson> newLessons = new List<Lesson>();
+
+            foreach(Lesson lesson in lessons)
+            {
+                newLessons.Add(ToLesson(ToLessonViewModel(lesson), isNew));
+            }
+
+            return newLessons;
         }
 
         public ICollection<LessonViewModel> AllToLessonViewModel(IQueryable lessons)

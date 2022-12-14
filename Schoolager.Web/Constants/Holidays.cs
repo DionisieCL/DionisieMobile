@@ -21,6 +21,7 @@ namespace Schoolager.Web.Constants
         public static string GetStaticHolidays()
         {
             List<string> holidays = new List<string>();
+
             for (int i = 2022; i < 2050; i++)
             {
                 foreach(string day in Days)

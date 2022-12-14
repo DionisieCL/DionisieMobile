@@ -75,21 +75,6 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            // TODO: From database
-            GradesViewModel model = new GradesViewModel();
-
-            model.GradeViewModels = new List<GradeViewModel>();
-
-            var students = _studentRepository.GetByTurmaId(id.Value);
-
-            foreach(var student in students)
-            {
-                model.GradeViewModels.Add(new GradeViewModel
-                {
-                    StudentViewModel = _converterHelper.ToStudentViewModel(student),
-                });
-            }
-
             // Get the logged in user to check if it's an owner
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -99,6 +84,27 @@ namespace Schoolager.Web.Controllers
             {
                 //TODO: return new NotFoundViewresult("TeacherNotFound");
                 return NotFound();
+            }
+
+            // TODO: From database
+            GradesViewModel model = new GradesViewModel();
+
+            model.GradeViewModels = new List<GradeViewModel>();
+
+            var students = _studentRepository.GetByTurmaId(id.Value);
+
+            List<int> studentIds = students.Select(s => s.Id).ToList();
+            var grades = await _gradeRepository.GetGradesBySubjectAndStudentIdsAsync(teacher.SubjectId.Value, studentIds);
+
+            for (int i = 0; i < students.Count; i++)
+            {
+                model.GradeViewModels.Add(new GradeViewModel
+                {
+                    StudentViewModel = _converterHelper.ToStudentViewModel(students[i]),
+                    FirstTermMark = grades.Count == 0 ? 0 : grades[i].FirstMark,
+                    SecondTermMark = grades.Count == 0 ? 0 : grades[i].SecondMark,
+                    ThirdTermMark = grades.Count == 0 ? 0 : grades[i].FirstMark,
+                });
             }
 
             ViewData["SubjectId"] = teacher.SubjectId;

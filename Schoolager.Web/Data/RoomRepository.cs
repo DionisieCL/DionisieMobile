@@ -3,6 +3,7 @@ using Schoolager.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Schoolager.Web.Data
 {
@@ -52,5 +53,11 @@ namespace Schoolager.Web.Data
             return list;
         }
 
+        public string GetRoomNameById(int id)
+        {
+            var room = _context.Rooms.FirstOrDefault(r => r.Id == id);
+
+            return room.Name;
+        }
     }
 }
