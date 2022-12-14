@@ -30,6 +30,7 @@ namespace Schoolager.Web.Data.Entities
 
         public int? TurmaId { get; set; }
 
+        [Range(5, 9, ErrorMessage = "You must select a school year.")]
         public int SchoolYear { get; set; }
 
         public ICollection<Grade> Grades { get; set; }

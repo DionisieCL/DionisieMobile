@@ -25,7 +25,7 @@ namespace Schoolager.Web.Data
             list.Insert(0, new SelectListItem
             {
                 Text = "< Select a subject >",
-                Value = null,
+                Value = "0",
             });
 
             return list;

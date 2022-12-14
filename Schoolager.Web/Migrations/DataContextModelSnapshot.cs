@@ -150,34 +150,6 @@ namespace Schoolager.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Schoolager.Web.Data.Entities.Doubt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Answer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LessonDataId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonDataId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Doubts");
-                });
-
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Grade", b =>
                 {
                     b.Property<int>("StudentId")
@@ -261,9 +233,6 @@ namespace Schoolager.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Homework")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LessonDate")
                         .HasColumnType("datetime2");
@@ -639,25 +608,6 @@ namespace Schoolager.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Schoolager.Web.Data.Entities.Doubt", b =>
-                {
-                    b.HasOne("Schoolager.Web.Data.Entities.LessonData", "LessonData")
-                        .WithMany()
-                        .HasForeignKey("LessonDataId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Schoolager.Web.Data.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LessonData");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Schoolager.Web.Data.Entities.Grade", b =>

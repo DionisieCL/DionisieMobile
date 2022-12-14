@@ -44,8 +44,9 @@ namespace Schoolager.Web.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var students = await _studentRepository.GetAll().ToListAsync();
-            return View(_studentRepository.GetAll());
+            var students = await _studentRepository.GetAllWithTurmas();
+            //var students = await _studentRepository.GetAll().ToListAsync();
+            return View(students);
         }
 
         // GET: Students/Details/5
@@ -70,7 +71,13 @@ namespace Schoolager.Web.Controllers
         public IActionResult Create()
         {
             //ViewData["TurmaId"] = new SelectList(_context.Turmas, "Id", "Id");
-            return View();
+
+            var model = new StudentViewModel
+            {
+                DateOfBirth = DateTime.Now,
+            };
+
+            return View(model);
         }
 
         // POST: Students/Create
@@ -209,6 +216,8 @@ namespace Schoolager.Web.Controllers
                         }
                     }
 
+                    //model.ImageId = imageId;
+
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)
@@ -220,7 +229,7 @@ namespace Schoolager.Web.Controllers
 
                         _flashMessage.Confirmation("Student has been updated.");
 
-                        return View(model);
+                        return RedirectToAction(nameof(Edit), new {id = model.Id});
                     }
 
                     _flashMessage.Danger("An error ocurred whilst tryng to update the owner, please try again.");
@@ -254,24 +263,44 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            var student = await _studentRepository.GetByIdAsync(id.Value);
+            var student = await _studentRepository.GetWithUserByIdAsync(id.Value);
 
-            if (student == null)
+            if (student == null || student.User == null)
             {
+                // TODO: return new NotFoundViewResult("StudentNotFound");
                 return NotFound();
             }
 
-            return View(student);
-        }
+            try
+            {
+                var user = await _userHelper.GetUserByIdAsync(student.User.Id);
 
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var student = await _studentRepository.GetByIdAsync(id);
-            await _studentRepository.DeleteAsync(student);
-            return RedirectToAction(nameof(Index));
+                await _userHelper.DeleteUserAsync(user);
+
+                await _studentRepository.DeleteAsync(student);
+
+                _flashMessage.Confirmation("Student deleted successfully");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // TODO: Vet could not be deleted
+                if (!await _studentRepository.ExistAsync(id.Value))
+                {
+                    // TODO: return new NotFoundViewResult("StudentNotFound");
+                    return NotFound();
+                }
+
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"You can't delete {student.FullName}. Too much depends on it";
+                    ViewBag.ErrorMessage = $"You can't delete this student because there are classes and lessons associated with it.</br></br>" +
+                        $"Delete all lessons associated with this user and try again.</br></br>";
+                }
+
+                return View("Error");
+            }
         }
 
         public async Task<Response> ConfirmEmailAsync(User user, StudentViewModel model)
