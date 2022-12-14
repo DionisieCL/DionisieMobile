@@ -16,7 +16,7 @@
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Subjects" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="specialitiesNav">
-                        <i data-feather="calendar" stroke-width="1"></i>
+                        <i class="fa-solid fa-book"></i>
                         <p class="mx-2 my-0">Subjects</p>
                     </div>
                 </a>
@@ -24,7 +24,7 @@
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Teachers" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="ownersNav">
-                        <i data-feather="user" stroke-width="1"></i>
+                        <i class="fa-solid fa-chalkboard-user"></i>
                         <p class="mx-2 my-0">Teachers</p>
                     </div>
                 </a>
@@ -32,7 +32,7 @@
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Students" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="usersNav">
-                        <i data-feather="users" stroke-width="1"></i>
+                        <i class="fa-solid fa-user"></i>
                         <p class="mx-2 my-0">Students</p>
                     </div>
                 </a>
@@ -40,32 +40,38 @@
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Lessons" asp-action="TeacherIndex">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="petsNav">
-                        <i data-feather="shopping-cart" stroke-width="1"></i>
-                        <p class="mx-2 my-0">My Lessons: Teacher</p>
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <p class="mx-2 my-0">Lessons</p>
                     </div>
                 </a>
             </div>
-            <div class="nav-item mb-2">
-                <a class="text-light w-100" asp-area="" asp-controller="Grades" asp-action="TeacherIndex">
-                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="treatmentsNav">
-                        <i data-feather="calendar" stroke-width="1"></i>
-                        <p class="mx-2 my-0">Grades: Teacher</p>
-                    </div>
-                </a>
-            </div>
+            @if (User.IsInRole("Teacher"))
+            {
+                <div class="nav-item mb-2">
+                    <a class="text-light w-100" asp-area="" asp-controller="Grades" asp-action="TeacherIndex">
+                        <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="treatmentsNav">
+                            <i class="fa-solid fa-medal"></i>
+                            <p class="mx-2 my-0">Grades</p>
+                        </div>
+                    </a>
+                </div>
+            }
+            else if(User.IsInRole("Student"))
+            {
+                <div class="nav-item mb-2">
+                    <a class="text-light w-100" asp-area="" asp-controller="Grades" asp-action="ShowLoggedStudentGrades">
+                        <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="treatmentsNav">
+                            <i class="fa-solid fa-medal"></i>
+                            <p class="mx-2 my-0">Grades</p>
+                        </div>
+                    </a>
+                </div>
+            }
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Turmas" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="calendarNav">
-                        <i data-feather="calendar" stroke-width="1"></i>
+                        <i class="fa-solid fa-people-group"></i>
                         <p class="mx-2 my-0">Turmas</p>
-                    </div>
-                </a>
-            </div>
-            <div class="nav-item mb-2">
-                <a class="text-light w-100" asp-area="" asp-controller="Messages" asp-action="Inbox">
-                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="messagesNav">
-                        <i data-feather="calendar" stroke-width="1"></i>
-                        <p class="mx-2 my-0">Messages</p>
                     </div>
                 </a>
             </div>

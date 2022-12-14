@@ -60,7 +60,11 @@ namespace Schoolager.Web.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var model = new EmployeeViewModel
+            {
+
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -116,7 +120,7 @@ namespace Schoolager.Web.Controllers
 
                         if (response.IsSuccess)
                         {
-                            _flashMessage.Confirmation("The student has been created and confirmation email has been sent to user.");
+                            _flashMessage.Confirmation("The employee has been created and confirmation email has been sent to user.");
                         }
 
                         return RedirectToAction(nameof(Index));
@@ -133,6 +137,25 @@ namespace Schoolager.Web.Controllers
 
             return View(model);
         }
+
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userHelper.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -155,6 +178,8 @@ namespace Schoolager.Web.Controllers
 
             return View(model);
         }
+
+
 
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -222,7 +247,7 @@ namespace Schoolager.Web.Controllers
                         return View(model);
                     }
 
-                    _flashMessage.Danger("An error ocurred whilst tryng to update the owner, please try again.");
+                    _flashMessage.Danger("An error ocurred whilst tryng to update the Employee, please try again.");
 
                     return View(model);
 
@@ -261,18 +286,34 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            try
+            {
+                await _userHelper.DeleteUserAsync(user);
+
+                _flashMessage.Confirmation("Employee deleted successfully");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"Something went wrong while trying to delete {user.FullName}";
+                    ViewBag.ErrorMessage = $"Please try again in a few moments or contact the system administrators.</br></br>";
+                }
+
+                return View("Error");
+            }
         }
 
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var employee = await _userHelper.GetUserByIdAsync(id);
-            await _userHelper.DeleteUserAsync(employee);
-            return RedirectToAction(nameof(Index));
-        }
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(string id)
+        //{
+        //    var employee = await _userHelper.GetUserByIdAsync(id);
+            
+        //}
 
         public async Task<Response> ConfirmEmailAsync(User user, EmployeeViewModel model)
         {
