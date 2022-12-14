@@ -1,4 +1,5 @@
 ﻿using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Models.Employees;
 using Schoolager.Web.Models.Lessons;
 using Schoolager.Web.Models.Students;
 using Schoolager.Web.Models.Teachers;
@@ -226,5 +227,21 @@ namespace Schoolager.Web.Helpers
 
             return user;
         }
+    
+        public EmployeeViewModel ToEmployeeViewModel(User user)
+        {
+            return new EmployeeViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ImageId = user.ImageId,
+                UserName = user.Email,
+                IsAdmin = user.IsAdmin,
+                BlobContainer = user.BlobContainer,
+            };
+        }
+
     }
 }

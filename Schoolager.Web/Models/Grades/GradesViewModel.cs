@@ -7,5 +7,6 @@ namespace Schoolager.Web.Models.Grades
     {
         public int SubjectId { get; set; }
         public List<GradeViewModel> GradeViewModels { get; set; }
+        public int TurmaId { get; set; }
     }
 }
