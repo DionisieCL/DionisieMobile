@@ -20,6 +20,8 @@ namespace Schoolager.Web.Data.Entities
 
         public string BlobContainer { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         [Display(Name = "Image")]
         public Guid ImageId { get; set; }
 

@@ -150,7 +150,7 @@ namespace Schoolager.Web.Controllers
                 await _gradeRepository.UpdateGradesAsync(gradesDb);
             }
 
-            return View(model);
+            return RedirectToAction(nameof(TurmaGrading), new {id = model.TurmaId});
         }
 
         //public async Task<IActionResult> ShowStudentsInTurma(int? id)

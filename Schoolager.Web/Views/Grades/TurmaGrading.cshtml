@@ -10,6 +10,7 @@
         </div>
         <div class="px-3 pb-3">
             <form asp-action="TurmaGrading" method="post">
+                <input type="hidden" asp-for="TurmaId" />
                 <input asp-for="SubjectId" value="@ViewData["SubjectId"]" type="hidden"/>
                 <div class="mb-2">
                     <table class="table table-bordered table-hover" id="gradesTable">

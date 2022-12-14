@@ -50,6 +50,8 @@ namespace Schoolager.Web.Helpers
             }
         }
 
+
+
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
@@ -118,5 +120,7 @@ namespace Schoolager.Web.Helpers
         {
             return await _userManager.UpdateAsync(user);
         }
+
+
     }
 }
