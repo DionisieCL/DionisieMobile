@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 
 namespace Schoolager.Prism.Views
 {
@@ -7,6 +8,8 @@ namespace Schoolager.Prism.Views
         public LogInPage()
         {
             InitializeComponent();
+
         }
+      
     }
 }

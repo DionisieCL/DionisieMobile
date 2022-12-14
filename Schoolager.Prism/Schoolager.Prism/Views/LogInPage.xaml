@@ -13,17 +13,23 @@
         <Entry
             Keyboard="Email"
             Placeholder="Enter your email"
-            Text="{Binding Email}"/>
+            Text="{Binding Email}"
+            IsEnabled="{Binding IsBlock}"/>
         <Label Text="Password"/>
-        <Label Text="Test"/>
-        <Entry
+
+            <Entry
             IsPassword="True"
             Placeholder="Enter your Password"
-            Text="{Binding Password}"/>
-        <ActivityIndicator IsRunning ="{Binding IsRuning}" VerticalOptions="StartAndExpand"/>
+                            IsEnabled="{Binding IsBlock}"
+        Text="{Binding Password}"/>
+        
+        <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
         <Button 
-            Command="{Binding LoginCommand}"
-            IsEnabled="{Binding IsEnabled}"
+            
+            Command="{Binding LoginCommand}"  
+
+
+            IsEnabled="{Binding IsEnable}"
             Text="Login"/>
         
 

@@ -15,6 +15,7 @@ namespace Schoolager.Prism.ViewModels
         private string _password;
         private bool _isRunning;
         private bool _isEnable;
+        private bool _isBlock;
         private DelegateCommand _loginCommand;
 
         private readonly IApiServices _apiService;
@@ -25,6 +26,9 @@ namespace Schoolager.Prism.ViewModels
         {
             Title = "Login";
             IsEnable= true;
+            IsRunning= false;
+            IsBlock= true;
+
 
             _apiService = apiService;
 
@@ -49,13 +53,24 @@ namespace Schoolager.Prism.ViewModels
             get => _isEnable;
             set => SetProperty(ref _isEnable, value);
         }
+        public bool IsBlock
+        {
+            get => _isBlock;
+            set => SetProperty(ref _isBlock, value);
+        }
 
         private async void Login()
         {
+            IsBlock = false;
+
+            IsRunning = true;
             if (string.IsNullOrEmpty(Email))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "You must enter an E-mail", "Accept");
                 Password = string.Empty;
+                IsBlock = true;
+                IsRunning = false;
+
                 return;
 
             }
@@ -63,24 +78,30 @@ namespace Schoolager.Prism.ViewModels
             {
                 await App.Current.MainPage.DisplayAlert("Error", "You must enter a password", "Accept");
                 Password = string.Empty;
+                IsBlock = true;
+                IsRunning = false;
+
                 return;
 
             }
-
+            IsBlock= false;
             string url = App.Current.Resources["UrlAPI"].ToString();
 
             Response response = await _apiService.Login(url, "api", "/Users", Email, Password);
 
             UserResponse userResponse = (UserResponse)response.Result;
-
+            IsRunning = false;
             if (!response.IsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "E-mail or Password wrong!", "Accept");
+                IsBlock = true;
+                return;
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Ok", userResponse.FirstName, "Accept");
+                await NavigationService.NavigateAsync("NavigationPage/MenuPage");
             }
+           
 
         }
 
