@@ -70,6 +70,8 @@ namespace Schoolager.Web.Controllers
                 return NotFound();
             }
 
+            ViewData["Subject"] = teacher.Subject.Name;
+
             return View(teacher);
         }
 
@@ -78,7 +80,12 @@ namespace Schoolager.Web.Controllers
         {
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
-            return View();
+            var model = new TeacherViewModel
+            {
+                DateOfBirth = DateTime.Now,
+            };
+
+            return View(model);
         }
 
         // POST: Teachers/Create
@@ -88,6 +95,9 @@ namespace Schoolager.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TeacherViewModel model)
         {
+
+            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             if (ModelState.IsValid)
             {
                 try
@@ -142,7 +152,6 @@ namespace Schoolager.Web.Controllers
                     _flashMessage.Danger(ex.Message);
                 }
             }
-            ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
 
             return View(model);
         }
@@ -182,6 +191,7 @@ namespace Schoolager.Web.Controllers
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
+
             if (ModelState.IsValid)
             {
                 try
@@ -219,6 +229,8 @@ namespace Schoolager.Web.Controllers
                         }
                     }
 
+                    //model.ImageId = imageId;
+
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)
@@ -230,7 +242,7 @@ namespace Schoolager.Web.Controllers
 
                         _flashMessage.Confirmation("Teacher has been updated.");
 
-                        return View(model);
+                        return RedirectToAction(nameof(Edit), new { id = model.Id });
                     }
 
                     _flashMessage.Danger("An error ocurred whilst tryng to update the owner, please try again.");
@@ -277,6 +289,8 @@ namespace Schoolager.Web.Controllers
 
                 await _userHelper.DeleteUserAsync(user);
 
+                await _teacherRepository.DeleteAsync(teacher);
+
                 _flashMessage.Confirmation("Teacher deleted successfully");
 
                 return RedirectToAction(nameof(Index));
@@ -301,15 +315,6 @@ namespace Schoolager.Web.Controllers
             }
         }
 
-        // POST: Teachers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var teacher = await _teacherRepository.GetByIdAsync(id);
-            await _teacherRepository.DeleteAsync(teacher);
-            return RedirectToAction(nameof(Index));
-        }
 
         [HttpPost]
         [Route("Teachers/GetTeachersBySubjectIdAsync")]

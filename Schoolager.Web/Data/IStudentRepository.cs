@@ -12,5 +12,7 @@ namespace Schoolager.Web.Data
         List<Student> GetByTurmaId(int id);
         List<Student> GetFreeStudentsBySchoolYear(int schoolYear);
         Task<Student> GetByUserIdAsync(string userId);
+        Task<Student> GetWithUserByIdAsync(int id);
+        Task<List<Student>> GetAllWithTurmas();
     }
 }
