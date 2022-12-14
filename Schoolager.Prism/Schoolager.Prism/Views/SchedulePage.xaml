@@ -9,17 +9,16 @@
 
     <ContentPage.Content>
         <syncfusion:SfSchedule x:Name="schedule"
-        DataSource = "{Binding Meetings}"
-        ScheduleView = "WeekView" >
+        DataSource = "{Binding Events}"
+        ScheduleView = "WorkWeekView" >
             <syncfusion:SfSchedule.AppointmentMapping>
-            <syncfusion:ScheduleAppointmentMapping
-                ColorMapping="color"
-                EndTimeMapping="To"
-                StartTimeMapping="From"
-                SubjectMapping="EventName"
-                IsAllDayMapping="AllDay"/>
-        </syncfusion:SfSchedule.AppointmentMapping>
-    </syncfusion:SfSchedule>
+                <syncfusion:ScheduleAppointmentMapping
+                SubjectMapping="SubjectName" 
+                StartTimeMapping="StartTime"
+                EndTimeMapping="EndTime"
+                RecurrenceRuleMapping="RecurrenceRule"/>
+            </syncfusion:SfSchedule.AppointmentMapping>
+        </syncfusion:SfSchedule>
 </ContentPage.Content>
     
 </ContentPage>

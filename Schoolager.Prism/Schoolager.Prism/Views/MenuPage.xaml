@@ -6,4 +6,23 @@
              x:Class="Schoolager.Prism.Views.MenuPage"
              Title="{Binding Title}">
 
+
+    <StackLayout >
+
+        <Button 
+            Clicked="GoSchedule"
+            IsEnabled="{Binding IsEnabled}"
+            Text="Schedule"/>
+
+        <Button 
+            Clicked="GoMessages"           
+            IsEnabled="{Binding IsEnabled}"
+            Text="Messages"/>
+        <Button 
+            
+            IsEnabled="{Binding IsEnabled}"
+            Text="LogOut"/>
+
+    </StackLayout>
+
 </ContentPage>

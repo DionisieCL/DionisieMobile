@@ -70,14 +70,25 @@ namespace Schoolager.Web.Controllers.API
 
         [HttpGet]
         [Route("GetLessonsById")]
-        public IActionResult GetLessonById()
+        public IActionResult GetLessonById(int id)
         {
             // Get the logged in user to check if it's a teacher or a student
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = "897250d8-c382-4de2-b241-0b5a08e71491";
-            if (User.IsInRole("Teacher"))
+
+            //student Id a8072336-9efc-4e6c-b14c-f66035f8d3d1
+            //teacher Id 2a842e35-d899-4f1d-9221-bdd39f9f2df8
+            var userId = id;
+            //  var userEmail = _userHelper.GetUserByEmailAsync(email);
+            //var user = _userHelper.GetUserByIdAsync(userId).Result;
+            // var student = _studentRepository.GetByUserIdAsync(id);
+            //var lessons = _lessonRepository.GetLessonByStudentIdAsync(1);
+           // var student = _studentRepository.GetByUserIdAsync(id);
+            var lessons = _lessonRepository.GetLessonByStudentIdAsync(2);
+            return Ok(lessons.Result);
+            /*
+            if (_userHelper.IsInRoleAsync(user, "Teacher").Result)
             {
-                var teacher = _teacherRepository.GetByUserIdAsync(userId);
+                var teacher = _teacherRepository.GetByUserIdAsync(user.Id);
 
                 if (teacher == null)
                 {
@@ -85,13 +96,13 @@ namespace Schoolager.Web.Controllers.API
                     return NotFound();
                 }
 
-                var lessons =_lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
+                var lessons =_lessonRepository.GetLessonByTeacherIdAsync(teacher.Result.Id);
 
-                return Ok(lessons);
+                return Ok(lessons.Result);
             }
-            else if (User.IsInRole("Student"))
+            else if (_userHelper.IsInRoleAsync(user, "Student").Result)
             {
-                var student =  _studentRepository.GetByUserIdAsync(userId);
+                var student = _studentRepository.GetByUserIdAsync(user.Id);
 
                 if (student == null)
                 {
@@ -99,12 +110,13 @@ namespace Schoolager.Web.Controllers.API
                     return NotFound();
                 }
 
-                var lessons = _lessonRepository.GetLessonByStudentIdAsync(student.Id);
+                var lessons = _lessonRepository.GetLessonByStudentIdAsync((int)student.Result.TurmaId);
 
-                return Ok(lessons);
+                return Ok(lessons.Result);
             }
 
-            return NotFound();
+            return NotFound();*/
+            
         }
     }
 }

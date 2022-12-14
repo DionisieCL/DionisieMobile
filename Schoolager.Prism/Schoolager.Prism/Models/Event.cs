@@ -7,13 +7,21 @@ namespace Schoolager.Prism.Models
 {
     public class Event
     {
-        public string EventName { get; set; }
-        public string Organizer { get; set; }
-        public string ContactID { get; set; }
-        public int Capacity { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
-        public bool AllDay { get; set; }
-        public Color color { get; set; }
+        public int Id { get; set; }
+        public string SubjectName { get; set; }
+        public int RoomId { get; set; }
+
+        public int WeekDay { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string RecurrenceRule { get; set; }
+        public string RecurrenceException { get; set; }
+
+        public int SubjectId { get; set; }
+
+        public int TeacherId { get; set; }
+
+        public int TurmaId { get; set; }
+
     }
 }
