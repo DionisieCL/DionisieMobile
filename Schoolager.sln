@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schoolager.Web", "Schoolager.Web\Schoolager.Web.csproj", "{D7D765BC-9236-4351-99E1-F562CF958967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schoolager.Prism", "Schoolager.Prism\Schoolager.Prism\Schoolager.Prism.csproj", "{5361353F-F32A-4715-98B8-00F8DF15BC88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schoolager.Prism", "Schoolager.Prism\Schoolager.Prism\Schoolager.Prism.csproj", "{5361353F-F32A-4715-98B8-00F8DF15BC88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schoolager.Prism.Android", "Schoolager.Prism\Schoolager.Prism.Android\Schoolager.Prism.Android.csproj", "{C1F9A4C8-9950-494E-8976-7D096B5B2FA1}"
 EndProject

@@ -36,7 +36,7 @@ namespace Schoolager.Prism.Services
                 //var response = await client.GetAsync(url);
                 // var response = await client.GetAsync(url);
                 var result = await response.Content.ReadAsStringAsync();
-
+                
                 if (!response.IsSuccessStatusCode)
                 {
                     return new Response

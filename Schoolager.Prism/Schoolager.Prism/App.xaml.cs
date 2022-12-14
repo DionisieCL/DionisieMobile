@@ -6,6 +6,7 @@ using Schoolager.Prism.Views;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
+using Syncfusion.SfSchedule;
 
 namespace Schoolager.Prism
 {
@@ -18,9 +19,10 @@ namespace Schoolager.Prism
 
         protected override async void OnInitialized()
         {
+           
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/LogInPage");
+            await NavigationService.NavigateAsync("NavigationPage/SchedulePage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -30,6 +32,7 @@ namespace Schoolager.Prism
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LogInPage, LogInPageViewModel>();
             containerRegistry.RegisterForNavigation<MenuPage, MenuPageViewModel>();
+            containerRegistry.RegisterForNavigation<SchedulePage, SchedulePageViewModel>();
 
         }
     } 

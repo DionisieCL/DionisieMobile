@@ -23,6 +23,7 @@ namespace Schoolager.Prism.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            Syncfusion.SfSchedule.XForms.iOS.SfScheduleRenderer.Init();
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);
