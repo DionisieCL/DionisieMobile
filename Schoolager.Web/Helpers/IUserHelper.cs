@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Models.Account;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,5 +38,6 @@ namespace Schoolager.Web.Helpers
         Task<string> GenerateChangeEmailTokenAsync(User user, string email);
         Task<IdentityResult> ChangeEmailAsync(User user, string newEmail, string token);
         Task<IdentityResult> DeleteUserAsync(User user);
+        Task<IList<User>> GetUsersInRoleAsync(string roleName);
     }
 }

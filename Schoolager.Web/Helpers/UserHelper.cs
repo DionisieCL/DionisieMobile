@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Models.Account;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -90,6 +91,11 @@ namespace Schoolager.Web.Helpers
         public async Task<User> GetUserByIdAsync(string userId)
         {
             return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<IList<User>> GetUsersInRoleAsync(string roleName)
+        {
+            return await _userManager.GetUsersInRoleAsync(roleName);
         }
 
         public async Task<bool> IsInRoleAsync(User user, string roleName)

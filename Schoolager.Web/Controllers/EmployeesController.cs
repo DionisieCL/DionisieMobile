@@ -46,19 +46,9 @@ namespace Schoolager.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var users = await _userHelper.GetAll().ToListAsync();
+            var employees = await _userHelper.GetUsersInRoleAsync("Employee");
 
-            List<User> usersInRole = new List<User>();
-
-            foreach (var user in users)
-            {
-                if (await _userHelper.IsInRoleAsync(user,"Employee"))
-                {
-                    usersInRole.Add(user);
-                }
-            }
-
-            return View(usersInRole);
+            return View(employees);
         }
 
         public IActionResult Create()
