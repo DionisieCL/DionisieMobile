@@ -60,14 +60,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             var teacher = await _teacherRepository.GetTeacherByIdWithSubjectAsync(id.Value);
 
             if (teacher == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             ViewData["Subject"] = teacher.Subject.Name;
@@ -161,14 +161,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             var teacher = await _teacherRepository.GetWithUserByIdAsync(id.Value);
 
             if (teacher == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
@@ -187,7 +187,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != model.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
@@ -208,7 +208,7 @@ namespace Schoolager.Web.Controllers
                     if (user == null)
                     {
                         //return new NotFoundViewResult("TeacherNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("TeacherNotFound");
                     }
 
                     string email = user.Email;
@@ -254,7 +254,7 @@ namespace Schoolager.Web.Controllers
                     if (! await _teacherRepository.ExistAsync(model.Id))
                     {
                         //return new NotFoundViewResult("TeacherNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("TeacherNotFound");
                     }
                     else
                     {
@@ -271,15 +271,15 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TeacherNotFound");
             }
 
             var teacher = await _teacherRepository.GetWithUserByIdAsync(id.Value);
 
             if (teacher == null || teacher.User == null)
             {
-                // TODO: return new NotFoundViewResult("TeacherNotFound");
-                return NotFound();
+                // return new NotFoundViewResult("TeacherNotFound");
+                return new NotFoundViewResult("TeacherNotFound");
 
             }
 
@@ -297,11 +297,11 @@ namespace Schoolager.Web.Controllers
             }
             catch (Exception ex)
             {
-                // TODO: Vet could not be deleted
+                // Vet could not be deleted
                 if (!await _teacherRepository.ExistAsync(id.Value))
                 {
-                    // TODO: return new NotFoundViewResult("TeacherNotFound");
-                    return NotFound();
+                    // return new NotFoundViewResult("TeacherNotFound");
+                    return new NotFoundViewResult("TeacherNotFound");
                 }
 
                 if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
@@ -315,6 +315,10 @@ namespace Schoolager.Web.Controllers
             }
         }
 
+        public IActionResult TeacherNotFound()
+        {
+            return View();
+        }
 
         [HttpPost]
         [Route("Teachers/GetTeachersBySubjectIdAsync")]

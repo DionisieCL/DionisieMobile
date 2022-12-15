@@ -54,14 +54,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             var student = await _studentRepository.GetByIdAsync(id.Value);
 
             if (student == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             return View(student);
@@ -151,7 +151,7 @@ namespace Schoolager.Web.Controllers
             if (id == null)
             {
                 // return new NotFoudnViewModel("StudentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             var student = await  _studentRepository.GetByIdAsync(id.Value);
@@ -159,7 +159,7 @@ namespace Schoolager.Web.Controllers
             if (student == null)
             {
                 // return new NotFoudnViewModel("StudentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             var model = _converterHelper.ToStudentViewModel(student);
@@ -176,7 +176,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != model.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             if (ModelState.IsValid)
@@ -195,7 +195,7 @@ namespace Schoolager.Web.Controllers
                     if(user == null)
                     {
                         //return new NotFoundViewResult("StudentNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("StudentNotFound");
                     }
 
                     string email = user.Email;
@@ -242,7 +242,7 @@ namespace Schoolager.Web.Controllers
                     if (!await _studentRepository.ExistAsync(model.Id))
                     {
                         //return new NotFoundViewResult("StudentNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("StudentNotFound");
                     }
                     else
                     {
@@ -260,15 +260,15 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             var student = await _studentRepository.GetWithUserByIdAsync(id.Value);
 
             if (student == null || student.User == null)
             {
-                // TODO: return new NotFoundViewResult("StudentNotFound");
-                return NotFound();
+                // return new NotFoundViewResult("StudentNotFound");
+                return new NotFoundViewResult("StudentNotFound");
             }
 
             try
@@ -285,11 +285,11 @@ namespace Schoolager.Web.Controllers
             }
             catch (Exception ex)
             {
-                // TODO: Vet could not be deleted
+                // Vet could not be deleted
                 if (!await _studentRepository.ExistAsync(id.Value))
                 {
-                    // TODO: return new NotFoundViewResult("StudentNotFound");
-                    return NotFound();
+                    // return new NotFoundViewResult("StudentNotFound");
+                    return new NotFoundViewResult("StudentNotFound");
                 }
 
                 if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
@@ -301,6 +301,10 @@ namespace Schoolager.Web.Controllers
 
                 return View("Error");
             }
+        }
+        public IActionResult StudentNotFound()
+        {
+            return View();
         }
 
         public async Task<Response> ConfirmEmailAsync(User user, StudentViewModel model)

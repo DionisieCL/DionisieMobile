@@ -97,7 +97,7 @@ namespace Schoolager.Web.Controllers
                 string.IsNullOrEmpty(passwordToken))
             {
                 //return RedirectToAction(nameof(NotAuthorized));
-                return NotFound();
+                return new NotFoundViewResult("UserNotFound");
             }
 
             var model = new ConfirmAccountViewModel()
@@ -120,7 +120,7 @@ namespace Schoolager.Web.Controllers
                 if (user == null)
                 {
                     //return new NotFoundViewResult("UserNotFound");
-                    return NotFound();
+                    return new NotFoundViewResult("UserNotFound");
                 }
 
                 var result = await _userHelper.ConfirmEmailAsync(user, model.ConfirmationToken);
@@ -177,8 +177,7 @@ namespace Schoolager.Web.Controllers
                 string.IsNullOrEmpty(newEmail) ||
                 string.IsNullOrEmpty(token))
             {
-                // TODO: return new NotFoundViewResult("UserNotFound");
-                return NotFound();
+                return new NotFoundViewResult("UserNotFound");
             }
             var user = await _userHelper.GetUserByIdAsync(userId);
 
@@ -219,6 +218,11 @@ namespace Schoolager.Web.Controllers
         }
 
         public IActionResult Test()
+        {
+            return View();
+        }
+
+        public IActionResult UserNotFound()
         {
             return View();
         }

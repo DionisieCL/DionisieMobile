@@ -58,8 +58,7 @@ namespace Schoolager.Web.Controllers
 
             if (teacher == null)
             {
-                //TODO: return new NotFoundViewresult("TeacherNotFound");
-                return NotFound();
+                return new NotFoundViewResult("GradeNotFound");
             }
 
             var turmas = await _turmaRepository.GetTurmasByTeacherIdAsync(teacher.Id);
@@ -71,8 +70,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                //TODO: return new NotFoundViewresult("TurmaNotFound");
-                return NotFound();
+                return new NotFoundViewResult("GradeNotFound");
             }
 
             // Get the logged in user to check if it's an owner
@@ -82,11 +80,10 @@ namespace Schoolager.Web.Controllers
 
             if (teacher == null)
             {
-                //TODO: return new NotFoundViewresult("TeacherNotFound");
-                return NotFound();
+                return new NotFoundViewResult("GradeNotFound");
             }
 
-            // TODO: From database
+            // From database
             GradesViewModel model = new GradesViewModel();
 
             model.GradeViewModels = new List<GradeViewModel>();
@@ -109,9 +106,12 @@ namespace Schoolager.Web.Controllers
                 });
             }
 
+            var turma = await _turmaRepository.GetByIdAsync(id.Value);
+
             ViewData["SubjectId"] = teacher.SubjectId;
             ViewData["SubjectName"] = teacher.Subject.Name;
             ViewData["SubjectName"] = teacher.Subject.Name;
+            ViewData["TurmaName"] = turma.Name;
 
             return View(model);
         }
@@ -177,6 +177,11 @@ namespace Schoolager.Web.Controllers
             var grades = await _gradeRepository.GetLoggedStudentGrades(user.UserName);
 
             return View(grades);
+        }
+
+        public IActionResult GradeNotFound()
+        {
+            return View();
         }
     }
 }

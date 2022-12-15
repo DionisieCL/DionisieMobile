@@ -143,14 +143,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var user = await _userHelper.GetUserByIdAsync(id);
 
             if (user == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             return View(user);
@@ -163,7 +163,7 @@ namespace Schoolager.Web.Controllers
             if (id == null)
             {
                 // return new NotFoudnViewModel("StudentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var employee = await _userHelper.GetUserByIdAsync(id);
@@ -171,7 +171,7 @@ namespace Schoolager.Web.Controllers
             if (employee == null)
             {
                 // return new NotFoudnViewModel("StudentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var model = _converterHelper.ToEmployeeViewModel(employee);
@@ -190,7 +190,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != model.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             if (ModelState.IsValid)
@@ -209,7 +209,7 @@ namespace Schoolager.Web.Controllers
                     if (user == null)
                     {
                         //return new NotFoundViewResult("EmployeeNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("EmployeeNotFound");
                     }
 
                     string email = user.Email;
@@ -258,7 +258,7 @@ namespace Schoolager.Web.Controllers
                     if (user == null)
                     {
                         //return new NotFoundViewResult("StudentNotFound");
-                        return NotFound();
+                        return new NotFoundViewResult("EmployeeNotFound");
                     }
                     else
                     {
@@ -276,14 +276,14 @@ namespace Schoolager.Web.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var user = await _userHelper.GetUserByIdAsync(id);
 
             if (user == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             try
@@ -312,8 +312,12 @@ namespace Schoolager.Web.Controllers
         //public async Task<IActionResult> DeleteConfirmed(string id)
         //{
         //    var employee = await _userHelper.GetUserByIdAsync(id);
-            
+
         //}
+        public IActionResult EmployeeNotFound()
+        {
+            return View();
+        }
 
         public async Task<Response> ConfirmEmailAsync(User user, EmployeeViewModel model)
         {
