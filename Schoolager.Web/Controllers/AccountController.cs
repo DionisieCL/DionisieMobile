@@ -166,6 +166,8 @@ namespace Schoolager.Web.Controllers
         {
             return View();
         }
+
+
         public IActionResult NotAuthorized()
         {
             return View();

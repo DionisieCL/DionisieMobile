@@ -15,6 +15,9 @@
             <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
             <h2>New Employee</h2>
         </div>
+        <div class="px-3 pt-3">
+            <flash dismissable="true"/>
+        </div>
         <div class="p-3">
             <form asp-action="Create" enctype="multipart/form-data" class="flex-fill">
             <input type="hidden" asp-for="Id" />
