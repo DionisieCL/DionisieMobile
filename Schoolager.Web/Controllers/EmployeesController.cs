@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
@@ -13,6 +14,8 @@ using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
+
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : Controller
     {
 
@@ -43,7 +46,7 @@ namespace Schoolager.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var users = _userHelper.GetAll();
+            var users = await _userHelper.GetAll().ToListAsync();
 
             List<User> usersInRole = new List<User>();
 
