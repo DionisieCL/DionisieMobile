@@ -251,6 +251,7 @@ namespace Schoolager.Web.Helpers
                 ImageId = user.ImageId,
                 UserName = user.Email,
                 IsAdmin = user.IsAdmin,
+                PhoneNumber = user.PhoneNumber,
                 BlobContainer = user.BlobContainer,
             };
         }
