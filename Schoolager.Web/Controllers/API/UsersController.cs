@@ -28,7 +28,7 @@ namespace Schoolager.Web.Controllers.API
         private readonly IStudentRepository _studentRepository;
 
 
-        public UsersController(IUserHelper userHelper, 
+        public UsersController(IUserHelper userHelper,
             ITeacherRepository teacherRepository,
                ILessonRepository lessonRepository,
                IStudentRepository studentRepository)
@@ -39,25 +39,24 @@ namespace Schoolager.Web.Controllers.API
             _studentRepository = studentRepository;
 
         }
-        
+
         [HttpGet]
         [Route("GetAll")]
-        public  IActionResult GetUsers()
+        public IActionResult GetUsers()
         {
-          
-            //  var result =  _userHelper.GetAll();
-           var result = _userHelper.GetUserByEmailAsync("student@mailinator.com");
-            return Ok(result.Result);
-              
+
+            var result = _userHelper.GetAll();
+            return Ok(result);
+
         }
         [HttpPost]
         [Route("GetUserByEmail")]
-        public IActionResult Login([Required] string email, [Required]string password)
+        public IActionResult Login([FromBody] TestUser testuser)
         {
             LoginViewModel model = new LoginViewModel();
-            model.Username = email;
-            model.Password = password;
-            var result =  _userHelper.LoginAsync(model);
+            model.Username = testuser.Email;
+            model.Password = testuser.Password;
+            var result = _userHelper.LoginAsync(model);
             if (result.Result.Succeeded)
             {
                 var user = _userHelper.GetUserByEmailAsync(model.Username);
@@ -70,53 +69,23 @@ namespace Schoolager.Web.Controllers.API
 
         [HttpGet]
         [Route("GetLessonsById")]
-        public IActionResult GetLessonById(int id)
+        public async Task<IActionResult> GetLessonById([FromBody] string userId)
         {
-            // Get the logged in user to check if it's a teacher or a student
-            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var student = await _studentRepository.GetByUserIdAsync(userId);
+            var teacher = await _teacherRepository.GetByUserIdAsync(userId);
 
-            //student Id a8072336-9efc-4e6c-b14c-f66035f8d3d1
-            //teacher Id 2a842e35-d899-4f1d-9221-bdd39f9f2df8
-            var userId = id;
-            //  var userEmail = _userHelper.GetUserByEmailAsync(email);
-            //var user = _userHelper.GetUserByIdAsync(userId).Result;
-            // var student = _studentRepository.GetByUserIdAsync(id);
-            //var lessons = _lessonRepository.GetLessonByStudentIdAsync(1);
-           // var student = _studentRepository.GetByUserIdAsync(id);
-            var lessons = _lessonRepository.GetLessonByStudentIdAsync(2);
-            return Ok(lessons.Result);
-            /*
-            if (_userHelper.IsInRoleAsync(user, "Teacher").Result)
+            if (teacher != null)
             {
-                var teacher = _teacherRepository.GetByUserIdAsync(user.Id);
-
-                if (teacher == null)
-                {
-                    //TODO: return new NotFoundViewresult("TeacherNotFound");
-                    return NotFound();
-                }
-
-                var lessons =_lessonRepository.GetLessonByTeacherIdAsync(teacher.Result.Id);
-
-                return Ok(lessons.Result);
+                var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
+                return Ok(lessons);
             }
-            else if (_userHelper.IsInRoleAsync(user, "Student").Result)
+            if (student != null)
             {
-                var student = _studentRepository.GetByUserIdAsync(user.Id);
-
-                if (student == null)
-                {
-                    //TODO: return new NotFoundViewresult("StudentNotFound");
-                    return NotFound();
-                }
-
-                var lessons = _lessonRepository.GetLessonByStudentIdAsync((int)student.Result.TurmaId);
-
-                return Ok(lessons.Result);
+                var lessons = await _lessonRepository.GetLessonByStudentIdAsync((int)student.TurmaId);
+                return Ok(lessons);
             }
 
-            return NotFound();*/
-            
+            return NotFound();
         }
     }
 }
