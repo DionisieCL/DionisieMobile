@@ -68,7 +68,7 @@ namespace Schoolager.Web.Controllers
             if (turma == null)
             {
                 // new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             ViewData["TurmaId"] = id;
@@ -100,8 +100,8 @@ namespace Schoolager.Web.Controllers
 
                 if (teacher == null)
                 {
-                    //TODO: return new NotFoundViewresult("TeacherNotFound");
-                    return NotFound();
+                    //return new NotFoundViewresult("TeacherNotFound");
+                    return new NotFoundViewResult("LessonNotFound");
                 }
 
                 var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
@@ -120,8 +120,8 @@ namespace Schoolager.Web.Controllers
 
                 if (student == null)
                 {
-                    //TODO: return new NotFoundViewresult("StudentNotFound");
-                    return NotFound();
+                    // return new NotFoundViewresult("StudentNotFound");
+                    return new NotFoundViewResult("LessonNotFound");
                 }
 
                 var lessons = await _lessonRepository.GetLessonByStudentIdAsync(student.Id);
@@ -135,7 +135,7 @@ namespace Schoolager.Web.Controllers
                 return View(lessons);
             }
 
-            return NotFound();
+            return new NotFoundViewResult("LessonNotFound");
         }
 
 
@@ -146,16 +146,16 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                // TODO: NotFoundViewResult
-                return NotFound();
+                // NotFoundViewResult
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(id.Value);
 
             if (lesson == null)
             {
-                // TODO: NotFoundViewResult
-                return NotFound();
+                // NotFoundViewResult
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             return View(lesson);
@@ -169,7 +169,7 @@ namespace Schoolager.Web.Controllers
             if(turma == null)
             {
                 // new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             // Get final day of school
@@ -230,8 +230,8 @@ namespace Schoolager.Web.Controllers
 
                     if(subject == null)  
                     {
-                        // TODO: NotFoundViewResult
-                        return NotFound();
+                        // NotFoundViewResult
+                        return new NotFoundViewResult("LessonNotFound");
                     }
 
                     // Get final day of school
@@ -279,16 +279,16 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                // TODO: NotFoundViewResult
-                return NotFound();
+                // NotFoundViewResult
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(id.Value);
 
             if (lesson == null)
             {
-                // TODO: NotFoundViewResult
-                return NotFound();
+                // NotFoundViewResult
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var turma = await _turmaRepository.GetByIdAsync(lesson.TurmaId);
@@ -296,7 +296,7 @@ namespace Schoolager.Web.Controllers
             if (turma == null)
             {
                 // new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var model = _converterHelper.ToLessonViewModel(lesson);
@@ -321,8 +321,8 @@ namespace Schoolager.Web.Controllers
         {
             if (id != model.Id)
             {
-                // TODO: NotFoundViewResult
-                return NotFound();
+                // NotFoundViewResult
+                return new NotFoundViewResult("LessonNotFound");
             }
 
 
@@ -359,10 +359,10 @@ namespace Schoolager.Web.Controllers
                 {
                     if (!await _lessonRepository.ExistAsync(model.Id))
                     {
-                        // TODO: NotFoundViewResult
-                        return NotFound();
+                        // NotFoundViewResult
+                        return new NotFoundViewResult("LessonNotFound");
                     }
-                    // TODO: failure message
+                    // failure message
                 }
             }
 
@@ -377,14 +377,14 @@ namespace Schoolager.Web.Controllers
             TimeSpan startTime = model.StartTime.Value.TimeOfDay;
             TimeSpan endTime = model.EndTime.Value.TimeOfDay;
 
-            //TODO: Get first day of school
+            //Get first day of school
             model.StartTime = new DateTime(2022, 9, 15).Date + startTime;
             model.EndTime = new DateTime(2022, 9, 15).Date + endTime;
 
             model.RecurrenceException = Holidays.GetStaticHolidays();
 
             var lesson = _converterHelper.ToLesson(model, false);
-            //TODO: Get Recurrence exception
+            //Get Recurrence exception
             try
             {
                 await _lessonRepository.UpdateAsync(lesson);
@@ -403,7 +403,7 @@ namespace Schoolager.Web.Controllers
             if (id == null)
             {
                 // NotFoundViewResult("AppointmentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(id.Value);
@@ -411,7 +411,7 @@ namespace Schoolager.Web.Controllers
             if (lesson == null)
             {
                 // NotFoundViewResult("AppointmentNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             try
@@ -426,7 +426,7 @@ namespace Schoolager.Web.Controllers
             {
                 if (!await _lessonRepository.ExistAsync(lesson.Id))
                 {
-                    return NotFound();
+                    return new NotFoundViewResult("LessonNotFound");
                 }
                 _flashMessage.Danger(ex.Message);
             }
@@ -487,7 +487,7 @@ namespace Schoolager.Web.Controllers
 
             if(lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
+                // return new NotFoundViewResult("LessonDataNotFound")
                 return NotFound(model);
             }
 
@@ -515,8 +515,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(lessonData.LessonId);
@@ -524,7 +524,7 @@ namespace Schoolager.Web.Controllers
             if(lesson == null)
             {
                 // return new NotFoundViewResult("LessonDataNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             // get all the students in turma, whose lesson we're trying to check
@@ -577,7 +577,7 @@ namespace Schoolager.Web.Controllers
                         WasPresent = attendance.WasPresent
                     });
                 }
-                // TODO: flashMessage
+                // flashMessage
                 await _lessonDataRepository.InsertStudentLessonDataRangeAsync(studentLessonDatas);
             } else
             {
@@ -586,7 +586,7 @@ namespace Schoolager.Web.Controllers
                     studentLessonDatasDb[i].WasPresent = model.Attendances[i].WasPresent;
                 }
 
-                // TODO: flashMessage
+                // flashMessage
                 await _lessonDataRepository.UpdateStudentLessonDataRangeAsync(studentLessonDatasDb);
             }
             var lesson = await _lessonRepository.GetByIdAsync(model.LessonId);
@@ -606,8 +606,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lesson = await _lessonRepository.GetByIdAsync(lessonData.LessonId);
@@ -615,7 +615,7 @@ namespace Schoolager.Web.Controllers
             if (lesson == null)
             {
                 // return new NotFoundViewResult("LessonDataNotFound");
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             LessonDataViewModel model = new LessonDataViewModel();
@@ -695,8 +695,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             LessonDataViewModel model = new LessonDataViewModel
@@ -717,8 +717,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             lessonData.Homework = model.Homework;
@@ -744,8 +744,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             // Get the logged in user to check if it's a teacher or a student
@@ -759,8 +759,8 @@ namespace Schoolager.Web.Controllers
 
                 if (teacher == null)
                 {
-                    //TODO: return new NotFoundViewresult("TeacherNotFound");
-                    return NotFound();
+                    //return new NotFoundViewresult("TeacherNotFound");
+                    return new NotFoundViewResult("LessonNotFound");
                 }
 
                 doubts = await _lessonDataRepository.GetDoubtsByLessonDataIdAsync(id);
@@ -771,8 +771,8 @@ namespace Schoolager.Web.Controllers
 
                 if (student == null)
                 {
-                    //TODO: return new NotFoundViewresult("StudentNotFound");
-                    return NotFound();
+                    //return new NotFoundViewresult("StudentNotFound");
+                    return new NotFoundViewResult("LessonNotFound");
                 }
 
                 doubts = await _lessonDataRepository.GetDoubtsByLessonDataAndStudentIdsAsync(id, student.Id);
@@ -810,16 +810,16 @@ namespace Schoolager.Web.Controllers
 
             if(doubt == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var lessonData = await _lessonDataRepository.GetByIdAsync(doubt.LessonDataId);
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var model = new DoubtViewModel
@@ -841,8 +841,8 @@ namespace Schoolager.Web.Controllers
 
             if (doubt == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             doubt.Answer = model.Answer;
@@ -869,8 +869,8 @@ namespace Schoolager.Web.Controllers
 
             if (lessonData == null)
             {
-                // TODO: return new NotFoundViewResult("LessonDataNotFound")
-                return NotFound();
+                // return new NotFoundViewResult("LessonDataNotFound")
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             // Get the logged in user to check if it's a teacher or a student
@@ -880,8 +880,8 @@ namespace Schoolager.Web.Controllers
 
             if (student == null)
             {
-                //TODO: return new NotFoundViewresult("StudentNotFound");
-                return NotFound();
+                //return new NotFoundViewresult("StudentNotFound");
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             var model = new DoubtViewModel
@@ -926,7 +926,7 @@ namespace Schoolager.Web.Controllers
 
             if(schoolYear == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LessonNotFound");
             }
 
             return View(schoolYear);
@@ -966,6 +966,11 @@ namespace Schoolager.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult LessonNotFound()
+        {
+            return View();
         }
 
         public async Task<IActionResult> EditLessonData(int id)

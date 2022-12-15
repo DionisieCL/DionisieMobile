@@ -33,7 +33,6 @@ namespace Schoolager.Web
         {
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-                // TODO: Change to true
                 cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
@@ -110,6 +109,9 @@ namespace Schoolager.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

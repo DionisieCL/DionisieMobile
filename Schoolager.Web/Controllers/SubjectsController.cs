@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
 using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
@@ -39,13 +40,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             var subject = await _subjectRepository.GetByIdAsync(id.Value);
             if (subject == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             return View(subject);
@@ -78,14 +79,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             var subject = await _subjectRepository.GetByIdAsync(id.Value);
 
             if (subject == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
             return View(subject);
         }
@@ -99,7 +100,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != subject.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             if (ModelState.IsValid)
@@ -113,7 +114,7 @@ namespace Schoolager.Web.Controllers
                 {
                     if (! await _subjectRepository.ExistAsync(subject.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("SubjectNotFound");
                     }
                     else
                     {
@@ -130,13 +131,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             var subject = await _subjectRepository.GetByIdAsync(id.Value);
             if (subject == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("SubjectNotFound");
             }
 
             try
@@ -155,6 +156,11 @@ namespace Schoolager.Web.Controllers
 
                 return View("Error");
             }
+        }
+
+        public IActionResult SubjectNotFound()
+        {
+            return View();
         }
 
     }

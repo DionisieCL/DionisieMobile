@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="mb-2">
-                    <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
+                    <a asp-action="TurmaSchedule" asp-route-id="@ViewData["TurmaId"]" class="btn btn-outline-danger">Cancel</a>
                     <button asp-action="Create" type="submit" value="Create" class="btn btn-outline-success">Create</button>
                 </div>
             </form>

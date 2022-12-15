@@ -61,13 +61,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             var turma = await _turmaRepository.GetByIdAsync(id.Value);
             if (turma == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             return View(turma);
@@ -102,15 +102,15 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                //TODO:return new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                //return new NotFoundViewResult("TurmaNotFound");
+                return new NotFoundViewResult("TurmaNotFound");
             }
             var turma = _turmaRepository.GetWithStudentsById(id.Value);
 
             if (turma == null)
             {
-                //TODO:return new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                //return new NotFoundViewResult("TurmaNotFound");
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             var turmaStudents = _studentRepository.GetByTurmaId(turma.Id);
@@ -153,14 +153,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             var turma = await _turmaRepository.GetByIdAsync(id.Value);
 
             if (turma == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
             return View(turma);
         }
@@ -174,7 +174,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != turma.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             if (ModelState.IsValid)
@@ -188,7 +188,7 @@ namespace Schoolager.Web.Controllers
                 {
                     if (!await _turmaRepository.ExistAsync(turma.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("TurmaNotFound");
                     }
                     else
                     {
@@ -205,13 +205,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             var turma = await _turmaRepository.GetByIdAsync(id.Value);
             if (turma == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
             try
@@ -254,8 +254,8 @@ namespace Schoolager.Web.Controllers
 
             if (turma == null)
             {
-                //TODO:return new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                //return new NotFoundViewResult("TurmaNotFound");
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
 
@@ -349,8 +349,8 @@ namespace Schoolager.Web.Controllers
 
             if (turma == null)
             {
-                //TODO:return new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                //return new NotFoundViewResult("TurmaNotFound");
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
 
@@ -405,8 +405,8 @@ namespace Schoolager.Web.Controllers
 
             if (turma == null)
             {
-                //TODO:return new NotFoundViewResult("TurmaNotFound");
-                return NotFound();
+                //return new NotFoundViewResult("TurmaNotFound");
+                return new NotFoundViewResult("TurmaNotFound");
             }
 
 
@@ -414,6 +414,11 @@ namespace Schoolager.Web.Controllers
             ViewData["TurmaName"] = turma.Name;
 
             return View(model);
+        }
+
+        public IActionResult TurmaNotFound()
+        {
+            return View();
         }
     }
 }

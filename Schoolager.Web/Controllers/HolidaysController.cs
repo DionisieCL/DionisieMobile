@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
 
 namespace Schoolager.Web.Controllers
 {
@@ -26,23 +27,6 @@ namespace Schoolager.Web.Controllers
             return View(await _holidayRepository.GetAll().ToListAsync());
         }
 
-        // GET: Holidays/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var holiday = await _holidayRepository.GetByIdAsync(id.Value);
-
-            if (holiday == null)
-            {
-                return NotFound();
-            }
-
-            return View(holiday);
-        }
 
         // GET: Holidays/Create
         public IActionResult Create()
@@ -71,14 +55,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HolidayNotFound");
             }
 
             var holiday = await _holidayRepository.GetByIdAsync(id.Value);
 
             if (holiday == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HolidayNotFound");
             }
             return View(holiday);
         }
@@ -92,7 +76,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != holiday.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("HolidayNotFound");
             }
 
             if (ModelState.IsValid)
@@ -105,7 +89,7 @@ namespace Schoolager.Web.Controllers
                 {
                     if (!await _holidayRepository.ExistAsync(id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("HolidayNotFound");
                     }
                     else
                     {
@@ -122,28 +106,25 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HolidayNotFound");
             }
 
             var holiday = await _holidayRepository.GetByIdAsync(id.Value);
+
             if (holiday == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HolidayNotFound");
             }
-
-            return View(holiday);
-        }
-
-        // POST: Holidays/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var holiday = await _holidayRepository.GetByIdAsync(id);
 
             await _holidayRepository.DeleteAsync(holiday);
 
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public IActionResult HolidayNotFound()
+        {
+            return View();
         }
     }
 }

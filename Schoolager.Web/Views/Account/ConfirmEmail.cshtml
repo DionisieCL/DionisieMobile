@@ -6,35 +6,46 @@
 
 <div class="container-fluid p-5">
     <div class="row mb-3 bg-white">
-        <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
-            <a asp-action="Create" class="btn btn-outline-primary">New Student</a>
-            <h2>Students</h2>
-        </div>
-        <div class="p-3 d-flex justify-content-center align-items-center">
+        <div class="p-3 d-flex flex-column justify-content-center align-items-center">
             <div>
-            <p>To activate your account please change your password.</p>
-        </div>
-        <form class="flex-fill" method="post" style="max-width: 500px;">
-            <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" asp-for="UserId" class="form-control"/>
-            <input type="hidden" asp-for="ConfirmationToken" class="form-control"/>
-            <input type="hidden" asp-for="PasswordToken" class="form-control"/>
-            <div class="mb-3">
-                <label asp-for="Password">Password</label>
-                <input id="firstName" asp-for="Password" class="form-control"/>
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <p>To activate your account please change your password.</p>
             </div>
-            <div class="mb-3">
-                <label asp-for="ConfirmPassword">Confirm Password</label>
-                <input id="lastName" asp-for="ConfirmPassword" class="form-control"/>
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button asp-action="ConfirmEmail" type="submit" class="btn btn-primary text-light">Activate Account</button>
+            <form class="flex-fill" method="post" style="max-width: 500px;">
+                <div asp-validation-summary="ModelOnly"></div>
+                <input type="hidden" asp-for="UserId" class="form-control"/>
+                <input type="hidden" asp-for="ConfirmationToken" class="form-control"/>
+                <input type="hidden" asp-for="PasswordToken" class="form-control"/>
+                <div class="mb-3">
+                    <label asp-for="Password">Password</label>
+                    <input id="firstName" asp-for="Password" class="form-control"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                    <input id="lastName" asp-for="ConfirmPassword" class="form-control"/>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button asp-action="ConfirmEmail" type="submit" class="btn btn-primary text-light">Activate Account</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        let isSignedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+	    $(document).ready(function () {
+            if (!isSignedIn)
+            {
+                $("#navbar").addClass("closed");
+            }
+	    });
+    </script>
+}

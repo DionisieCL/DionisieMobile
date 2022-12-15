@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
+using Schoolager.Web.Helpers;
 using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
@@ -39,14 +40,14 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             var room = await _context.Rooms
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             return View(room);
@@ -82,13 +83,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             var room = await _context.Rooms.FindAsync(id);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
             return View(room);
         }
@@ -102,7 +103,7 @@ namespace Schoolager.Web.Controllers
         {
             if (id != room.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             if (ModelState.IsValid)
@@ -117,7 +118,7 @@ namespace Schoolager.Web.Controllers
                 {
                     if (!RoomExists(room.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("RoomNotFound");
                     }
                     else
                     {
@@ -134,13 +135,13 @@ namespace Schoolager.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             var room = await _roomRepository.GetByIdAsync(id.Value);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             try
@@ -169,8 +170,13 @@ namespace Schoolager.Web.Controllers
         //public async Task<IActionResult> DeleteConfirmed(int id)
         //{
         //    var room = await _roomRepository.GetByIdAsync(id);
-            
+
         //}
+
+        public IActionResult RoomNotFound()
+        {
+            return View();
+        }
 
         private bool RoomExists(int id)
         {
