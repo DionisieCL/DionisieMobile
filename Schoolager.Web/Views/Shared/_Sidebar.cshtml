@@ -2,7 +2,7 @@
     <div class="sidebar-container py-3" id="sidebarContainer">
         <div class="sidebar flex-column open bg-dark" id="sidebar">
             <div class="nav-item mb-5">
-                <a class="text-light w-100" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                <a class="text-light w-100" asp-area="" asp-controller="Home" asp-action="Index">
                     <div class="d-flex brand-container justify-content-center align-items-center">
                         <div class="brand-image-container">
                             <img class="brand-image" src="~/images/schoolager.svg" alt="" />
@@ -64,6 +64,19 @@
                 </a>
             </div>
             }
+
+            @if(User.IsInRole("Admin"))
+            {
+            <div class="nav-item mb-2">
+                <a class="text-light w-100" asp-area="" asp-controller="Holidays" asp-action="Index">
+                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="calendarNav">
+                        <i class="fa-solid fa-gift"></i>
+                        <p class="mx-2 my-0">Holidays</p>
+                    </div>
+                </a>
+            </div>
+            }
+
             @if (User.IsInRole("Teacher"))
             {
                 <div class="nav-item mb-2">

@@ -4,7 +4,7 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="burger-container ms-3">
-                    <button id="burgerBtn" class="btn btn-outline-dark">X</button>
+                    <button id="burgerBtn" class="btn btn-outline-dark"><i class="fa-solid fa-bars"></i></button>
                 </div>
             }
             <ul class="navbar-nav navbar-right">
@@ -19,9 +19,9 @@
                             </div>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                <li>
+@*                                <li>
                                     <a class="dropdown-item text-light fw-lighter" asp-area="" asp-controller="Account" asp-action="RecoverPassword">Recover Password</a>
-                                </li>
+                                </li>*@
                                 @if(User.IsInRole("Admin"))
                                 {
                                     <li>
