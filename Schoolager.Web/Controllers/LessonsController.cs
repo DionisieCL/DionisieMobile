@@ -13,6 +13,7 @@ using Schoolager.Web.Data;
 using Schoolager.Web.Data.Entities;
 using Schoolager.Web.Helpers;
 using Schoolager.Web.Models.Lessons;
+using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
 {
@@ -30,6 +31,7 @@ namespace Schoolager.Web.Controllers
         private readonly IRoomRepository _roomRepository;
         private readonly IBlobHelper _blobHelper;
         private readonly IHolidayRepository _holidayRepository;
+        private readonly IFlashMessage _flashMessage;
 
         public LessonsController(
             ILessonRepository lessonRepository,
@@ -42,7 +44,8 @@ namespace Schoolager.Web.Controllers
             IStudentRepository studentRepository,
             IRoomRepository roomRepository,
             IBlobHelper blobHelper,
-            IHolidayRepository holidayRepository)
+            IHolidayRepository holidayRepository,
+            IFlashMessage flashMessage)
         {
             _lessonRepository = lessonRepository;
             _converterHelper = converterHelper;
@@ -55,6 +58,7 @@ namespace Schoolager.Web.Controllers
             _roomRepository = roomRepository;
             _blobHelper = blobHelper;
             _holidayRepository = holidayRepository;
+            _flashMessage = flashMessage;
         }
 
         public async Task<IActionResult> TurmaSchedule(int id)
@@ -243,7 +247,7 @@ namespace Schoolager.Web.Controllers
 
                     if(roomValidation != null)
                     {
-                        // TODO: failure message
+                        _flashMessage.Danger("That room is already beeing used.");
                         return RedirectToAction(nameof(Create), new { id = model.TurmaId });
                     }
 
@@ -251,18 +255,18 @@ namespace Schoolager.Web.Controllers
 
                     if(lessonValidate != null)
                     {
-                        // TODO: failure message
+                        _flashMessage.Danger("Teacher is giving a lesson at the selected time.");
                         return RedirectToAction(nameof(Create), new { id = model.TurmaId });
                     }
 
                     await _lessonRepository.CreateAsync(lesson);
 
-                    // TODO: success message
+                    _flashMessage.Confirmation("Lesson created successfully");
                     return RedirectToAction(nameof(TurmaSchedule), new { id = model.TurmaId });
                 }
                 catch (Exception ex)
                 {
-                    // TODO: failure message
+                    _flashMessage.Danger(ex.Message);
                 }
             }
             ViewData["SubjectId"] = _subjectRepository.GetComboSubjects();
@@ -334,7 +338,7 @@ namespace Schoolager.Web.Controllers
 
                     if (roomValidation != null && lesson.Id != roomValidation.Id)
                     {
-                        // TODO: failure message
+                        _flashMessage.Danger("That room is already beeing used.");
                         return RedirectToAction(nameof(Create), new { id = model.TurmaId });
                     }
 
@@ -342,13 +346,13 @@ namespace Schoolager.Web.Controllers
 
                     if (lessonValidate != null && lesson.Id != roomValidation.Id)
                     {
-                        // TODO: failure message
+                        _flashMessage.Danger("Teacher is giving a lesson at the selected time.");
                         return RedirectToAction(nameof(Create), new { id = model.TurmaId });
                     }
 
                     await _lessonRepository.UpdateAsync(lesson);
 
-                    // TODO: success message
+                    _flashMessage.Confirmation("Lesson created successfully");
                     return RedirectToAction(nameof(Edit), new { id = lesson.Id});
                 }
                 catch (DbUpdateConcurrencyException)
@@ -414,7 +418,7 @@ namespace Schoolager.Web.Controllers
             {
                 await _lessonRepository.DeleteAsync(lesson);
 
-                //_flashMessage.Confirmation("Appointment deleted successfully.");
+                _flashMessage.Confirmation("Lesson deleted successfully.");
 
                 return RedirectToAction(nameof(TurmaSchedule), new { id = lesson.TurmaId });
             }
@@ -424,10 +428,10 @@ namespace Schoolager.Web.Controllers
                 {
                     return NotFound();
                 }
-                //_flashMessage.Danger(ex.Message);
+                _flashMessage.Danger(ex.Message);
             }
 
-            //_flashMessage.Danger("Could not delete appointment.");
+            _flashMessage.Danger("Could not delete Lesson.");
 
             return RedirectToAction(nameof(TurmaSchedule), new { id = lesson.TurmaId });
         }
@@ -495,11 +499,11 @@ namespace Schoolager.Web.Controllers
             }
             catch (Exception ex)
             {
-                // _flashMessage.Danger("Could not update the lesson's summary.");
+                 _flashMessage.Danger("Could not update the lesson's summary.");
                 return View(model);
             }
 
-            // _flashMessage.Confirmation("The lesson's summary was updated.");
+             _flashMessage.Confirmation("The lesson's summary was updated.");
 
             return View(model);
         }
@@ -651,7 +655,7 @@ namespace Schoolager.Web.Controllers
 
                     if(contentType != "application/pdf")
                     {
-                        // _flashMessage.Danger("That file type is not allowed");
+                        _flashMessage.Danger("That file type is not allowed");
                         return View(model);
                     }
 
@@ -669,14 +673,14 @@ namespace Schoolager.Web.Controllers
 
                     if(model.LessonResource.Id == 0)
                     {
-                        // _flashMessage.Confirmation("Resource was added.");
+                         _flashMessage.Confirmation("Resource was added.");
                         await _lessonDataRepository.InsertLessonResourceAsync(lessonResource);
 
                         model.LessonResource.Id = lessonResource.Id;
                     } else
                     {
                         lessonResource.Id = model.LessonResource.Id;
-                        // _flashMessage.Confirmation("Resource was updated.");
+                         _flashMessage.Confirmation("Resource was updated.");
                         await _lessonDataRepository.UpdateLessonResourceAsync(lessonResource);
                     }
                 }
@@ -725,11 +729,11 @@ namespace Schoolager.Web.Controllers
             }
             catch (Exception ex)
             {
-                // _flashMessage.Danger("Could not update the lesson's summary.");
+                 _flashMessage.Danger("Could not update the lesson's summary.");
                 return View(model);
             }
 
-            // _flashMessage.Confirmation("The lesson's summary was updated.");
+             _flashMessage.Confirmation("The lesson's summary was updated.");
 
             return View(model);
         }
@@ -850,10 +854,10 @@ namespace Schoolager.Web.Controllers
             }
             catch (Exception ex)
             {
-                // _flashMessage.Danger("Could not update the lesson's summary.");
+                 _flashMessage.Danger("Could not update the lesson's summary.");
             }
 
-            // _flashMessage.Danger("Could not update the lesson's summary.");
+             _flashMessage.Danger("Could not update the lesson's summary.");
 
             return View(model);
         }
@@ -905,12 +909,12 @@ namespace Schoolager.Web.Controllers
             {
                 await _lessonDataRepository.InsertDoubt(doubt);
 
-                // _flashMessage.Danger("Could not update the lesson's summary.");
+                 _flashMessage.Danger("Could not update the lesson's summary.");
                 return RedirectToAction(nameof(LessonDataDoubts), new { id = model.LessonDataId });
             }
             catch (Exception ex)
             {
-                // _flashMessage.Danger("Could not update the lesson's summary.");
+                 _flashMessage.Danger("Could not update the lesson's summary.");
             }
 
             return View(model);
