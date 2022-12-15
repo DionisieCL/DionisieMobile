@@ -96,6 +96,7 @@ namespace Schoolager.Web.Controllers
                             ImageId = imageId,
                             UserName = model.Email,
                             IsAdmin = model.IsAdmin,
+                            PhoneNumber = model.PhoneNumber,
                             BlobContainer = "employees"
                         };
 

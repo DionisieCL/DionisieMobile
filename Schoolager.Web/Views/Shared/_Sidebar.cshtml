@@ -13,6 +13,16 @@
                     </div>
                 </a>
             </div>
+            @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+            {
+            <div class="nav-item mb-2">
+                <a class="text-light w-100" asp-area="" asp-controller="Employees" asp-action="Index">
+                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="specialitiesNav">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <p class="mx-2 my-0">Employees</p>
+                    </div>
+                </a>
+            </div>
             <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Subjects" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="specialitiesNav">
@@ -30,6 +40,14 @@
                 </a>
             </div>
             <div class="nav-item mb-2">
+                <a class="text-light w-100" asp-area="" asp-controller="Rooms" asp-action="Index">
+                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="ownersNav">
+                        <i class="fa-solid fa-house"></i>
+                        <p class="mx-2 my-0">Rooms</p>
+                    </div>
+                </a>
+            </div>
+            <div class="nav-item mb-2">
                 <a class="text-light w-100" asp-area="" asp-controller="Students" asp-action="Index">
                     <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="usersNav">
                         <i class="fa-solid fa-user"></i>
@@ -38,15 +56,24 @@
                 </a>
             </div>
             <div class="nav-item mb-2">
-                <a class="text-light w-100" asp-area="" asp-controller="Lessons" asp-action="TeacherIndex">
-                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="petsNav">
-                        <i class="fa-regular fa-calendar-days"></i>
-                        <p class="mx-2 my-0">Lessons</p>
+                <a class="text-light w-100" asp-area="" asp-controller="Turmas" asp-action="Index">
+                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="calendarNav">
+                        <i class="fa-solid fa-people-group"></i>
+                        <p class="mx-2 my-0">Turmas</p>
                     </div>
                 </a>
             </div>
+            }
             @if (User.IsInRole("Teacher"))
             {
+                <div class="nav-item mb-2">
+                    <a class="text-light w-100" asp-area="" asp-controller="Lessons" asp-action="TeacherIndex">
+                        <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="petsNav">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <p class="mx-2 my-0">Lessons</p>
+                        </div>
+                    </a>
+                </div>
                 <div class="nav-item mb-2">
                     <a class="text-light w-100" asp-area="" asp-controller="Grades" asp-action="TeacherIndex">
                         <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="treatmentsNav">
@@ -59,6 +86,14 @@
             else if(User.IsInRole("Student"))
             {
                 <div class="nav-item mb-2">
+                    <a class="text-light w-100" asp-area="" asp-controller="Lessons" asp-action="TeacherIndex">
+                        <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="petsNav">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <p class="mx-2 my-0">Lessons</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-item mb-2">
                     <a class="text-light w-100" asp-area="" asp-controller="Grades" asp-action="ShowLoggedStudentGrades">
                         <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="treatmentsNav">
                             <i class="fa-solid fa-medal"></i>
@@ -67,14 +102,6 @@
                     </a>
                 </div>
             }
-            <div class="nav-item mb-2">
-                <a class="text-light w-100" asp-area="" asp-controller="Turmas" asp-action="Index">
-                    <div class="px-4 d-flex flex-row justify-content-start align-items-center sidebar-item" id="calendarNav">
-                        <i class="fa-solid fa-people-group"></i>
-                        <p class="mx-2 my-0">Turmas</p>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
 </aside>
