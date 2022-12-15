@@ -73,7 +73,9 @@ namespace Schoolager.Web.Controllers.API
         {
             var student = await _studentRepository.GetByUserIdAsync(userId);
             var teacher = await _teacherRepository.GetByUserIdAsync(userId);
-
+            var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
+            return Ok(lessons);
+            /*
             if (teacher != null)
             {
                 var lessons = await _lessonRepository.GetLessonByTeacherIdAsync(teacher.Id);
@@ -85,7 +87,7 @@ namespace Schoolager.Web.Controllers.API
                 return Ok(lessons);
             }
 
-            return NotFound();
+            return NotFound();*/
         }
     }
 }
