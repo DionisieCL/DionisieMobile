@@ -90,6 +90,7 @@ namespace Schoolager.Web.Helpers
                 TurmaId = turmaId,
                 Grades = model.Grades,
                 User = model.User,
+                UserId = model.UserId,
                 ImageId = model.ImageId,
                 SchoolYear = model.SchoolYear,
             };
