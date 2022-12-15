@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using Vereyon.Web;
 
 namespace Schoolager.Web.Controllers
+
 {
+
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
