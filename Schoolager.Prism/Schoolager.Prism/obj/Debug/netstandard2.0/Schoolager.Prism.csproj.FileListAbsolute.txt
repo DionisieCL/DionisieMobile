@@ -1,0 +1,17 @@
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\bin\Debug\netstandard2.0\Schoolager.Prism.deps.json
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\bin\Debug\netstandard2.0\Schoolager.Prism.dll
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\bin\Debug\netstandard2.0\Schoolager.Prism.pdb
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.csproj.AssemblyReference.cache
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Views\LogInPage.xaml.g.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Views\MenuPage.xaml.g.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Views\MessagePage.xaml.g.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Views\SchedulePage.xaml.g.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.AssemblyInfoInputs.cache
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.AssemblyInfo.cs
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.csproj.CoreCompileInputs.cache
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.dll
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Schoolager.Prism.pdb
+C:\Users\dinis\Contacts\Desktop\SchoolagerMobile\Schoolager\Schoolager.Prism\Schoolager.Prism\obj\Debug\netstandard2.0\Views\WeatherPage.xaml.g.cs

@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "dgSpecHash": "Whre30Su0sqCtYsk7m2V6JILGjE8aNNO9Q4q6d/hUIPzMjttFXMCADIIOD5SdiGoEZZFyCuEvPPSjy8zlnbSrw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dinis\\Contacts\\Desktop\\SchoolagerMobile\\Schoolager\\Schoolager.Prism\\Schoolager.Prism.iOS\\Schoolager.Prism.iOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dinis\\.nuget\\packages\\dryioc.dll\\4.7.7\\dryioc.dll.4.7.7.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\prism.core\\8.1.97\\prism.core.8.1.97.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\prism.dryioc.forms\\8.1.97\\prism.dryioc.forms.8.1.97.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\prism.forms\\8.1.97\\prism.forms.8.1.97.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\syncfusion.licensing\\20.3.0.47\\syncfusion.licensing.20.3.0.47.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\syncfusion.xamarin.core\\20.3.0.47\\syncfusion.xamarin.core.20.3.0.47.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\syncfusion.xamarin.sfcalendar\\20.3.0.47\\syncfusion.xamarin.sfcalendar.20.3.0.47.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\syncfusion.xamarin.sfschedule\\20.3.0.47\\syncfusion.xamarin.sfschedule.20.3.0.47.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\webp.touch\\1.0.8\\webp.touch.1.0.8.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\xamarin.essentials\\1.7.0\\xamarin.essentials.1.7.0.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\xamarin.essentials.interfaces\\1.7.0\\xamarin.essentials.interfaces.1.7.0.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
+    "C:\\Users\\dinis\\.nuget\\packages\\xamarin.forms\\5.0.0.2545\\xamarin.forms.5.0.0.2545.nupkg.sha512"
+  ],
+  "logs": []
+}
