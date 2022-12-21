@@ -13,5 +13,7 @@ namespace Schoolager.Prism.Services
         Task<Response> GetListAsync<T>(string urlBase, string servicePrefix, string controller);
         Task<Response> Login(string urlBase, string servicePrefix, string controller, User user);
 
+        Task<Response> GetWeather(string urlBase, string servicePrefix, string controller);
+
     }
 }

@@ -22,7 +22,7 @@ namespace Schoolager.Prism
            
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/LogInPage");
+            await NavigationService.NavigateAsync("NavigationPage/WeatherPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -35,6 +35,7 @@ namespace Schoolager.Prism
             containerRegistry.RegisterForNavigation<SchedulePage, SchedulePageViewModel>();
 
             containerRegistry.RegisterForNavigation<MessagePage, MessagePageViewModel>();
+            containerRegistry.RegisterForNavigation<WeatherPage, WeatherPageViewModel>();
         }
     } 
 }

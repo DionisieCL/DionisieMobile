@@ -4,11 +4,12 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.MenuPage"
-             Title="{Binding Title}">
+
+             >
 
 
     <StackLayout >
-
+        
         <Button 
             Clicked="GoSchedule"
             IsEnabled="{Binding IsEnabled}"

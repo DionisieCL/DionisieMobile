@@ -2,37 +2,51 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             Title="{Binding Title}"
+           Title="{Binding Title}"
+             
              prism:ViewModelLocator.AutowireViewModel="True"
+             BackgroundColor="#293042"
              x:Class="Schoolager.Prism.Views.LogInPage"
              >
-   
 
-    <StackLayout Padding="10">
-        <Label Text="Email"/>
-        <Entry
+    <ContentPage.Content>
+        
+        <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <Image Source="loginlogo.jpg" WidthRequest="180" HeightRequest="180"></Image>
+
+            <Entry
             Keyboard="Email"
             Placeholder="Enter your email"
+            TextColor="White"
             Text="{Binding Email}"
+            PlaceholderColor="gray"
             IsEnabled="{Binding IsBlock}"/>
-        <Label Text="Password"/>
+
 
             <Entry
             IsPassword="True"
+             
             Placeholder="Enter your Password"
-                            IsEnabled="{Binding IsBlock}"
-        Text="{Binding Password}"/>
-        
-        <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
-        <Button 
             
+            TextColor="White"
+            PlaceholderColor="gray"
+            IsEnabled="{Binding IsBlock}"
+        Text="{Binding Password}"/>
+
+            <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
+            <Button 
+            VerticalOptions="Center"
+           
             Command="{Binding LoginCommand}"  
-
-
+            BackgroundColor="Transparent"
+                BorderColor="#79FFC4 "
+                BorderWidth="1.5"
+            CornerRadius="50"
             IsEnabled="{Binding IsEnable}"
-            Text="Login"/>
-        
+            Text="Login"
+                TextColor="White"/>
+            
 
-    </StackLayout>
-        
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

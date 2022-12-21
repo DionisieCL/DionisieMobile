@@ -7,6 +7,8 @@ namespace Schoolager.Prism.Views
     {
         public LogInPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+
             InitializeComponent();
 
         }

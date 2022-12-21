@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+            
+    Title="{Binding Title}"
+             
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Schoolager.Prism.Views.WeatherPage"
+             >
+
+    <ContentPage.Content>
+
+        <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <Label Text="Aqui" TextDecorations="Underline"  />
+            <Label Text="{Binding Visibility}" TextDecorations="Underline" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

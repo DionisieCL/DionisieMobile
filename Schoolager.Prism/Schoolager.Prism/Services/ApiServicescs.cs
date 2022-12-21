@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Schoolager.Prism.Models;
 using Xamarin.Essentials;
 
@@ -107,6 +108,51 @@ namespace Schoolager.Prism.Services
                 {
                     IsSuccess = true,
                     Result = userResponse
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        public async Task<Response> GetWeather(
+         string urlBase,
+         string servicePrefix,
+         string controller)
+        {
+            try
+            {
+                //string requestString = JsonConvert.SerializeObject(user);
+                //StringContent content = new StringContent(requestString, Encoding.UTF8, "application/json");
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/weather?id=524901&appid=e9b98b4b8e7b477116d5163477065289")
+                };
+
+                string url = $"{servicePrefix}{controller}";
+
+                var response = await client.GetAsync("http://api.openweathermap.org/data/2.5/weather?id=524901&appid=e9b98b4b8e7b477116d5163477065289");
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode || result == "")
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = result,
+                    };
+                }
+
+                WeatherResponse weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(result);
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = weatherResponse
                 };
             }
             catch (Exception ex)

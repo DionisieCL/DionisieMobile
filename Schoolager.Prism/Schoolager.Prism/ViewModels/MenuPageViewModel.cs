@@ -15,6 +15,9 @@ namespace Schoolager.Prism.ViewModels
 
         public MenuPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+
+
+
             Title = "Menu";
 
         }       

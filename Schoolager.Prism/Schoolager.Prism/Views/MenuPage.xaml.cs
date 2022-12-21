@@ -8,7 +8,10 @@ namespace Schoolager.Prism.Views
     {
         public MenuPage()
         {
+          
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, false);
         }
         public void GoSchedule(object obj,EventArgs args)
         {
