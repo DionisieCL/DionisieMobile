@@ -2,18 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-            
-    Title="{Binding Title}"
-             
+             Title="{Binding Title}" 
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.WeatherPage"
+             BackgroundColor="#293042"
              >
 
     <ContentPage.Content>
-
         <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <Label Text="Aqui" TextDecorations="Underline"  />
-            <Label Text="{Binding Visibility}" TextDecorations="Underline" />
+            <Entry
+            Keyboard="Text"
+            Placeholder="Enter a city"
+            TextColor="White"
+            Text="{Binding City}"
+            PlaceholderColor="gray"
+            IsEnabled="{Binding IsBlock}"/>
+
+            <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
+            <Button 
+            VerticalOptions="Center"
+            Command="{Binding SearchCommand}"  
+            BackgroundColor="Transparent"
+                BorderColor="#79FFC4 "
+                BorderWidth="1.5"
+            CornerRadius="50"
+            Text="Search"
+                TextColor="White"/>
+
+            <Label Text="{Binding City}" TextColor="White"/>
 
         </StackLayout>
     </ContentPage.Content>

@@ -18,21 +18,24 @@ namespace Schoolager.Prism.ViewModels
 	{
         private readonly IApiServices _apiService;
         private string _visibility;
+        private DelegateCommand _searchCommand;
+
         public WeatherPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
             _apiService = apiService;
             Title = "Weather";
-          
-             GetData();
-         
         }
+        public string City{ get; set; }
+
+        public DelegateCommand SearchCommand => _searchCommand ?? (_searchCommand = new DelegateCommand(Search));
+
         public WeatherResponse weather { get; set; }
         public string Visibility {
             get => _visibility;
             set => SetProperty(ref _visibility, value);
         }
 
-        private async void GetData()
+        private async void Search()
         {
             string urlBase = "";
             string controller = "";
@@ -41,8 +44,9 @@ namespace Schoolager.Prism.ViewModels
 
             weather = (WeatherResponse)response.Result;
 
-            _visibility = weather.Visibility.ToString();
-            
+            //            _visibility = weather.Visibility.ToString();
+            Visibility = "Aqui";
+            await App.Current.MainPage.DisplayAlert("OK", Visibility, "Accept");
         }
 
 
