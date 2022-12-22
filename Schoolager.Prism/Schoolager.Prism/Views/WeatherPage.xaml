@@ -30,7 +30,6 @@
                 TextColor="White"/>
 
             <Label Text="{Binding City}" TextColor="White"/>
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

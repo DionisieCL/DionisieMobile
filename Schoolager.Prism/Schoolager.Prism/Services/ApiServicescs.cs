@@ -130,12 +130,12 @@ namespace Schoolager.Prism.Services
                 //StringContent content = new StringContent(requestString, Encoding.UTF8, "application/json");
                 HttpClient client = new HttpClient
                 {
-                    BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/weather?id=524901&appid=e9b98b4b8e7b477116d5163477065289")
+                    BaseAddress = new Uri(urlBase)
                 };
 
                 string url = $"{servicePrefix}{controller}";
 
-                var response = await client.GetAsync("http://api.openweathermap.org/data/2.5/weather?id=524901&appid=e9b98b4b8e7b477116d5163477065289");
+                var response = await client.GetAsync(url);
                 var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode || result == "")

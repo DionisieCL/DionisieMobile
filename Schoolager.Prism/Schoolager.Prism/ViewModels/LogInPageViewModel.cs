@@ -86,11 +86,13 @@ namespace Schoolager.Prism.ViewModels
             }
             IsBlock= false;
             string url = App.Current.Resources["UrlAPI"].ToString();
+            string controller = "/Users/GetUserByEmail";
+            string servicePrefix = "api";
             User user = new User ();
             user.Email = Email;
             user.Password = Password;
 
-            Response response = await _apiService.Login(url, "api", "/Users/GetUserByEmail", user);
+            Response response = await _apiService.Login(url, servicePrefix, controller, user);
 
             IsRunning = false;
             if (!response.IsSuccess)

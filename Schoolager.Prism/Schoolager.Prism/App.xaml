@@ -9,6 +9,8 @@
         <ResourceDictionary>
             <!--Parameters-->
             <x:String x:Key="UrlAPI">https://schoolager.azurewebsites.net/</x:String>
+            <x:String x:Key="UrlAPIWeather">https://api.openweathermap.org/data/2.5/</x:String>
+            <x:String x:Key="KEYWeather">e9b98b4b8e7b477116d5163477065289</x:String>
         </ResourceDictionary>
   </Application.Resources>
 </prism:PrismApplication>
