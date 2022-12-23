@@ -23,13 +23,14 @@ namespace Schoolager.Prism.ViewModels
             get => _weather;
             set => SetProperty(ref _weather, value);
         }
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            if (parameters.ContainsKey("Country"))
+            if (parameters.ContainsKey("country"))
             {
-                string Country = parameters.GetValue<CityResponse>("Country").Name;
+                string Country = parameters.GetValue<CityResponse>("country").Name;
                 //TODO CallAPI Weather
 
                 Title = Country;

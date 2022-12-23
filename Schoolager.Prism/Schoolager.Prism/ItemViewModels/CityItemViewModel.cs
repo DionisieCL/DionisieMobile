@@ -2,6 +2,7 @@
 using Prism.Navigation;
 using Schoolager.Prism.Models;
 using Schoolager.Prism.ViewModels;
+using Schoolager.Prism.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,9 +27,9 @@ namespace Schoolager.Prism.ItemViewModels
         {
             NavigationParameters parameters = new NavigationParameters
             {
-                {"Country",this }
+                {"country",this }
             };
-            await _navigationService.NavigateAsync(nameof(CityDetailPageViewModel),parameters);
+            await _navigationService.NavigateAsync(nameof(CityDetailPage),parameters);
         }
     }
 }
