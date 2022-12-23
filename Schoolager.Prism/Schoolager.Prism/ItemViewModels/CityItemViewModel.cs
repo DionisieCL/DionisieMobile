@@ -1,13 +1,14 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Schoolager.Prism.Models;
+using Schoolager.Prism.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Schoolager.Prism.ItemViewModels
 {
-    public class CityItemViewModel : WeatherResponse
+    public class CityItemViewModel : CityResponse
     {
         private readonly INavigationService _navigationService;
 
@@ -21,9 +22,13 @@ namespace Schoolager.Prism.ItemViewModels
             _selectCountryCommand ??
             (_selectCountryCommand = new DelegateCommand(SelectCountryAsync));
 
-        private void SelectCountryAsync()
+        private async void SelectCountryAsync()
         {
-            throw new NotImplementedException();
+            NavigationParameters parameters = new NavigationParameters
+            {
+                {"Country",this }
+            };
+            await _navigationService.NavigateAsync(nameof(CityDetailPageViewModel),parameters);
         }
     }
 }

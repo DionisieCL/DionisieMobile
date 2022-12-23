@@ -15,6 +15,7 @@ using RESTCountries.Services;
 using RESTCountries.Models;
 using RestSharp;
 using System.Collections.ObjectModel;
+using Schoolager.Prism.ItemViewModels;
 
 namespace Schoolager.Prism.ViewModels
 {
@@ -22,18 +23,20 @@ namespace Schoolager.Prism.ViewModels
 	{
         private readonly IApiServices _apiService;
         private bool _isRunning;
-        private ObservableCollection<CityResponse> _countries;
+        private ObservableCollection<CityItemViewModel> _countries;
         private string _search;
         private List<CityResponse> _city;
         private DelegateCommand _searchCommand;
+        private readonly INavigationService _navigationService;
         public WeatherPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
+            _navigationService = navigationService;
             _apiService = apiService;
             Title = "Weather";
 
             LoadCountries();
         }
-        public ObservableCollection<CityResponse> Countries{
+        public ObservableCollection<CityItemViewModel> Countries{
             get=> _countries; 
             set=>SetProperty(ref _countries, value); 
         }
@@ -93,11 +96,24 @@ namespace Schoolager.Prism.ViewModels
         {
             if (string.IsNullOrEmpty(Search))
             {
-                Countries = new ObservableCollection<CityResponse>(_city);
+                Countries = new ObservableCollection<CityItemViewModel>
+                    (_city.Select(c=> new CityItemViewModel(_navigationService) {
+
+
+                        Name = c.Name,
+                        Flag = c.Flag
+
+                    }).ToList());
             }
             else
             {
-                Countries = new ObservableCollection<CityResponse>(_city.Where(p => p.Name.ToLower().Contains(Search.ToLower())) );
+                Countries = new ObservableCollection<CityItemViewModel>
+                    (_city.Select(
+                        c=> new CityItemViewModel(_navigationService)
+                        {
+                            Name = c.Name,
+                            Flag = c.Flag
+                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList() );
             }
         }
     }
