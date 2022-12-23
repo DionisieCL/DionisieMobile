@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RESTCountries.Services;
+using RestSharp;
 using Schoolager.Prism.Models;
 using Xamarin.Essentials;
 
@@ -23,18 +26,30 @@ namespace Schoolager.Prism.Services
         {
             try
             {
-                var client = new HttpClient
+                System.Net.ServicePointManager.ServerCertificateValidationCallback =
+    ((sender, certificate, chain, sslPolicyErrors) => true);
+
+                /*var client = new HttpClient
                 {
-                    BaseAddress = new Uri($"{urlBase}"),
+                    BaseAddress = new Uri(urlBase),
                 };
 
-                var url = $"{servicePrefix}{controller}";
+                var url = $"{servicePrefix}{controller}";*/
+                HttpClient client = new HttpClient();
+                var response = await client.GetAsync("https://restcountries.eu/rest/v1/all");
 
 
-               
-               var response = await client.GetAsync(url);
-              
                 var result = await response.Content.ReadAsStringAsync();
+                //string url = "https://restcountries.eu/rest/v1/all";
+
+                // Web Request with the given url.
+                /*WebRequest request = WebRequest.Create(url);
+                request.Credentials = CredentialCache.DefaultCredentials;
+
+                WebResponse response = request.GetResponse();*/
+
+                return null;
+
                 /*
                 if (!response.IsSuccessStatusCode)
                 {
@@ -49,19 +64,19 @@ namespace Schoolager.Prism.Services
 
 
 
-               
-              /*  if (result.Equals(jsonString))
-                {
 
-                }*/
-                    
-                    var list = JsonConvert.DeserializeObject<List<T>>(result);
+                /*  if (result.Equals(jsonString))
+                  {
+
+                  }*/
+
+              /*  var list = JsonConvert.DeserializeObject<List<T>>(result);
                    // var list = JsonConvert.DeserializeObject<List<T>>(result);
                     return new Response
                     {
                         IsSuccess = true,
                         Result = list
-                    };
+                    };*/
                // }
             }
             catch (Exception ex)
@@ -72,6 +87,46 @@ namespace Schoolager.Prism.Services
                     Message = ex.Message
                 };
             }
+        }
+
+        public async Task<Response> Test<T>()
+        {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback =
+    ((sender, certificate, chain, sslPolicyErrors) => true);
+            /*string WebAPIUrl = "https://api.first.org/data/v1/countries"; // Set your REST API URL here.
+            var uri = new Uri(WebAPIUrl);
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            */
+
+            try
+            {
+                var client = new RestClient("https://restcountries.com/v2/all");
+
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("Content-Type", "application/json; charset=utf-8");
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Access-Control-Allow-Origin","*");
+                var response = client.Execute(request);
+
+                var content = response.Content;
+
+                List<CityResponse> list = JsonConvert.DeserializeObject<List<CityResponse>>(content);
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = list
+                }; 
+
+                //var response = await client.GetAsync(uri);
+                //var response = await RESTCountriesAPI.GetAllCountriesAsync();
+                //  var content = await response.Content.ReadAsStringAsync();
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return null;
         }
         public async Task<Response> Login(
           string urlBase,

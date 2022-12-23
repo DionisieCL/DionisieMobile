@@ -6,6 +6,7 @@ using Schoolager.Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Schoolager.Prism.ViewModels
@@ -61,6 +62,17 @@ namespace Schoolager.Prism.ViewModels
 
         private async void Login()
         {
+            if(Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", 
+                        "Check internet connection", 
+                        "Accept");
+
+                });
+                return; 
+            }
             IsBlock = false;
 
             IsRunning = true;

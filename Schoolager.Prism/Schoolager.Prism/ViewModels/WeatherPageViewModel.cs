@@ -11,42 +11,72 @@ using System.ComponentModel;
 using System.Linq;
 using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
+using RESTCountries.Services;
+using RESTCountries.Models;
+using RestSharp;
+using System.Collections.ObjectModel;
 
 namespace Schoolager.Prism.ViewModels
 {
-	public class WeatherPageViewModel : ViewModelBase
+	public class WeatherPageViewModel : ViewModelBase,INotifyPropertyChanged
 	{
         private readonly IApiServices _apiService;
-        private string _visibility;
         private bool _isRunning;
+        private ObservableCollection<CityResponse> _countries;
+        private string _search;
+        private List<CityResponse> _city;
         private DelegateCommand _searchCommand;
-
         public WeatherPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
             _apiService = apiService;
             Title = "Weather";
-            IsRunning = false;
-        }
-        public string City{ get; set; }
 
+            LoadCountries();
+        }
+        public ObservableCollection<CityResponse> Countries{
+            get=> _countries; 
+            set=>SetProperty(ref _countries, value); 
+        }
+        public DelegateCommand SearchCommand=> _searchCommand ??(_searchCommand = new DelegateCommand(ShowCities));
+
+        public string Search
+        {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                ShowCities();
+            }
+        }
         public bool IsRunning
         {
             get => _isRunning;
             set => SetProperty(ref _isRunning, value);
         }
 
-        public DelegateCommand SearchCommand => _searchCommand ?? (_searchCommand = new DelegateCommand(Search));
 
         public WeatherResponse weather { get; set; }
-        public string Visibility {
-            get => _visibility;
-            set => SetProperty(ref _visibility, value);
-        }
+       
 
-        private async void Search()
+        private async void LoadCountries()
         {
-            IsRunning = true;
-            string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
+
+            string urlBase= App.Current.Resources["CityList"].ToString();
+            string servicePrefix = "v2/";
+            string controller = "all";
+            
+            Response response = await _apiService.Test<CityResponse>();
+
+           _city = (List<CityResponse>)response.Result;
+            ShowCities();
+
+
+           // await App.Current.MainPage.DisplayAlert("OK", CityResponse.ToArray()[0].Name, "Accept");
+           // Response response = await _apiService.GetListAsync<CityResponse>(urlBase,servicePrefix,controller);
+           // CityResponse = (List<CityResponse>)response.Result;
+
+            //await App.Current.MainPage.DisplayAlert("OK", CityResponse.ToArray()[0].Capital.ToString(), "Accept");
+            /*string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
             string key = App.Current.Resources["KEYWeather"].ToString();
             string servicePrefix = "weather?q="+City;
             string controller = "&appid="+key;
@@ -56,8 +86,19 @@ namespace Schoolager.Prism.ViewModels
 
             //            _visibility = weather.Visibility.ToString();
             Visibility = weather.Visibility.ToString();
-            await App.Current.MainPage.DisplayAlert("OK", Visibility, "Accept");
-            IsRunning = false;
+            
+           */
+        }
+        private void ShowCities()
+        {
+            if (string.IsNullOrEmpty(Search))
+            {
+                Countries = new ObservableCollection<CityResponse>(_city);
+            }
+            else
+            {
+                Countries = new ObservableCollection<CityResponse>(_city.Where(p => p.Name.ToLower().Contains(Search.ToLower())) );
+            }
         }
     }
 }

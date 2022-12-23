@@ -36,6 +36,7 @@ namespace Schoolager.Prism
 
             containerRegistry.RegisterForNavigation<MessagePage, MessagePageViewModel>();
             containerRegistry.RegisterForNavigation<WeatherPage, WeatherPageViewModel>();
+            containerRegistry.RegisterForNavigation<CityDetailPage, CityDetailPageViewModel>();
         }
     } 
 }
