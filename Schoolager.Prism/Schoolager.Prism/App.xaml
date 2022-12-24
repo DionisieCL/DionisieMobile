@@ -11,7 +11,7 @@
             <x:String x:Key="UrlAPI">https://schoolager.azurewebsites.net/</x:String>
             <x:String x:Key="UrlAPIWeather">https://api.openweathermap.org/data/2.5/</x:String>
             <x:String x:Key="KEYWeather">e9b98b4b8e7b477116d5163477065289</x:String>
-            <x:String x:Key="CityList">https://restcountries.comres/</x:String>
+            <x:String x:Key="CityList">https://restcountries.com/</x:String>
             <x:String x:Key="KEYCountries">cb2d1a9c219f6781b1e92aa3cdb5b3ee</x:String>
             
         </ResourceDictionary>

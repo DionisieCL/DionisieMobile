@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
+using RESTCountries.Models;
 using Schoolager.Prism.Models;
+using Schoolager.Prism.Services;
 using Schoolager.Prism.ViewModels;
 using Schoolager.Prism.Views;
 using System;
@@ -14,20 +16,45 @@ namespace Schoolager.Prism.ItemViewModels
         private readonly INavigationService _navigationService;
 
         private DelegateCommand _selectCountryCommand;
-        public CityItemViewModel(INavigationService navigationService)
+        private readonly IApiServices _apiService;
+
+        public CityItemViewModel(INavigationService navigationService, IApiServices apiService)
         {
             _navigationService = navigationService;
+            _apiService = apiService;
         }
+
 
         public DelegateCommand SelectCountryCommand => 
             _selectCountryCommand ??
             (_selectCountryCommand = new DelegateCommand(SelectCountryAsync));
 
+
         private async void SelectCountryAsync()
         {
+            string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
+            string key = App.Current.Resources["KEYWeather"].ToString();
+            string servicePrefix = "weather?q=" + this.Name;
+            string controller = "&appid=" + key+"&units=metric";
+            Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
+
+            WeatherResponse weather  = (WeatherResponse)response.Result;
+
+            CountryWeather countryWeather = new CountryWeather
+            {
+                Name = this.Name,
+                Flag = this.Flag,
+                Description = weather.Weather[0].Description,
+                Temp_max = weather.Main.Temp_max,
+                Temp_min = weather.Main.Temp_min,
+                Feels_like = weather.Main.Feels_like,
+                Humidity = weather.Main.Humidity,
+                Icon = weather.Weather[0].Icon
+            };
+
             NavigationParameters parameters = new NavigationParameters
             {
-                {"country",this }
+                {"country", countryWeather }
             };
             await _navigationService.NavigateAsync(nameof(CityDetailPage),parameters);
         }

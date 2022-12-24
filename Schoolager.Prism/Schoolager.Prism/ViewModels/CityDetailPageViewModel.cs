@@ -1,8 +1,10 @@
-﻿using Prism.Commands;
+﻿using Example;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using RESTCountries.Models;
 using Schoolager.Prism.Models;
+using Schoolager.Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +15,18 @@ namespace Schoolager.Prism.ViewModels
     {
         private readonly INavigationService _navigationService;
 
-        private WeatherResponse _weather;
+        private CountryWeather _weather;
+
         public CityDetailPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _navigationService = navigationService;
         }
-        public WeatherResponse Weather
+        public CountryWeather WeatherDetail
         {
             get => _weather;
             set => SetProperty(ref _weather, value);
         }
+
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -30,10 +34,10 @@ namespace Schoolager.Prism.ViewModels
 
             if (parameters.ContainsKey("country"))
             {
-                string Country = parameters.GetValue<CityResponse>("country").Name;
-                //TODO CallAPI Weather
+                WeatherDetail = parameters.GetValue<CountryWeather>("country");
 
-                Title = Country;
+                Title = WeatherDetail.Name;
+
             }
            
         }

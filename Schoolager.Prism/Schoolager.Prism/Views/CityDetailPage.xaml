@@ -4,7 +4,88 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.CityDetailPage"
-             Title="{Binding Title}">
-             
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             Title="{Binding Title}" >
+    <ScrollView>
+
+        <StackLayout Padding="15">
+            <ffSvg:SvgCachedImage Source="{Binding WeatherDetail.Flag}"
+                                                    Aspect="AspectFit"
+                                                  CacheDuration="50"
+                                                       Margin="5"
+                                                       RetryCount="3"
+                                                       RetryDelay="600"
+                                                       />
+            <Grid Padding="10,20">
+                <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Description"/>
+                <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Description}"/> 
+                <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Feels Like"/>
+                <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Feels_like}"/> 
+                <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Minimum Temperature"/>
+                <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Temp_min}"/>
+<Label
+                Grid.Row="3"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Maximum Temperature"/>
+                <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Temp_max}"/>
+<Label
+                Grid.Row="4"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Humidity"/>
+                <Label
+                Grid.Row="4"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Humidity}" TextColor="black"/>
+
+
+            </Grid>
+
+        </StackLayout>
+        
+        
+    </ScrollView>
   
 </ContentPage>

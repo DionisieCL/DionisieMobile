@@ -10,6 +10,13 @@ namespace Schoolager.Prism.Models
         public string Name { get; set; }
 
         public string Flag { get; set; }
+
+        public Flags Flags { get; set; }
        
+    }
+
+    public class Flags
+    {
+        public string Svg { get; set; }
     }
 }

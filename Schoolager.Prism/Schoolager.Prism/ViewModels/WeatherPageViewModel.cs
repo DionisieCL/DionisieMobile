@@ -1,4 +1,4 @@
-﻿using Example;
+﻿ using Example;
 using ImTools;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -97,11 +97,12 @@ namespace Schoolager.Prism.ViewModels
             if (string.IsNullOrEmpty(Search))
             {
                 Countries = new ObservableCollection<CityItemViewModel>
-                    (_city.Select(c=> new CityItemViewModel(_navigationService) {
+                    (_city.Select(c=> new CityItemViewModel(_navigationService, _apiService) {
 
 
                         Name = c.Name,
                         Flag = c.Flag
+                        
 
                     }).ToList());
             }
@@ -109,7 +110,7 @@ namespace Schoolager.Prism.ViewModels
             {
                 Countries = new ObservableCollection<CityItemViewModel>
                     (_city.Select(
-                        c=> new CityItemViewModel(_navigationService)
+                        c=> new CityItemViewModel(_navigationService, _apiService)
                         {
                             Name = c.Name,
                             Flag = c.Flag

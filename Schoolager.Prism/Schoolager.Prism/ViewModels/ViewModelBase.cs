@@ -9,10 +9,9 @@ namespace Schoolager.Prism.ViewModels
 {
     public class ViewModelBase: BindableBase, INavigationAware
     {
-        private readonly INavigationService _navigationService;
         public ViewModelBase(INavigationService navigationService) 
         {
-            _navigationService = navigationService;
+            NavigationService = navigationService;
         }
 
         public string Title { get; set; }
@@ -23,7 +22,7 @@ namespace Schoolager.Prism.ViewModels
 
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters) { }
+        public virtual void OnNavigatedFrom(INavigationParameters parameters) { }
 
 
     }
