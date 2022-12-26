@@ -8,7 +8,7 @@
     <MasterDetailPage.Master>
         <ContentPage
            Title="Menu"
-           IconImageSource="ic_menu_open">
+           IconImageSource="ic_favorite_border">
           
             <ContentPage.Padding>
                 <OnPlatform x:TypeArguments="Thickness">
@@ -20,7 +20,7 @@
             <StackLayout Padding="20">
                 <Image HeightRequest="150" Source="loginlogo"/>
                 <ListView
-                    Background="Transaparent"
+                   
                     HasUnevenRows="True"
                     ItemsSource="{Binding Menus}"
                     SeparatorVisibility="None">
@@ -44,7 +44,7 @@
                                     <Label
                                         Grid.Column="1"
                                         FontAttributes="Bold"
-                                        Text="Test"
+                                        Text="{Binding Title}"
                                         VerticalOptions="Center"/>
 
                                 </Grid>
