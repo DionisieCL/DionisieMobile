@@ -100,7 +100,7 @@ namespace Schoolager.Prism.ViewModels
                     (_city.Select(c=> new CityItemViewModel(_navigationService, _apiService) {
 
 
-                        Name = c.Name,
+                        NativeName = c.NativeName,
                         Flag = c.Flag
                         
 
@@ -112,9 +112,9 @@ namespace Schoolager.Prism.ViewModels
                     (_city.Select(
                         c=> new CityItemViewModel(_navigationService, _apiService)
                         {
-                            Name = c.Name,
+                            NativeName = c.NativeName,
                             Flag = c.Flag
-                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList() );
+                        }).Where(p => p.NativeName.ToLower().Contains(Search.ToLower())).ToList() );
             }
         }
     }

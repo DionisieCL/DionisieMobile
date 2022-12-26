@@ -8,14 +8,36 @@
              Title="{Binding Title}" >
     <ScrollView>
 
-        <StackLayout Padding="15">
-            <ffSvg:SvgCachedImage Source="{Binding WeatherDetail.Flag}"
-                                                    Aspect="AspectFit"
-                                                  CacheDuration="50"
-                                                       Margin="5"
-                                                       RetryCount="3"
-                                                       RetryDelay="600"
-                                                       />
+        <StackLayout >
+            <Frame Margin="10" CornerRadius="10" BackgroundColor="DarkOrange">
+                <Grid Padding="20,60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Name}" TextColor="black" FontSize="35"/>
+                <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Medium"/>
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    >
+                    <Image Source="{Binding WeatherDetail.Icon}" Scale="2"/>
+                </Grid>
+
+            </Grid>
+            </Frame>
             <Grid Padding="10,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

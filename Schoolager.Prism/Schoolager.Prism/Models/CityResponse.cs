@@ -8,6 +8,7 @@ namespace Schoolager.Prism.Models
     public class CityResponse
     {
         public string Name { get; set; }
+        //public string NativeName { get; set; }
 
         public string Flag { get; set; }
 
