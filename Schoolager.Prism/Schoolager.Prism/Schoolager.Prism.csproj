@@ -17,13 +17,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\SearchAllPage.xaml.cs">
+      <DependentUpon>SearchAllPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CityDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\FavoritesPage.xaml">
+    <EmbeddedResource Update="Views\SearchAllPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LogInPage.xaml">

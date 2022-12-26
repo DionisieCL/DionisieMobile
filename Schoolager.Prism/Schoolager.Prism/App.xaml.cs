@@ -22,9 +22,9 @@ namespace Schoolager.Prism
         {
            
             InitializeComponent();
-            // await NavigationService.NavigateAsync("NavigationPage/FavoritesPage");
-           // await NavigationService.NavigateAsync("WeatherMasterDetailPage"); 
-           await NavigationService.NavigateAsync("/WeatherMasterDetailPage/NavigationPage/FavoritesPage"); 
+          // await NavigationService.NavigateAsync("NavigationPage/AboutPage");
+          await NavigationService.NavigateAsync($"/{nameof(WeatherMasterDetailPage)}/NavigationPage/{nameof(WeatherPage)}"); 
+          // await NavigationService.NavigateAsync("/WeatherMasterDetailPage/NavigationPage/FavoritesPage"); 
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

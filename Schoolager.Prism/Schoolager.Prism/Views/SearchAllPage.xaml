@@ -9,11 +9,12 @@
     <ContentPage.Content>
 
         <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <Image Source="loginlogo.jpg" WidthRequest="180" HeightRequest="180"></Image>
-
-            <Label Text="test"></Label>
-
+            <SearchBar Placeholder="Search City"
+                       Text="{Binding Search}"/>
+            <Button Text="Search" Command="{Binding SearchCommand}"/>
+            <Label Text="{Binding Response}"/>
 
         </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>
