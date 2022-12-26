@@ -18,7 +18,7 @@
                                                        />
             <Grid Padding="10,20">
                 <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
@@ -29,13 +29,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
                 <Label
                 Grid.Row="0"
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Text="Description:"/>
-                
                 <Label
                 Grid.Row="0"
                 Grid.Column="2"
@@ -47,14 +45,7 @@
                     Padding="-8"
                     >
                     <Image Source="{Binding WeatherDetail.Icon}"/>
-
-
-
-
-
-
                 </Grid>
-
                 <Label
                 Grid.Row="1"
                 Grid.Column="0"
@@ -65,12 +56,12 @@
                 Grid.Column="1"
                 FontAttributes="Bold">
                     <Label.FormattedText >
-                    <FormattedString>
-                        <Span Text="{Binding WeatherDetail.Feels_like}"/>
-                        <Span Text="ºC"/>
-                    </FormattedString>
+                        <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Feels_like}"/>
+                            <Span Text="ºC"/>
+                        </FormattedString>
                     </Label.FormattedText>
-                </Label> 
+                </Label>
                 <Label
                 Grid.Row="2"
                 Grid.Column="0"
@@ -105,7 +96,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-<Label
+                <Label
                 Grid.Row="4"
                 Grid.Column="0"
                 FontAttributes="Bold"
@@ -115,13 +106,7 @@
                 Grid.Column="1"
                 FontAttributes="Bold"
                 Text="{Binding WeatherDetail.Humidity}" TextColor="black"/>
-
-
             </Grid>
-
         </StackLayout>
-        
-        
     </ScrollView>
-  
 </ContentPage>

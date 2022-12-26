@@ -12,7 +12,98 @@
             <SearchBar Placeholder="Search City"
                        Text="{Binding Search}"/>
             <Button Text="Search" Command="{Binding SearchCommand}"/>
-            <Label Text="{Binding Response}"/>
+            <Label Text="{Binding SearchItem}" IsVisible="{Binding Enabled}"/>
+            <Grid Padding="10,20" IsVisible="{Binding Enabled}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Description:"/>
+                <Label
+                Grid.Row="0"
+                Grid.Column="2"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Weather[0].Description}" TextColor="black" FontSize="Large"/>
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="-8"
+                    >
+                    <Image Source="{Binding WeatherDetail.Weather[0].Icon}"/>
+                </Grid>
+                <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Feels Like:"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontAttributes="Bold">
+                <Label.FormattedText >
+                    <FormattedString>
+                        <Span Text="{Binding WeatherDetail.Main.Feels_like}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Minimum Temperature:"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                >
+                <Label.FormattedText >
+                    <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Main.Temp_min}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                Grid.Row="3"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Maximum Temperature"/>
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                FontAttributes="Bold"
+               >
+                <Label.FormattedText >
+                    <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Main.Temp_max}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                Grid.Row="4"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Humidity"/>
+                <Label
+                Grid.Row="4"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                Text="{Binding WeatherDetail.Main.Humidity}" TextColor="black"/>
+            </Grid>
 
         </StackLayout>
         
