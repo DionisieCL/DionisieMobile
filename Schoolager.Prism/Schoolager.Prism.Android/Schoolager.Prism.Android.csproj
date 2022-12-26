@@ -67,6 +67,9 @@
     <PackageReference Include="Syncfusion.Xamarin.SfCalendar">
       <Version>20.3.0.47</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar">
+      <Version>20.4.0.38</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfSchedule">
       <Version>20.3.0.47</Version>
     </PackageReference>

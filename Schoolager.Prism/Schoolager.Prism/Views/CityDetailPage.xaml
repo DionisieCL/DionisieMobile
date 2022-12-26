@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.CityDetailPage"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -9,15 +10,19 @@
     <ScrollView>
 
         <StackLayout >
+            <progressBar:SfCircularProgressBar x:Name="CircularProgressBar" Progress="75" StartAngle="180" EndAngle="360" Scale="5" ShowProgressValue="False">
+                <progressBar:SfCircularProgressBar.Content>
             <Frame Margin="25,20,25,0" CornerRadius="1000" BackgroundColor="LightSeaGreen">
+            
+          
                 <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="150"/>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="150"/>
                     </Grid.RowDefinitions>
                 <Label
                 Grid.Row="0"
@@ -28,7 +33,7 @@
                 <Label
                 Grid.Row="1"
                 Grid.Column="0"
-                Padding="35,10,0,0"
+                Padding="35,0,0,0"
                 Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Medium"/>
                 <Grid
                     Grid.Row="0"
@@ -40,6 +45,8 @@
 
             </Grid>
             </Frame>
+            </progressBar:SfCircularProgressBar.Content>
+            </progressBar:SfCircularProgressBar>
             <Grid Padding="10,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

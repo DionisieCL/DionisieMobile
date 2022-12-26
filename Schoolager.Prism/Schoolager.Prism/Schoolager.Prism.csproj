@@ -8,6 +8,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RESTCountries.NET" Version="1.0.0" />
     <PackageReference Include="Syncfusion.Xamarin.SfCalendar" Version="20.3.0.47" />
+    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="20.4.0.38" />
     <PackageReference Include="Syncfusion.Xamarin.SfSchedule" Version="20.3.0.47" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
