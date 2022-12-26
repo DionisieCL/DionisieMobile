@@ -71,6 +71,7 @@ namespace Schoolager.Prism.ViewModels
             Response response = await _apiService.Test<CityResponse>();
 
            _city = (List<CityResponse>)response.Result;
+
             ShowCities();
 
 
@@ -100,8 +101,9 @@ namespace Schoolager.Prism.ViewModels
                     (_city.Select(c=> new CityItemViewModel(_navigationService, _apiService) {
 
 
-                        NativeName = c.NativeName,
-                        Flag = c.Flag
+                        Name = c.Name,
+                        Flag = c.Flag,
+                        Latlng = c.Latlng,
                         
 
                     }).ToList());
@@ -112,9 +114,10 @@ namespace Schoolager.Prism.ViewModels
                     (_city.Select(
                         c=> new CityItemViewModel(_navigationService, _apiService)
                         {
-                            NativeName = c.NativeName,
-                            Flag = c.Flag
-                        }).Where(p => p.NativeName.ToLower().Contains(Search.ToLower())).ToList() );
+                            Name = c.Name,
+                            Flag = c.Flag,
+                            Latlng = c.Latlng,
+                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList() );
             }
         }
     }

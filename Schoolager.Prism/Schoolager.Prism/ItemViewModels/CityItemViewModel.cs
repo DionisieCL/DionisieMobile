@@ -34,8 +34,9 @@ namespace Schoolager.Prism.ItemViewModels
         {
             string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
             string key = App.Current.Resources["KEYWeather"].ToString();
-            string servicePrefix = "weather?q=" + this.Name;
+            string servicePrefix = "weather?lat=" + this.Latlng[0] + "&lon=" + this.Latlng[1];
             string controller = "&appid=" + key+"&units=metric";
+            
             Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
 
             WeatherResponse weather  = (WeatherResponse)response.Result;
