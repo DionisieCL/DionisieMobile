@@ -19,7 +19,8 @@
             <Grid Padding="10,20">
                 <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -33,33 +34,61 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Description"/>
+                Text="Description:"/>
+                
                 <Label
                 Grid.Row="0"
-                Grid.Column="1"
+                Grid.Column="2"
                 FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Description}"/> 
+                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Large"/>
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="-8"
+                    >
+                    <Image Source="{Binding WeatherDetail.Icon}"/>
+
+
+
+
+
+
+                </Grid>
+
                 <Label
                 Grid.Row="1"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Feels Like"/>
+                Text="Feels Like:"/>
                 <Label
                 Grid.Row="1"
                 Grid.Column="1"
-                FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Feels_like}"/> 
+                FontAttributes="Bold">
+                    <Label.FormattedText >
+                    <FormattedString>
+                        <Span Text="{Binding WeatherDetail.Feels_like}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                    </Label.FormattedText>
+                </Label> 
                 <Label
                 Grid.Row="2"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Minimum Temperature"/>
+                Text="Minimum Temperature:"/>
                 <Label
                 Grid.Row="2"
                 Grid.Column="1"
                 FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Temp_min}"/>
-<Label
+                >
+                    <Label.FormattedText >
+                        <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Temp_min}"/>
+                            <Span Text="ºC"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
                 Grid.Row="3"
                 Grid.Column="0"
                 FontAttributes="Bold"
@@ -68,7 +97,14 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Temp_max}"/>
+               >
+                    <Label.FormattedText >
+                        <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Temp_max}"/>
+                            <Span Text="ºC"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 <Label
                 Grid.Row="4"
                 Grid.Column="0"

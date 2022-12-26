@@ -30,17 +30,23 @@
                                 <TapGestureRecognizer Command="{Binding SelectCountryCommand}"/>
                             </Grid.GestureRecognizers>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                
                             </Grid.ColumnDefinitions>
                             <ffSvg:SvgCachedImage Source="{Binding Flag}"
                                                   CacheDuration="50"
-                                                       Margin="5"
+                                                       Margin="1"
                                                        RetryCount="3"
                                                        RetryDelay="600"
                                                        />
+                            <!--<ffSvg:SvgCachedImage Source="ic_favorite_border"
+                                                  CacheDuration="50"
+                                                       Margin="5"
+                                                       RetryCount="3"
+                                                       RetryDelay="600"
+                                                       />-->
                             <!--<ffimageloading:CacheIamge Grid.Column="0"
                                                        Aspect="AspectFil"
                                                        Source="{Bidding Flag}"
@@ -51,7 +57,7 @@
                                                        WidhtRequest="100"/>-->
                                 <StackLayout Grid.Column="1"
                                          VerticalOptions="Center">
-                                <Label Text="{Binding Name}" TextColor="White" LineHeight="100" FontSize="Large"/>
+                                <Label Text="{Binding Name}" TextColor="White" LineHeight="300" FontSize="Medium"/>
 
                             </StackLayout>
         

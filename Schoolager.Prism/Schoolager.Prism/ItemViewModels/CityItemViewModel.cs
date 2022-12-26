@@ -49,7 +49,7 @@ namespace Schoolager.Prism.ItemViewModels
                 Temp_min = weather.Main.Temp_min,
                 Feels_like = weather.Main.Feels_like,
                 Humidity = weather.Main.Humidity,
-                Icon = weather.Weather[0].Icon
+                Icon = "http://openweathermap.org/img/wn/"+weather.Weather[0].Icon+"@4x.png"
             };
 
             NavigationParameters parameters = new NavigationParameters

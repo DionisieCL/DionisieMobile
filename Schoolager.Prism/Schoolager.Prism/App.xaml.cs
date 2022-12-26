@@ -7,6 +7,7 @@ using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
 using Syncfusion.SfSchedule;
+using Prism.Navigation;
 
 namespace Schoolager.Prism
 {
@@ -21,8 +22,9 @@ namespace Schoolager.Prism
         {
            
             InitializeComponent();
-
-            await NavigationService.NavigateAsync("NavigationPage/WeatherPage");
+          // await NavigationService.NavigateAsync("NavigationPage/AboutPage");
+          // await NavigationService.NavigateAsync($"/{nameof(WeatherMasterDetailPage)}/NavigationPage/{nameof(FavoritesPage)}"); 
+          // await NavigationService.NavigateAsync("/WeatherMasterDetailPage/NavigationPage/FavoritesPage"); 
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -37,6 +39,9 @@ namespace Schoolager.Prism
             containerRegistry.RegisterForNavigation<MessagePage, MessagePageViewModel>();
             containerRegistry.RegisterForNavigation<WeatherPage, WeatherPageViewModel>();
             containerRegistry.RegisterForNavigation<CityDetailPage, CityDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<WeatherMasterDetailPage, WeatherMasterDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<FavoritesPage, FavoritesPageViewModel>();
+            containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
         }
     } 
 }
