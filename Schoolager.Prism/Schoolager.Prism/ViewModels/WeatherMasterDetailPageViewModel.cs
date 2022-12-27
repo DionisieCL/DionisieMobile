@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Schoolager.Prism.Helpers;
 using Schoolager.Prism.ItemViewModels;
 using Schoolager.Prism.Models;
 using Schoolager.Prism.Views;
@@ -32,7 +33,7 @@ namespace Schoolager.Prism.ViewModels
 
                 Icon="ic_wb_sunny",
                 PageName=$"{nameof(WeatherPage)}",
-                Title="Weather"
+                Title=Languages.Weather
 
                },
 
@@ -42,7 +43,7 @@ namespace Schoolager.Prism.ViewModels
 
                 Icon="ic_favorite_border",
                 PageName=$"{nameof(FavoritesPage)}",
-                Title="Favorites"
+                Title=Languages.SearchAll
                },
 
                 new Menu
@@ -50,7 +51,13 @@ namespace Schoolager.Prism.ViewModels
 
                 Icon="ic_info_outline",
                 PageName=$"{nameof(AboutPage)}",
-                Title="About"
+                Title=Languages.AboutPage
+               },
+                 new Menu
+               {
+                Icon="ic_logout",
+                PageName=$"{nameof(Logout)}",
+                Title=Languages.LogOut
                }
             };
             Menus = new ObservableCollection<MenuItemViewModel>(
@@ -61,7 +68,7 @@ namespace Schoolager.Prism.ViewModels
                     Icon =m.Icon,
                     PageName=m.PageName,
                     Title=m.Title,
-                  //  IsLoginRequired=m.IsLoginRequired,
+                    IsLoginRequired=m.IsLoginRequired,
 
                 }).ToList());
         }

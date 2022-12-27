@@ -34,8 +34,8 @@ namespace Schoolager.Prism.ViewModels
         {
             _navigationService = navigationService;
             _apiService = apiService;
-            Title = "Weather";
-
+            Title = Languages.Weather;
+            _isRunning = true;
             LoadCountries();
         }
         public ObservableCollection<CityItemViewModel> Countries
@@ -78,15 +78,21 @@ namespace Schoolager.Prism.ViewModels
             string servicePrefix = "v2/";
             string controller = "all";
 
-            Response response = await _apiService.Test<CityResponse>();
+            Response response = await _apiService.GetCountries<CityResponse>(urlBase,servicePrefix,controller);
 
-            _city = (List<CityResponse>)response.Result;
-
-            ShowCities();
-
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        response.Message,
+                        Languages.Accept);
+                return;
+            }
+                _city = (List<CityResponse>)response.Result;
+                ShowCities();
         }
         private void ShowCities()
         {
+            IsRunning = false;
             if (string.IsNullOrEmpty(Search))
             {
                 Countries = new ObservableCollection<CityItemViewModel>
@@ -95,7 +101,7 @@ namespace Schoolager.Prism.ViewModels
                         Name = c.Name,
                         Flag = c.Flag,
                         Latlng = c.Latlng,
-                    }).ToList());
+                    }).ToList().OrderBy(c => c.Name).ToList().Where(c=> c.Latlng !=null).ToList());
             }
             else
             {
@@ -106,7 +112,7 @@ namespace Schoolager.Prism.ViewModels
                             Name = c.Name,
                             Flag = c.Flag,
                             Latlng = c.Latlng,
-                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList());
+                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList().Where(c => c.Latlng != null).ToList());
             }
         }
     }

@@ -133,4 +133,52 @@
   <data name="WindSpeed" xml:space="preserve">
     <value>Velocidad del viento</value>
   </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Versión de la aplicación</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Compañía</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Introduzca su dirección de correo electrónico</value>
+  </data>
+  <data name="EnterPassword" xml:space="preserve">
+    <value>Escriba la contraseña</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>Buscar población</value>
+  </data>
+  <data name="SearchCountry" xml:space="preserve">
+    <value>Buscar país</value>
+  </data>
+  <data name="AboutPage" xml:space="preserve">
+    <value>Acerca de la página</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>El tiempo</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="SearchAll" xml:space="preserve">
+    <value>Buscar todo</value>
+  </data>
+  <data name="MustEmail" xml:space="preserve">
+    <value>Debe introducir un correo electrónico</value>
+  </data>
+  <data name="MustPassword" xml:space="preserve">
+    <value>Debes introducir tu contraseña.</value>
+  </data>
+  <data name="CredentialsInvalid" xml:space="preserve">
+    <value>¡El correo electrónico o la contraseña son incorrectos!</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar...</value>
+  </data>
 </root>

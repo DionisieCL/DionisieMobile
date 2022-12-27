@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Schoolager.Prism.Helpers;
 using Schoolager.Prism.Views;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Schoolager.Prism.ViewModels
 	{
         public AboutPageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            Title = "About Page";
+            Title = Languages.AboutPage;
         }
 	}
 }

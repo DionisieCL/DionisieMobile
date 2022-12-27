@@ -133,4 +133,52 @@
   <data name="WindSpeed" xml:space="preserve">
     <value>Velocidade do Vento</value>
   </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Versão da aplicação</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Introduza o seu e-mail</value>
+  </data>
+  <data name="EnterPassword" xml:space="preserve">
+    <value>Insira sua senha</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Iniciar sessão</value>
+  </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>Pesquisar Cidade</value>
+  </data>
+  <data name="SearchCountry" xml:space="preserve">
+    <value>Pesquisar país</value>
+  </data>
+  <data name="AboutPage" xml:space="preserve">
+    <value>Sobre </value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>Tempo</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Saír</value>
+  </data>
+  <data name="SearchAll" xml:space="preserve">
+    <value>Pesquisar tudo</value>
+  </data>
+  <data name="MustEmail" xml:space="preserve">
+    <value>Insira um email</value>
+  </data>
+  <data name="MustPassword" xml:space="preserve">
+    <value>Insira uma password</value>
+  </data>
+  <data name="CredentialsInvalid" xml:space="preserve">
+    <value>O e-mail ou a senha estão incorretos</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Pesquisar</value>
+  </data>
 </root>

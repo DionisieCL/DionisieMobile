@@ -2,9 +2,9 @@
 
 namespace Schoolager.Prism.Views
 {
-    public partial class MessagePage : ContentPage
+    public partial class Logout : ContentPage
     {
-        public MessagePage()
+        public Logout()
         {
             InitializeComponent();
         }

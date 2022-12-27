@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:i18n="clr-namespace:Schoolager.Prism.Helpers"
            Title="{Binding Title}"
              BackgroundImageSource="Gray"
              prism:ViewModelLocator.AutowireViewModel="True"
-             BackgroundColor="White"
-           
+             BackgroundColor="{StaticResource ColorBackground}"
              x:Class="Schoolager.Prism.Views.LogInPage"
              >
 
@@ -17,38 +17,34 @@
             
             <Entry
             Keyboard="Email"
-            Placeholder="Enter your email"
+            Placeholder="{i18n:Translate EnterEmail}"
             
-            TextColor="#f9f8eb"
+            TextColor="{StaticResource ColorBackground}"
             Text="{Binding Email}"
-            PlaceholderColor="#50574C"
+            PlaceholderColor="{StaticResource ColorBackground}"
             IsEnabled="{Binding IsBlock}"/>
 
 
             <Entry
             IsPassword="True"
-             
-            Placeholder="Enter your Password"
-            
-            TextColor="#f9f8eb"
-            PlaceholderColor="#50574C"
+            Placeholder="{i18n:Translate EnterPassword}"
+            TextColor="{StaticResource ColorBackground}"
+            PlaceholderColor="{StaticResource ColorBackground}"
             IsEnabled="{Binding IsBlock}"
-        Text="{Binding Password}"/>
+            Text="{Binding Password}"/>
 
-            <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
+            <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand" Color="{StaticResource ColorPrimary}"/>
             <Button 
             VerticalOptions="Center"
            
             Command="{Binding LoginCommand}"  
-       
-                 BackgroundColor="#Gray"
-                
-                BorderColor="#00FF9D"
+                BackgroundColor="{StaticResource ColorSecondary}"
+                BorderColor="{StaticResource ColorBackground}"
                 BorderWidth="3"
             CornerRadius="50"
             IsEnabled="{Binding IsEnable}"
-            Text="Login"
-                TextColor="#f9f8eb"/>
+            Text="{i18n:Translate Login}"
+                TextColor="{StaticResource ColorBackground}"/>
             
 
         </StackLayout>

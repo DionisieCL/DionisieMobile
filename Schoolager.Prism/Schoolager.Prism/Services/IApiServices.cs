@@ -15,7 +15,7 @@ namespace Schoolager.Prism.Services
 
         Task<Response> GetWeather(string urlBase, string servicePrefix, string controller);
 
-        Task<Response> Test<T>();
+        Task<Response> GetCountries<T>(string urlBase, string servicePrefix, string controller);
 
     }
 }

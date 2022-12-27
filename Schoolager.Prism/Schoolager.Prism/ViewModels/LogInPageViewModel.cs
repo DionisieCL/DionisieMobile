@@ -1,8 +1,10 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Schoolager.Prism.Helpers;
 using Schoolager.Prism.Models;
 using Schoolager.Prism.Services;
+using Schoolager.Prism.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +20,20 @@ namespace Schoolager.Prism.ViewModels
         private bool _isEnable;
         private bool _isBlock;
         private DelegateCommand _loginCommand;
-
+        private List<CityResponse> _city;
         private readonly IApiServices _apiService;
+        private INavigationService _navigationService;
 
         
 
         public LogInPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
-            Title = "Login";
+            Title = Languages.Login;
             IsEnable= true;
             IsRunning= false;
             IsBlock= true;
 
-
+            _navigationService = navigationService;
             _apiService = apiService;
 
         }
@@ -42,7 +45,11 @@ namespace Schoolager.Prism.ViewModels
         }
 
         public DelegateCommand LoginCommand => _loginCommand ?? (_loginCommand = new DelegateCommand(Login));
-
+        public List<CityResponse> CityResponses
+        {
+            get => _city;
+            set => SetProperty(ref _city, value);
+        }
        
         public bool IsRunning
         {
@@ -66,9 +73,9 @@ namespace Schoolager.Prism.ViewModels
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", 
-                        "Check internet connection", 
-                        "Accept");
+                    await App.Current.MainPage.DisplayAlert(Languages.Error, 
+                        Languages.ConnectionError, 
+                        Languages.Accept);
 
                 });
                 return; 
@@ -78,7 +85,9 @@ namespace Schoolager.Prism.ViewModels
             IsRunning = true;
             if (string.IsNullOrEmpty(Email))
             {
-                await App.Current.MainPage.DisplayAlert("Error", "You must enter an E-mail", "Accept");
+                await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        Languages.MustEmail,
+                        Languages.Accept);
                 Password = string.Empty;
                 IsBlock = true;
                 IsRunning = false;
@@ -88,7 +97,9 @@ namespace Schoolager.Prism.ViewModels
             }
             if (string.IsNullOrEmpty(Password))
             {
-                await App.Current.MainPage.DisplayAlert("Error", "You must enter a password", "Accept");
+                await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        Languages.MustPassword,
+                        Languages.Accept);
                 Password = string.Empty;
                 IsBlock = true;
                 IsRunning = false;
@@ -106,20 +117,23 @@ namespace Schoolager.Prism.ViewModels
 
             Response response = await _apiService.Login(url, servicePrefix, controller, user);
 
-            IsRunning = false;
             if (!response.IsSuccess)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "E-mail or Password wrong!", "Accept");
+                IsRunning = false;
+                await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        Languages.CredentialsInvalid,
+                        Languages.Accept);
                 IsBlock = true;
                 return;
             }
             else
             {
-                await NavigationService.NavigateAsync("NavigationPage/MenuPage");
+                IsRunning = false;
+                
+                await NavigationService.NavigateAsync($"/{nameof(WeatherMasterDetailPage)}/NavigationPage/WeatherPage");
             }
            
 
         }
-
     }
 }

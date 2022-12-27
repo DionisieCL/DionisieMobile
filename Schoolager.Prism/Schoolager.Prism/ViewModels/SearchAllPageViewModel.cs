@@ -9,6 +9,7 @@ using Schoolager.Prism.Views;
 using Schoolager.Prism.Models;
 using Schoolager.Prism.Services;
 using Xamarin.Essentials;
+using Schoolager.Prism.Helpers;
 
 namespace Schoolager.Prism.ViewModels
 {
@@ -16,7 +17,7 @@ namespace Schoolager.Prism.ViewModels
     {
         private DelegateCommand _searchCommand;
 
-
+        private bool _isRunning;
         private string _searchItem;
         private string _search;
         private readonly IApiServices _apiService;
@@ -26,9 +27,10 @@ namespace Schoolager.Prism.ViewModels
 
         public FavoritesPageViewModel(INavigationService navigationService, IApiServices apiServices) : base(navigationService)
         {
-            Title = "Search";
+            Title = Languages.SearchAll;
             _apiService = apiServices;
             _enabled = false;
+            _isRunning = false;
         }
 
         public string SearchItem
@@ -40,6 +42,12 @@ namespace Schoolager.Prism.ViewModels
         {
             get => _weatherDetail;
             set => SetProperty(ref (_weatherDetail), value);
+        }
+
+        public bool IsRunning
+        {
+            get => _isRunning;
+            set => SetProperty(ref _isRunning, value);
         }
 
         public bool Enabled
@@ -57,6 +65,21 @@ namespace Schoolager.Prism.ViewModels
 
         public async void ButtonClicked()
         {
+            IsRunning = true;
+            Enabled = false;
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        Languages.ConnectionError,
+                        Languages.Accept);
+
+                });
+                IsRunning= false;
+                return;
+            }
+
             string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
             string key = App.Current.Resources["KEYWeather"].ToString();
             string servicePrefix = "weather?q=" + Search;
@@ -65,11 +88,13 @@ namespace Schoolager.Prism.ViewModels
 
             if (!response.IsSuccess)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There is no city or country with this name!", "Accept");
+                IsRunning = false;
+                await App.Current.MainPage.DisplayAlert(Languages.Error,response.Message, Languages.Accept);
                 
             }
             else
             {
+                IsRunning = false;
                 SearchItem = Search;
                 WeatherResponse weather = (WeatherResponse)response.Result;
                 string icon = weather.Weather[0].Icon;

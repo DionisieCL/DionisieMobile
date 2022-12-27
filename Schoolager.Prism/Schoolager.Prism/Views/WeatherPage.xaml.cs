@@ -6,6 +6,7 @@ namespace Schoolager.Prism.Views
     {
         public WeatherPage()
         {
+           // NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
         }
     }

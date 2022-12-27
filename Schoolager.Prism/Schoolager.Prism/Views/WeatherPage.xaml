@@ -8,14 +8,15 @@
              Title="{Binding Title}" 
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.WeatherPage"
-             BackgroundColor="#293042"
-             >
+             BackgroundColor="{StaticResource ColorBackground}"
+             >  
 
         <AbsoluteLayout>
+       
         <StackLayout Padding="5"
                      AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All">
-            <SearchBar Placeholder="Search Country"
+            <SearchBar Placeholder="{i18n:Translate SearchCountry}"
                        SearchCommand="{Binding SearchCommand}"
                        Text="{Binding Search}"/> 
             
@@ -60,11 +61,10 @@
                                                        WidhtRequest="100"/>-->
                             <StackLayout Grid.Column="1"
                                          VerticalOptions="Center">
-                                <Label Text="{Binding Name}" TextColor="White" LineHeight="300" FontSize="Medium"/>
+                                <Label Text="{Binding Name}" LineHeight="300" FontSize="Medium"/>
 
                             </StackLayout>
-        
-        </Grid>
+                        </Grid>
                     </DataTemplate>
                     
                     

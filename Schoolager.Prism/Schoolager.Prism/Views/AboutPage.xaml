@@ -2,19 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:i18n="clr-namespace:Schoolager.Prism.Helpers"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.AboutPage"
              Title="{Binding Title}"
-             BackgroundColor="White">
+             BackgroundColor="{StaticResource ColorBackground}">
 
     <ContentPage.Content>
 
         <StackLayout Padding="25" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <Grid
-                Padding="0,10,0,0">
-                <Image Source="ForreCastLogo" WidthRequest="180" HeightRequest="180"></Image>
+                Padding="0,50,0,50">
+                <Image Source="Weather" WidthRequest="180" HeightRequest="180"></Image>
             </Grid>
-            <Grid>
+            <Grid BackgroundColor="{StaticResource ColorAccent}" Padding="0,10,0,200">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
 
@@ -32,15 +33,12 @@
                 Grid.Column="0"
                 FontAttributes="Bold"
                Padding="80,50,0,0"
-                 TextColor="black"
                   
-                Text="App Version:"/>
+                Text="{i18n:Translate AppVersion}"/>
                 <Label
                 Grid.Row="0"
                 Grid.Column="1"
                 FontAttributes="Bold"
-                 
-                  TextColor="black"
                   Padding="5,50,0,0"
                 Text="1.0.0.0"/>
 
@@ -49,29 +47,23 @@
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Padding="80,0,0,0"
-                    TextColor="black"
-                Text="Author:"/>
+                Text="{i18n:Translate Author}"/>
                 <Label
                 Grid.Row="1"
                 Grid.Column="1"
                 Padding="5,0,0,0"
                 FontAttributes="Bold"
-                Text="Dionisie Clim"
-                TextColor="black"/>
-
+                Text="Dionisie Clim"/>
                 <Label
                 Grid.Row="2"
                 Grid.Column="0"
                 Padding="80,0,0,0"
-                    FontAttributes="Bold"
-                TextColor="black"
-
-                Text="Company:"/>
+                FontAttributes="Bold"
+               Text="{i18n:Translate Company}"/>
                 <Label
                 Grid.Row="2"
                 Grid.Column="1"
                 FontAttributes="Bold"
-                TextColor="black"
                 Padding="5,0,0,0"
                 Text="CINEL"/>
 

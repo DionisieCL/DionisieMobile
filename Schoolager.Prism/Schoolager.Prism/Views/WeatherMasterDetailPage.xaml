@@ -4,7 +4,7 @@
                   xmlns:prism="http://prismlibrary.com"
                   prism:ViewModelLocator.AutowireViewModel="True"
                   x:Class="Schoolager.Prism.Views.WeatherMasterDetailPage"
-                  BackgroundColor="White"
+                  BackgroundColor="{StaticResource ColorBackground}"
                   >
                 
     <MasterDetailPage.Master>
@@ -19,10 +19,9 @@
                 </OnPlatform>
             </ContentPage.Padding>
 
-            <StackLayout Padding="20">
-                <Image HeightRequest="150" Source="ForreCastLogo"/>
+            <StackLayout Padding="20,50,20,20">
+                <Image HeightRequest="150" Source="Weather"/>
                 <ListView
-                   
                     HasUnevenRows="True"
                     ItemsSource="{Binding Menus}"
                     SeparatorVisibility="None">
@@ -48,7 +47,6 @@
                                         FontAttributes="Bold"
                                         Text="{Binding Title}"
                                         VerticalOptions="Center"/>
-
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>

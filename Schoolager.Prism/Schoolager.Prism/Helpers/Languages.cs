@@ -43,5 +43,37 @@ namespace Schoolager.Prism.Helpers
         public static string WindSpeed => Resource.WindSpeed;
 
         public static string Temperature => Resource.Temperature;
+
+        public static string Author => Resource.Author;
+
+        public static string AppVersion => Resource.AppVersion;
+
+        public static string Company => Resource.Company;
+
+        public static string EnterEmail => Resource.EnterEmail;
+        public static string EnterPassword => Resource.EnterPassword;   
+        public static string Login => Resource.Login;   
+
+        public static string SearchCity => Resource.SearchCity;
+
+        public static string SearchCountry => Resource.SearchCountry;
+
+        public static string LogOut => Resource.LogOut;
+
+        public static string AboutPage => Resource.AboutPage;
+
+        public static string Weather => Resource.Weather;
+
+        public static string SearchAll => Resource.SearchAll;
+
+        public static string MustEmail => Resource.MustEmail;
+
+        public static string MustPassword => Resource.MustPassword;
+
+
+        public static string CredentialsInvalid => Resource.CredentialsInvalid;
+
+        public static string Search => Resource.Search;
+
     }
 }

@@ -7,17 +7,19 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.CityDetailPage"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             Title="{Binding Title}" >
+             Title="{Binding Title}" 
+             BackgroundColor="{StaticResource ColorFontInverse}">
 
     <AbsoluteLayout>
-        <Frame BackgroundColor="#f9f8eb" 
+        <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
+        <Frame BackgroundColor="{StaticResource ColorBackground}"
                    CornerRadius="200"
                    HeightRequest="320"
                    WidthRequest="320"
-                   Margin="48"
+                   Margin="45"
                     
                  >
-            <Grid Margin="10,70,30,30">
+            <Grid Margin="5,70,30,30">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -31,12 +33,12 @@
                 Grid.Column="0"
                 FontAttributes="Bold"
                 VerticalTextAlignment="Center"        
-                Text="{Binding WeatherDetail.Name}" TextColor="black" FontSize="20"/>
+                Text="{Binding WeatherDetail.Name}" FontSize="20"/>
                 <Label
                 Grid.Row="1"
                 Grid.Column="0"
 
-                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Medium"/>
+                Text="{Binding WeatherDetail.Description}" FontSize="Medium"/>
                 <Grid
                     Grid.Row="0"
                     Grid.Column="1"
@@ -54,12 +56,12 @@
                 Grid.Row="2"
                 Grid.Column="6"
                 FontAttributes="Bold"
-                Margin="-200,0,0,0"
+                Margin="-170,20,0,0"
                 >
                     <Label.FormattedText >
                         <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Temp, StringFormat=':{0:C1}'}" FontSize="70"/>
-                            <Span Text="º" FontSize="70"/>
+                            <Span Text="{Binding WeatherDetail.Temp}" FontSize="50"/>
+                            <Span Text="º" FontSize="50"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -85,7 +87,7 @@
                     Padding="360,69,0,0"
                     >
                     <Label 
-                        Text="{Binding WeatherDetail.Sunset}" TextColor="black" FontSize="10"/>
+                        Text="{Binding WeatherDetail.Sunset}"  FontSize="10"/>
                 </Grid>
                 <Grid
                     Padding="0,30,360,0"
@@ -102,13 +104,13 @@
                     Padding="0,69,0,0"
                     >
                     <Label 
-                         Text="{Binding WeatherDetail.Sunrise}" TextColor="black" FontSize="10"/>
+                         Text="{Binding WeatherDetail.Sunrise}"  FontSize="10"/>
                 </Grid>
             </Grid>
 
         </Frame>
 
-        <Grid Margin="100,490,0,0" BackgroundColor="#97c5b4" Padding="20" Scale="1.4">
+        <Grid Margin="100,490,0,0" BackgroundColor="{StaticResource ColorAccent}" Padding="20" Scale="1.4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="80"/>

@@ -61,11 +61,47 @@ namespace Schoolager.Prism.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About Page.
+        /// </summary>
+        internal static string AboutPage {
+            get {
+                return ResourceManager.GetString("AboutPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accept.
         /// </summary>
         internal static string Accept {
             get {
                 return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App Version.
+        /// </summary>
+        internal static string AppVersion {
+            get {
+                return ResourceManager.GetString("AppVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        internal static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company.
+        /// </summary>
+        internal static string Company {
+            get {
+                return ResourceManager.GetString("Company", resourceCulture);
             }
         }
         
@@ -84,6 +120,33 @@ namespace Schoolager.Prism.Resources {
         internal static string Country {
             get {
                 return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The email or password is wrong.
+        /// </summary>
+        internal static string CredentialsInvalid {
+            get {
+                return ResourceManager.GetString("CredentialsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your email.
+        /// </summary>
+        internal static string EnterEmail {
+            get {
+                return ResourceManager.GetString("EnterEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your password.
+        /// </summary>
+        internal static string EnterPassword {
+            get {
+                return ResourceManager.GetString("EnterPassword", resourceCulture);
             }
         }
         
@@ -115,6 +178,24 @@ namespace Schoolager.Prism.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Out.
+        /// </summary>
+        internal static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum Temperature.
         /// </summary>
         internal static string MaximumTemperature {
@@ -133,11 +214,65 @@ namespace Schoolager.Prism.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must enter an email.
+        /// </summary>
+        internal static string MustEmail {
+            get {
+                return ResourceManager.GetString("MustEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must enter an password.
+        /// </summary>
+        internal static string MustPassword {
+            get {
+                return ResourceManager.GetString("MustPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pressure.
         /// </summary>
         internal static string Pressure {
             get {
                 return ResourceManager.GetString("Pressure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search All.
+        /// </summary>
+        internal static string SearchAll {
+            get {
+                return ResourceManager.GetString("SearchAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search City.
+        /// </summary>
+        internal static string SearchCity {
+            get {
+                return ResourceManager.GetString("SearchCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Country.
+        /// </summary>
+        internal static string SearchCountry {
+            get {
+                return ResourceManager.GetString("SearchCountry", resourceCulture);
             }
         }
         
@@ -156,6 +291,15 @@ namespace Schoolager.Prism.Resources {
         internal static string Visibility {
             get {
                 return ResourceManager.GetString("Visibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weather.
+        /// </summary>
+        internal static string Weather {
+            get {
+                return ResourceManager.GetString("Weather", resourceCulture);
             }
         }
         

@@ -13,7 +13,30 @@
             <x:String x:Key="KEYWeather">e9b98b4b8e7b477116d5163477065289</x:String>
             <x:String x:Key="CityList">https://restcountries.com/</x:String>
             <x:String x:Key="KEYCountries">cb2d1a9c219f6781b1e92aa3cdb5b3ee</x:String>
+            <!--Colors -->
+            <Color x:Key="ColorBackground">#f9f8eb</Color>
+            <Color x:Key="ColorPrimary">#589e85</Color>
+            <Color x:Key="ColorSecondary">#76b39d</Color>
+            <Color x:Key="ColorFont">#111111</Color>
+            <Color x:Key="ColorDanger">#B22222</Color>
+            <Color x:Key="ColorAccent">#97c5b4</Color>
+            <Color x:Key="ColorFontInverse">#ffff</Color>
             
+            <!--Styles -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorAccent}"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="{StaticResource ColorFont}"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ColorFont}"/>
+            </Style>
+            <Style x:Key="SecondaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorSecondary}"/>
+            </Style>
+            <Style x:Key="DangerButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorDanger}"/>
+            </Style>
         </ResourceDictionary>
   </Application.Resources>
 </prism:PrismApplication>

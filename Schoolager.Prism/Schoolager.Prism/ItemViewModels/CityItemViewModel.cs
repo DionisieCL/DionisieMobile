@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using RESTCountries.Models;
+using Schoolager.Prism.Helpers;
 using Schoolager.Prism.Models;
 using Schoolager.Prism.Services;
 using Schoolager.Prism.ViewModels;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Schoolager.Prism.ItemViewModels
 {
@@ -52,6 +55,17 @@ namespace Schoolager.Prism.ItemViewModels
 
         private async void SelectCountryAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        Languages.ConnectionError,
+                        Languages.Accept);
+
+                });
+                return;
+            }
             string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
             string key = App.Current.Resources["KEYWeather"].ToString();
             string servicePrefix = "weather?lat=" + this.Latlng[0] + "&lon=" + this.Latlng[1];
@@ -60,8 +74,15 @@ namespace Schoolager.Prism.ItemViewModels
             Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
 
             WeatherResponse weather  = (WeatherResponse)response.Result;
-            
-            DateTimeOffset timeSunset = DateTimeOffset.FromUnixTimeSeconds(weather.Sys.Sunset + weather.Timezone);
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert(Languages.Error,
+                        response.Message,
+                        Languages.Accept);
+                return;
+            }
+
+                DateTimeOffset timeSunset = DateTimeOffset.FromUnixTimeSeconds(weather.Sys.Sunset + weather.Timezone);
             DateTimeOffset timeSunrise = DateTimeOffset.FromUnixTimeSeconds(weather.Sys.Sunrise + weather.Timezone);
             double progressTime = CalculateProgress(weather.Sys.Sunrise, weather.Sys.Sunset);
             string localTime = CalculateLocalTime(weather.Timezone);

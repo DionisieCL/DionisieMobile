@@ -2,17 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:i18n="clr-namespace:Schoolager.Prism.Helpers"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.FavoritesPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource ColorBackground}">
 
     <ContentPage.Content>
 
-        <StackLayout Padding="25" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <SearchBar Placeholder="Search City"
+        <StackLayout Padding="25" HorizontalOptions="FillAndExpand">
+            <SearchBar Placeholder="{i18n:Translate SearchCity}" VerticalOptions="Start"
                        Text="{Binding Search}"/>
-            <Button Text="Search" Command="{Binding SearchCommand}"/>
-            <Grid Padding="25,25" BackgroundColor="#97c5b4" IsVisible="{Binding Enabled}">
+            <Button Text="{i18n:Translate Search}" Command="{Binding SearchCommand}"/>
+            <Grid Padding="25,25,0,0" Margin="0,50,0,0" BackgroundColor="{StaticResource ColorSecondary}" IsVisible="{Binding Enabled}">
                 <Label Text="{Binding SearchItem}" FontSize="40"/>
             <Grid Padding="10,60">
                 <Grid.ColumnDefinitions>
@@ -33,7 +35,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Temperature:"/>
+                Text="{i18n:Translate Temperature}"/>
                     <Label
                 Grid.Row="0"
                 Grid.Column="1"
@@ -49,7 +51,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Feels Like:"/>
+               Text="{i18n:Translate FeelsLike}"/>
                     <Label
                 Grid.Row="1"
                 Grid.Column="1"
@@ -65,7 +67,7 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Minimum Temperature:"/>
+                Text="{i18n:Translate MinimumTemperature}"/>
                     <Label
                 Grid.Row="2"
                 Grid.Column="1"
@@ -82,7 +84,7 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Maximum Temperature"/>
+                Text="{i18n:Translate MaximumTemperature}"/>
                     <Label
                 Grid.Row="3"
                 Grid.Column="1"
@@ -99,7 +101,7 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Humidity"/>
+                Text="{i18n:Translate Humidity}"/>
                     <Label
                 Grid.Row="4"
                 Grid.Column="1"
@@ -115,7 +117,7 @@
                 Grid.Row="5"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Visibility"/>
+                    Text="{i18n:Translate Visibility}"/>
                     <Label
                 Grid.Row="5"
                 Grid.Column="1"
@@ -125,7 +127,7 @@
                 Grid.Row="6"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Pressure"/>
+                   Text="{i18n:Translate Pressure}"/>
                     <Label
                 Grid.Row="6"
                 Grid.Column="1"
@@ -135,7 +137,7 @@
                 Grid.Row="7"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Wind Speed"/>
+                   Text="{i18n:Translate WindSpeed}"/>
                     <Label
                 Grid.Row="7"
                 Grid.Column="1"
@@ -143,6 +145,7 @@
                     Text="{Binding WeatherDetail.Wind.Speed}"/>
                 </Grid>
             </Grid>
+            <ActivityIndicator IsRunning ="{Binding IsRunning}" VerticalOptions="StartAndExpand"/>
         </StackLayout>
         
     </ContentPage.Content>

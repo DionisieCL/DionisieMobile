@@ -12,7 +12,7 @@ namespace Schoolager.Prism.Models
 
         public string Description { get; set; }
 
-        public double Temp { get; set; }
+        public string Temp { get; set; }
         public double Feels_like { get; set; }
         public double Temp_min { get; set; }
         public double Temp_max { get; set; }

@@ -29,28 +29,19 @@ namespace Schoolager.Prism.Services
                 System.Net.ServicePointManager.ServerCertificateValidationCallback =
     ((sender, certificate, chain, sslPolicyErrors) => true);
 
-                /*var client = new HttpClient
+                var client = new HttpClient
                 {
                     BaseAddress = new Uri(urlBase),
                 };
 
-                var url = $"{servicePrefix}{controller}";*/
-                HttpClient client = new HttpClient();
-                var response = await client.GetAsync("https://restcountries.eu/rest/v1/all");
+                var url = $"{servicePrefix}{controller}";
+                
+                var response = await client.GetAsync(url);
 
 
                 var result = await response.Content.ReadAsStringAsync();
-                //string url = "https://restcountries.eu/rest/v1/all";
 
-                // Web Request with the given url.
-                /*WebRequest request = WebRequest.Create(url);
-                request.Credentials = CredentialCache.DefaultCredentials;
 
-                WebResponse response = request.GetResponse();*/
-
-                return null;
-
-                /*
                 if (!response.IsSuccessStatusCode)
                 {
                     return new Response
@@ -60,24 +51,14 @@ namespace Schoolager.Prism.Services
                     };
                 }
                 else
-                {*/
-
-
-
-
-                /*  if (result.Equals(jsonString))
-                  {
-
-                  }*/
-
-              /*  var list = JsonConvert.DeserializeObject<List<T>>(result);
-                   // var list = JsonConvert.DeserializeObject<List<T>>(result);
+                {
+                    var list = JsonConvert.DeserializeObject<List<T>>(result);
                     return new Response
                     {
                         IsSuccess = true,
                         Result = list
-                    };*/
-               // }
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -89,19 +70,14 @@ namespace Schoolager.Prism.Services
             }
         }
 
-        public async Task<Response> Test<T>()
+        public async Task<Response> GetCountries<T>(string urlBase, string servicePrefix, string controller)
         {
             System.Net.ServicePointManager.ServerCertificateValidationCallback =
     ((sender, certificate, chain, sslPolicyErrors) => true);
-            /*string WebAPIUrl = "https://api.first.org/data/v1/countries"; // Set your REST API URL here.
-            var uri = new Uri(WebAPIUrl);
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            */
 
             try
             {
-                var client = new RestClient("https://restcountries.com/v2/all");
+                var client = new RestClient(urlBase+servicePrefix+controller);
 
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Content-Type", "application/json; charset=utf-8");
@@ -117,16 +93,15 @@ namespace Schoolager.Prism.Services
                     IsSuccess = true,
                     Result = list
                 }; 
-
-                //var response = await client.GetAsync(uri);
-                //var response = await RESTCountriesAPI.GetAllCountriesAsync();
-                //  var content = await response.Content.ReadAsStringAsync();
-
             }
             catch (Exception ex)
             {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
             }
-            return null;
         }
         public async Task<Response> Login(
           string urlBase,
@@ -181,8 +156,6 @@ namespace Schoolager.Prism.Services
         {
             try
             {
-                //string requestString = JsonConvert.SerializeObject(user);
-                //StringContent content = new StringContent(requestString, Encoding.UTF8, "application/json");
                 HttpClient client = new HttpClient
                 {
                     BaseAddress = new Uri(urlBase)

@@ -22,9 +22,7 @@ namespace Schoolager.Prism
         {
            
             InitializeComponent();
-          // await NavigationService.NavigateAsync("NavigationPage/AboutPage");
-          await NavigationService.NavigateAsync($"/{nameof(WeatherMasterDetailPage)}/NavigationPage/{nameof(WeatherPage)}"); 
-          // await NavigationService.NavigateAsync("/WeatherMasterDetailPage/NavigationPage/FavoritesPage"); 
+          await NavigationService.NavigateAsync($"NavigationPage/{nameof(LogInPage)}"); 
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -33,15 +31,12 @@ namespace Schoolager.Prism
             containerRegistry.Register<IApiServices, ApiServicescs>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LogInPage, LogInPageViewModel>();
-            containerRegistry.RegisterForNavigation<MenuPage, MenuPageViewModel>();
-            containerRegistry.RegisterForNavigation<SchedulePage, SchedulePageViewModel>();
-
-            containerRegistry.RegisterForNavigation<MessagePage, MessagePageViewModel>();
             containerRegistry.RegisterForNavigation<WeatherPage, WeatherPageViewModel>();
             containerRegistry.RegisterForNavigation<CityDetailPage, CityDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<WeatherMasterDetailPage, WeatherMasterDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<FavoritesPage, FavoritesPageViewModel>();
             containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
+            containerRegistry.RegisterForNavigation<Logout, LogoutViewModel>();
         }
     } 
 }
