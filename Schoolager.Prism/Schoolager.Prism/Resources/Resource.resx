@@ -101,9 +101,36 @@
     <value>Error</value>
   </data>
   <data name="ConnectionError" xml:space="preserve">
-    <value>ConnectionError</value>
+    <value>Connection Error</value>
   </data>
   <data name="Accept" xml:space="preserve">
     <value>Accept</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="FeelsLike" xml:space="preserve">
+    <value>Feels Like</value>
+  </data>
+  <data name="MinimumTemperature" xml:space="preserve">
+    <value>Minimum Temperature</value>
+  </data>
+  <data name="MaximumTemperature" xml:space="preserve">
+    <value>Maximum Temperature</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Humidity</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Visibility</value>
+  </data>
+  <data name="Pressure" xml:space="preserve">
+    <value>Pressure</value>
+  </data>
+  <data name="WindSpeed" xml:space="preserve">
+    <value>Wind Speed</value>
   </data>
 </root>

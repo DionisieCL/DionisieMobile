@@ -106,4 +106,31 @@
   <data name="Accept" xml:space="preserve">
     <value>Aceitar</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperatura</value>
+  </data>
+  <data name="FeelsLike" xml:space="preserve">
+    <value>Sensação</value>
+  </data>
+  <data name="MinimumTemperature" xml:space="preserve">
+    <value>Temperatura mínima</value>
+  </data>
+  <data name="MaximumTemperature" xml:space="preserve">
+    <value>Temperatura máxima</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Umidade</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Visibilidade</value>
+  </data>
+  <data name="Pressure" xml:space="preserve">
+    <value>Pressão</value>
+  </data>
+  <data name="WindSpeed" xml:space="preserve">
+    <value>Velocidade do Vento</value>
+  </data>
 </root>

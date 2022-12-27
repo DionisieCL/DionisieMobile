@@ -1,4 +1,4 @@
-﻿ using Example;
+﻿using Example;
 using ImTools;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -16,11 +16,13 @@ using RESTCountries.Models;
 using RestSharp;
 using System.Collections.ObjectModel;
 using Schoolager.Prism.ItemViewModels;
+using Xamarin.Forms;
+using Schoolager.Prism.Helpers;
 
 namespace Schoolager.Prism.ViewModels
 {
-	public class WeatherPageViewModel : ViewModelBase,INotifyPropertyChanged
-	{
+    public class WeatherPageViewModel : ViewModelBase, INotifyPropertyChanged
+    {
         private readonly IApiServices _apiService;
         private bool _isRunning;
         private ObservableCollection<CityItemViewModel> _countries;
@@ -36,11 +38,12 @@ namespace Schoolager.Prism.ViewModels
 
             LoadCountries();
         }
-        public ObservableCollection<CityItemViewModel> Countries{
-            get=> _countries; 
-            set=>SetProperty(ref _countries, value); 
+        public ObservableCollection<CityItemViewModel> Countries
+        {
+            get => _countries;
+            set => SetProperty(ref _countries, value);
         }
-        public DelegateCommand SearchCommand=> _searchCommand ??(_searchCommand = new DelegateCommand(ShowCities));
+        public DelegateCommand SearchCommand => _searchCommand ?? (_searchCommand = new DelegateCommand(ShowCities));
 
         public string Search
         {
@@ -59,42 +62,36 @@ namespace Schoolager.Prism.ViewModels
 
 
         public WeatherResponse weather { get; set; }
-       
+
 
         private async void LoadCountries()
         {
-
-            string urlBase= App.Current.Resources["CityList"].ToString();
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert(Languages.Error, Languages.ConnectionError, Languages.Accept);
+                });
+                return;
+            }
+            string urlBase = App.Current.Resources["CityList"].ToString();
             string servicePrefix = "v2/";
             string controller = "all";
-            
+
             Response response = await _apiService.Test<CityResponse>();
 
-           _city = (List<CityResponse>)response.Result;
+            _city = (List<CityResponse>)response.Result;
 
             ShowCities();
 
-
-           // await App.Current.MainPage.DisplayAlert("OK", CityResponse.ToArray()[0].Name, "Accept");
-           // Response response = await _apiService.GetListAsync<CityResponse>(urlBase,servicePrefix,controller);
-           // CityResponse = (List<CityResponse>)response.Result;
-
-            //await App.Current.MainPage.DisplayAlert("OK", CityResponse.ToArray()[0].Capital.ToString(), "Accept");
-            /*string urlBase = App.Current.Resources["UrlAPIWeather"].ToString();
-            string key = App.Current.Resources["KEYWeather"].ToString();
-            string servicePrefix = "weather?q="+City;
-            string controller = "&appid="+key;
-            Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
-
-            weath             
-           */
         }
         private void ShowCities()
         {
             if (string.IsNullOrEmpty(Search))
             {
                 Countries = new ObservableCollection<CityItemViewModel>
-                    (_city.Select(c=> new CityItemViewModel(_navigationService, _apiService) {
+                    (_city.Select(c => new CityItemViewModel(_navigationService, _apiService)
+                    {
                         Name = c.Name,
                         Flag = c.Flag,
                         Latlng = c.Latlng,
@@ -104,12 +101,12 @@ namespace Schoolager.Prism.ViewModels
             {
                 Countries = new ObservableCollection<CityItemViewModel>
                     (_city.Select(
-                        c=> new CityItemViewModel(_navigationService, _apiService)
+                        c => new CityItemViewModel(_navigationService, _apiService)
                         {
                             Name = c.Name,
                             Flag = c.Flag,
                             Latlng = c.Latlng,
-                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList() );
+                        }).Where(p => p.Name.ToLower().Contains(Search.ToLower())).ToList());
             }
         }
     }

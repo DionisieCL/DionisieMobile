@@ -70,11 +70,20 @@ namespace Schoolager.Prism.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectionError.
+        ///   Looks up a localized string similar to Connection Error.
         /// </summary>
         internal static string ConnectionError {
             get {
                 return ResourceManager.GetString("ConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        internal static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
             }
         }
         
@@ -84,6 +93,78 @@ namespace Schoolager.Prism.Resources {
         internal static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feels Like.
+        /// </summary>
+        internal static string FeelsLike {
+            get {
+                return ResourceManager.GetString("FeelsLike", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Humidity.
+        /// </summary>
+        internal static string Humidity {
+            get {
+                return ResourceManager.GetString("Humidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Temperature.
+        /// </summary>
+        internal static string MaximumTemperature {
+            get {
+                return ResourceManager.GetString("MaximumTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Temperature.
+        /// </summary>
+        internal static string MinimumTemperature {
+            get {
+                return ResourceManager.GetString("MinimumTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pressure.
+        /// </summary>
+        internal static string Pressure {
+            get {
+                return ResourceManager.GetString("Pressure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        internal static string Temperature {
+            get {
+                return ResourceManager.GetString("Temperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility.
+        /// </summary>
+        internal static string Visibility {
+            get {
+                return ResourceManager.GetString("Visibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wind Speed.
+        /// </summary>
+        internal static string WindSpeed {
+            get {
+                return ResourceManager.GetString("WindSpeed", resourceCulture);
             }
         }
     }

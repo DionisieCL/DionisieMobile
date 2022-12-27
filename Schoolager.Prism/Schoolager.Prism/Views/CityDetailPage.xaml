@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
+             xmlns:i18n="clr-namespace:Schoolager.Prism.Helpers"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.CityDetailPage"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
@@ -57,7 +58,7 @@
                 >
                     <Label.FormattedText >
                         <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Temp}" FontSize="70"/>
+                            <Span Text="{Binding WeatherDetail.Temp, StringFormat=':{0:C1}'}" FontSize="70"/>
                             <Span Text="º" FontSize="70"/>
                         </FormattedString>
                     </Label.FormattedText>
@@ -127,7 +128,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Feels Like:"/>
+                Text="{i18n:Translate FeelsLike}"/>
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
@@ -143,7 +144,7 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Minimum Temperature:"/>
+                Text="{i18n:Translate MinimumTemperature}"/>
             <Label
                 Grid.Row="2"
                 Grid.Column="1"
@@ -160,7 +161,7 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Maximum Temperature"/>
+                Text="{i18n:Translate MaximumTemperature}"/>
             <Label
                 Grid.Row="3"
                 Grid.Column="1"
@@ -177,7 +178,7 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Humidity"/>
+                Text="{i18n:Translate Humidity}"/>
             <Label
                 Grid.Row="4"
                 Grid.Column="1"
@@ -193,7 +194,7 @@
                 Grid.Row="5"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Visibility"/>
+                    Text="{i18n:Translate Visibility}"/>
             <Label
                 Grid.Row="5"
                 Grid.Column="1"
@@ -203,7 +204,7 @@
                 Grid.Row="6"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Pressure"/>
+                    Text="{i18n:Translate Pressure}"/>
             <Label
                 Grid.Row="6"
                 Grid.Column="1"
@@ -213,7 +214,7 @@
                 Grid.Row="7"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                    Text="Wind Speed"/>
+                    Text="{i18n:Translate WindSpeed}"/>
             <Label
                 Grid.Row="7"
                 Grid.Column="1"

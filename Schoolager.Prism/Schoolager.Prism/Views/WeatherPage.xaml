@@ -4,6 +4,7 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:ffimageloading="clr-namesapce:FFImageLoading.Forms;assembley=FFImageLoading.Forms"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:i18n="clr-namespace:Schoolager.Prism.Helpers"
              Title="{Binding Title}" 
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Schoolager.Prism.Views.WeatherPage"
@@ -14,7 +15,7 @@
         <StackLayout Padding="5"
                      AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All">
-            <SearchBar Placeholder="Search City"
+            <SearchBar Placeholder="Search Country"
                        SearchCommand="{Binding SearchCommand}"
                        Text="{Binding Search}"/> 
             
