@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
            Title="{Binding Title}"
-             
+             BackgroundImageSource="Gray"
              prism:ViewModelLocator.AutowireViewModel="True"
              BackgroundColor="White"
            
@@ -13,15 +13,15 @@
     <ContentPage.Content>
         
         <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <Image Source="ForreCastLogo" WidthRequest="180" HeightRequest="180"></Image>
+            <Image Source="Weather" WidthRequest="250" HeightRequest="250"></Image>
             
-                
             <Entry
             Keyboard="Email"
             Placeholder="Enter your email"
-            TextColor="Black"
+            
+            TextColor="#f9f8eb"
             Text="{Binding Email}"
-            PlaceholderColor="gray"
+            PlaceholderColor="#50574C"
             IsEnabled="{Binding IsBlock}"/>
 
 
@@ -30,8 +30,8 @@
              
             Placeholder="Enter your Password"
             
-            TextColor="Black"
-            PlaceholderColor="Gray"
+            TextColor="#f9f8eb"
+            PlaceholderColor="#50574C"
             IsEnabled="{Binding IsBlock}"
         Text="{Binding Password}"/>
 
@@ -40,13 +40,15 @@
             VerticalOptions="Center"
            
             Command="{Binding LoginCommand}"  
-            BackgroundColor="Transparent"
-                BorderColor="#79FFC4 "
+       
+                 BackgroundColor="#Gray"
+                
+                BorderColor="#00FF9D"
                 BorderWidth="3"
             CornerRadius="50"
             IsEnabled="{Binding IsEnable}"
             Text="Login"
-                TextColor="Black"/>
+                TextColor="#f9f8eb"/>
             
 
         </StackLayout>

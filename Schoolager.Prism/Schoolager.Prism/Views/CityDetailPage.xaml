@@ -7,82 +7,21 @@
              x:Class="Schoolager.Prism.Views.CityDetailPage"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              Title="{Binding Title}" >
-    <ScrollView>
-        <StackLayout >
-            <Frame Margin="29,70,29,0" CornerRadius="1000" BackgroundColor="#f9f8eb">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="50"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="150"/>
-                        <RowDefinition Height="150"/>
-                    </Grid.RowDefinitions>
-                    <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                FontAttributes="Bold"
-                Padding="35,115,30,-15"
-                        
-                Text="{Binding WeatherDetail.Name}" TextColor="black" FontSize="20"/>
-                    <Label
-                Grid.Row="1"
-                Grid.Column="0"
-                Padding="35,0,0,0"
-                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Medium"/>
-                    <Grid
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Padding="-50,120,0,0"
-                    >
-                        <Image Source="{Binding WeatherDetail.Icon}" Scale="4"/>
-                    </Grid>
-                </Grid>
-            </Frame>
-            <Frame Margin="31,-248,31,0" BackgroundColor="Transparent" >
-                <progressBar:SfCircularProgressBar  Progress="75" HorizontalOptions="Center" StartAngle="180" EndAngle="360" Scale="5" ShowProgressValue="False" ProgressColor="Orange" TrackColor="LightGray"/>
-            </Frame>
-            <Frame BackgroundColor="Transparent" Margin="0,-22,0,0">
-                <Grid>
-                    <Grid
-                    Padding="360,-150,0,0"
-                    >
-                        <Image Source="sunrise" Scale="3"/>
-                    </Grid>
-                    <Grid
-                    Padding="352,-70,0,0"
-                    >
-                        <Label 
-                        Text="{Binding WeatherDetail.Sunrise}" TextColor="black" FontSize="10"/>
-                    </Grid>
-                    <Grid
-                    Padding="0,-150,360,0"
-                    >
-                        <Image Source="sunrise" Scale="3" />
-                    </Grid>
-                    <Grid
-                    Padding="-8,-69,0,0"
-                    >
-                        <Label 
-                         Text="{Binding WeatherDetail.Sunset}" TextColor="black" FontSize="10"/>
-                    </Grid>
-                </Grid>
-            </Frame>
 
-            <Frame Margin="10,100,10,0" BackgroundColor="#97c5b4" Opacity="1">
-                <Grid>
+    <AbsoluteLayout>
+        <Frame BackgroundColor="#f9f8eb" 
+                   CornerRadius="200"
+                   HeightRequest="320"
+                   WidthRequest="320"
+                   Margin="48"
+                    
+                 >
+            <Grid Margin="10,70,30,30">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -90,116 +29,196 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Temperature:"/>
+                VerticalTextAlignment="Center"        
+                Text="{Binding WeatherDetail.Name}" TextColor="black" FontSize="20"/>
                 <Label
-                Grid.Row="0"
-                Grid.Column="1"
-                FontAttributes="Bold">
+                Grid.Row="1"
+                Grid.Column="0"
+
+                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Medium"/>
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="10,0,0,0"
+                    >
+                    <ffSvg:SvgCachedImage Source="{Binding WeatherDetail.Icon}"
+                                                  CacheDuration="50"
+                                                       Margin="1"
+                                                       RetryCount="3"
+                                                       RetryDelay="600"
+                                                       Scale="2"
+                                                       />
+                </Grid>
+                <Label
+                Grid.Row="2"
+                Grid.Column="6"
+                FontAttributes="Bold"
+                Margin="-200,0,0,0"
+                >
                     <Label.FormattedText >
                         <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Temp}"/>
-                            <Span Text="ºC"/>
+                            <Span Text="{Binding WeatherDetail.Temp}" FontSize="70"/>
+                            <Span Text="º" FontSize="70"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label
+            </Grid>
+        </Frame>
+
+        <Frame BackgroundColor="Transparent"  VerticalOptions="Center"
+                   >
+            <Grid Margin="0,150,0,0">
+                <progressBar:SfCircularProgressBar  Progress="{Binding WeatherDetail.ProgressTime}" HorizontalOptions="Center" StartAngle="180" EndAngle="360" Scale="5" ShowProgressValue="False" ProgressColor="Orange" TrackColor="LightGray"/>
+
+                <Grid
+                    Padding="360,30,0,0"
+                    >
+                    <ffSvg:SvgCachedImage Source="sunrise"
+                                                  CacheDuration="50"
+                                                       Margin="1"
+                                                       RetryCount="3"
+                                                       RetryDelay="600"
+                                                       />
+                </Grid>
+                <Grid
+                    Padding="360,69,0,0"
+                    >
+                    <Label 
+                        Text="{Binding WeatherDetail.Sunset}" TextColor="black" FontSize="10"/>
+                </Grid>
+                <Grid
+                    Padding="0,30,360,0"
+                    >
+                    <ffSvg:SvgCachedImage Source="sunrise"
+                                                  CacheDuration="50"
+                                                        
+                                                       Margin="1"
+                                                       RetryCount="3"
+                                                       RetryDelay="600"
+                                                       />
+                </Grid>
+                <Grid
+                    Padding="0,69,0,0"
+                    >
+                    <Label 
+                         Text="{Binding WeatherDetail.Sunrise}" TextColor="black" FontSize="10"/>
+                </Grid>
+            </Grid>
+
+        </Frame>
+
+        <Grid Margin="100,490,0,0" BackgroundColor="#97c5b4" Padding="20" Scale="1.4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label
                 Grid.Row="1"
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Text="Feels Like:"/>
-                <Label
+            <Label
                 Grid.Row="1"
                 Grid.Column="1"
                 FontAttributes="Bold">
-                    <Label.FormattedText >
-                        <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Feels_like}"/>
-                            <Span Text="ºC"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label
+                <Label.FormattedText >
+                    <FormattedString>
+                        <Span Text="{Binding WeatherDetail.Feels_like}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
                 Grid.Row="2"
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Text="Minimum Temperature:"/>
-                <Label
+            <Label
                 Grid.Row="2"
                 Grid.Column="1"
                 FontAttributes="Bold"
                 >
-                    <Label.FormattedText >
-                        <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Temp_min}"/>
-                            <Span Text="ºC"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label
+                <Label.FormattedText >
+                    <FormattedString>
+                        <Span Text="{Binding WeatherDetail.Temp_min}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
                 Grid.Row="3"
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Text="Maximum Temperature"/>
-                <Label
+            <Label
                 Grid.Row="3"
                 Grid.Column="1"
                 FontAttributes="Bold"
                >
-                    <Label.FormattedText >
-                        <FormattedString>
-                            <Span Text="{Binding WeatherDetail.Temp_max}"/>
-                            <Span Text="ºC"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label
+                <Label.FormattedText >
+                    <FormattedString>
+                        <Span Text="{Binding WeatherDetail.Temp_max}"/>
+                        <Span Text="ºC"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
                 Grid.Row="4"
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Text="Humidity"/>
-                <Label
+            <Label
                 Grid.Row="4"
                 Grid.Column="1"
                 FontAttributes="Bold">
-                    <Label.FormattedText >
-                        <FormattedString>
-                            <Span  Text="{Binding WeatherDetail.Humidity}"/>
-                            <Span Text="%"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label
+                <Label.FormattedText >
+                    <FormattedString>
+                        <Span  Text="{Binding WeatherDetail.Humidity}"/>
+                        <Span Text="%"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
                 Grid.Row="5"
                 Grid.Column="0"
                 FontAttributes="Bold"
                     Text="Visibility"/>
-                <Label
+            <Label
                 Grid.Row="5"
                 Grid.Column="1"
                 FontAttributes="Bold"
                     Text="{Binding WeatherDetail.Visibility}"/>
-                <Label
+            <Label
                 Grid.Row="6"
                 Grid.Column="0"
                 FontAttributes="Bold"
                     Text="Pressure"/>
-                <Label
+            <Label
                 Grid.Row="6"
                 Grid.Column="1"
                 FontAttributes="Bold"
                     Text="{Binding WeatherDetail.Pressure}"/>
-                <Label
+            <Label
                 Grid.Row="7"
                 Grid.Column="0"
                 FontAttributes="Bold"
                     Text="Wind Speed"/>
-                <Label
+            <Label
                 Grid.Row="7"
                 Grid.Column="1"
                 FontAttributes="Bold"
                     Text="{Binding WeatherDetail.Speed}"/>
-            </Grid>
-            </Frame>
-        </StackLayout>
-    </ScrollView>
+        </Grid>
+    </AbsoluteLayout>
 </ContentPage>

@@ -17,6 +17,8 @@ namespace Schoolager.Prism.Models
 
         public Sys Sys { get; set; }
 
+        public int Timezone { get; set; }
+
     }
 
     public class Weather

@@ -6,7 +6,7 @@ namespace Schoolager.Prism.Views
     {
         public CityDetailPage()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Nzc5MDM0QDMyMzAyZTMzMmUzMEY1Rmx5dVk5ZGg5cDdONGRzMXJSV1dlaXFBRWhFanBlZTBVUTB5YUh3MzA9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("ODI0NTg2QDMyMzAyZTM0MmUzMGxWRGxXWWFPOEpoaUVReFNBL3p2ZERxMWR4dlg3YnBnZnFHLzJQZTdWdE09");
             InitializeComponent();
         }
     }

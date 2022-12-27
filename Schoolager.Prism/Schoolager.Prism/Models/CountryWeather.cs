@@ -25,7 +25,11 @@ namespace Schoolager.Prism.Models
         public double Speed { get; set; }
         public string Icon { get; set; }
 
-        public int Sunrise { get; set; }
-        public int Sunset { get; set; }
+        public string Sunrise { get; set; }
+        public string Sunset { get; set; }
+
+        public double ProgressTime { get; set; }
+
+        public string LocalTime { get; set; }
     }
 }

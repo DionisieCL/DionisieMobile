@@ -27,7 +27,6 @@ namespace Schoolager.Prism.ViewModels
             set => SetProperty(ref _weather, value);
         }
 
-
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
