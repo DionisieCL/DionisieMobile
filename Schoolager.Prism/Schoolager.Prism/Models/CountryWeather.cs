@@ -18,8 +18,14 @@ namespace Schoolager.Prism.Models
         public double Temp_max { get; set; }
         public int Humidity { get; set; }
 
-        
+        public int Visibility { get; set; }
 
+        public int Pressure { get; set; }
+
+        public double Speed { get; set; }
         public string Icon { get; set; }
+
+        public int Sunrise { get; set; }
+        public int Sunset { get; set; }
     }
 }

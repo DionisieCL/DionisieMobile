@@ -9,7 +9,7 @@
              Title="{Binding Title}" >
     <ScrollView>
         <StackLayout >
-            <Frame Margin="31,-250,31,0" CornerRadius="1000" BackgroundColor="LightSeaGreen" TabIndex="0">
+            <Frame Margin="29,70,29,0" CornerRadius="1000" BackgroundColor="#f9f8eb">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -24,6 +24,7 @@
                 Grid.Column="0"
                 FontAttributes="Bold"
                 Padding="35,115,30,-15"
+                        
                 Text="{Binding WeatherDetail.Name}" TextColor="black" FontSize="20"/>
                     <Label
                 Grid.Row="1"
@@ -39,21 +40,38 @@
                     </Grid>
                 </Grid>
             </Frame>
-            <Frame Margin="25,175,25,0" BackgroundColor="Transparent" TabIndex="1">
-                <progressBar:SfCircularProgressBar  Progress="75" HorizontalOptions="Center" StartAngle="180" EndAngle="360" Scale="5"/>
+            <Frame Margin="31,-248,31,0" BackgroundColor="Transparent" >
+                <progressBar:SfCircularProgressBar  Progress="75" HorizontalOptions="Center" StartAngle="180" EndAngle="360" Scale="5" ShowProgressValue="False" ProgressColor="Orange" TrackColor="LightGray"/>
+            </Frame>
+            <Frame BackgroundColor="Transparent" Margin="0,-22,0,0">
+                <Grid>
+                    <Grid
+                    Padding="360,-150,0,0"
+                    >
+                        <Image Source="sunrise" Scale="3"/>
+                    </Grid>
+                    <Grid
+                    Padding="352,-70,0,0"
+                    >
+                        <Label 
+                        Text="{Binding WeatherDetail.Sunrise}" TextColor="black" FontSize="10"/>
+                    </Grid>
+                    <Grid
+                    Padding="0,-150,360,0"
+                    >
+                        <Image Source="sunrise" Scale="3" />
+                    </Grid>
+                    <Grid
+                    Padding="-8,-69,0,0"
+                    >
+                        <Label 
+                         Text="{Binding WeatherDetail.Sunset}" TextColor="black" FontSize="10"/>
+                    </Grid>
+                </Grid>
             </Frame>
 
-
-
-
-
-
-
-
-
-
-
-            <Grid Padding="10,100">
+            <Frame Margin="10,100,10,0" BackgroundColor="#97c5b4" Opacity="1">
+                <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="80"/>
@@ -65,24 +83,25 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label
                 Grid.Row="0"
                 Grid.Column="0"
                 FontAttributes="Bold"
-                Text="Description:"/>
+                Text="Temperature:"/>
                 <Label
                 Grid.Row="0"
-                Grid.Column="2"
-                FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Description}" TextColor="black" FontSize="Large"/>
-                <Grid
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Padding="-8"
-                    >
-                    <Image Source="{Binding WeatherDetail.Icon}"/>
-                </Grid>
+                Grid.Column="1"
+                FontAttributes="Bold">
+                    <Label.FormattedText >
+                        <FormattedString>
+                            <Span Text="{Binding WeatherDetail.Temp}"/>
+                            <Span Text="ºC"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Label
                 Grid.Row="1"
                 Grid.Column="0"
@@ -141,9 +160,46 @@
                 <Label
                 Grid.Row="4"
                 Grid.Column="1"
+                FontAttributes="Bold">
+                    <Label.FormattedText >
+                        <FormattedString>
+                            <Span  Text="{Binding WeatherDetail.Humidity}"/>
+                            <Span Text="%"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
+                Grid.Row="5"
+                Grid.Column="0"
                 FontAttributes="Bold"
-                Text="{Binding WeatherDetail.Humidity}" TextColor="black"/>
+                    Text="Visibility"/>
+                <Label
+                Grid.Row="5"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                    Text="{Binding WeatherDetail.Visibility}"/>
+                <Label
+                Grid.Row="6"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                    Text="Pressure"/>
+                <Label
+                Grid.Row="6"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                    Text="{Binding WeatherDetail.Pressure}"/>
+                <Label
+                Grid.Row="7"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                    Text="Wind Speed"/>
+                <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                    Text="{Binding WeatherDetail.Speed}"/>
             </Grid>
+            </Frame>
         </StackLayout>
     </ScrollView>
 </ContentPage>

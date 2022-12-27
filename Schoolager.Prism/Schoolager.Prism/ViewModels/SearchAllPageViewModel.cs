@@ -62,13 +62,25 @@ namespace Schoolager.Prism.ViewModels
             string servicePrefix = "weather?q=" + Search;
             string controller = "&appid=" + key + "&units=metric";
             Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
-            SearchItem = Search;
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There is no city or country with this name!", "Accept");
+                
+            }
+            else
+            {
+                SearchItem = Search;
+                WeatherResponse weather = (WeatherResponse)response.Result;
+                string icon = weather.Weather[0].Icon;
+                weather.Weather[0].Icon = "http://openweathermap.org/img/wn/" + icon + "@4x.png";
+                WeatherDetail = weather;
+                Enabled = true;
+            }
+            
             Search= null;
-            WeatherResponse weather = (WeatherResponse)response.Result;
-            string icon = weather.Weather[0].Icon;
-            weather.Weather[0].Icon= "http://openweathermap.org/img/wn/" + icon + "@4x.png";
-            WeatherDetail = weather;
-            Enabled = true;
+           
+            
         }
 
     }

@@ -41,12 +41,14 @@
                                                        RetryCount="3"
                                                        RetryDelay="600"
                                                        />
+                            
                             <!--<ffSvg:SvgCachedImage Source="ic_favorite_border"
                                                   CacheDuration="50"
                                                        Margin="5"
                                                        RetryCount="3"
                                                        RetryDelay="600"
                                                        />-->
+                            
                             <!--<ffimageloading:CacheIamge Grid.Column="0"
                                                        Aspect="AspectFil"
                                                        Source="{Bidding Flag}"
@@ -55,7 +57,7 @@
                                                        RetryCount="3"
                                                        RetryDelay="600"
                                                        WidhtRequest="100"/>-->
-                                <StackLayout Grid.Column="1"
+                            <StackLayout Grid.Column="1"
                                          VerticalOptions="Center">
                                 <Label Text="{Binding Name}" TextColor="White" LineHeight="300" FontSize="Medium"/>
 
