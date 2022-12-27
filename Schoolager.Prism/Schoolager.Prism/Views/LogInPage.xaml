@@ -5,19 +5,21 @@
            Title="{Binding Title}"
              
              prism:ViewModelLocator.AutowireViewModel="True"
-             BackgroundColor="#293042"
+             BackgroundColor="White"
+           
              x:Class="Schoolager.Prism.Views.LogInPage"
              >
 
     <ContentPage.Content>
         
         <StackLayout Padding="45" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <Image Source="loginlogo.jpg" WidthRequest="180" HeightRequest="180"></Image>
-
+            <Image Source="ForreCastLogo" WidthRequest="180" HeightRequest="180"></Image>
+            
+                
             <Entry
             Keyboard="Email"
             Placeholder="Enter your email"
-            TextColor="White"
+            TextColor="Black"
             Text="{Binding Email}"
             PlaceholderColor="gray"
             IsEnabled="{Binding IsBlock}"/>
@@ -28,8 +30,8 @@
              
             Placeholder="Enter your Password"
             
-            TextColor="White"
-            PlaceholderColor="gray"
+            TextColor="Black"
+            PlaceholderColor="Gray"
             IsEnabled="{Binding IsBlock}"
         Text="{Binding Password}"/>
 
@@ -40,11 +42,11 @@
             Command="{Binding LoginCommand}"  
             BackgroundColor="Transparent"
                 BorderColor="#79FFC4 "
-                BorderWidth="1.5"
+                BorderWidth="3"
             CornerRadius="50"
             IsEnabled="{Binding IsEnable}"
             Text="Login"
-                TextColor="White"/>
+                TextColor="Black"/>
             
 
         </StackLayout>

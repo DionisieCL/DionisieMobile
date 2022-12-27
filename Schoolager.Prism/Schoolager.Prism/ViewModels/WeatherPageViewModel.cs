@@ -99,13 +99,9 @@ namespace Schoolager.Prism.ViewModels
             {
                 Countries = new ObservableCollection<CityItemViewModel>
                     (_city.Select(c=> new CityItemViewModel(_navigationService, _apiService) {
-
-
                         Name = c.Name,
                         Flag = c.Flag,
                         Latlng = c.Latlng,
-                        
-
                     }).ToList());
             }
             else
