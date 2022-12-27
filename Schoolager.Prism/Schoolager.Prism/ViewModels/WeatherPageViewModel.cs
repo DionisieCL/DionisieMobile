@@ -86,11 +86,7 @@ namespace Schoolager.Prism.ViewModels
             string controller = "&appid="+key;
             Response response = await _apiService.GetWeather(urlBase, servicePrefix, controller);
 
-            weather = (WeatherResponse)response.Result;
-
-            //            _visibility = weather.Visibility.ToString();
-            Visibility = weather.Visibility.ToString();
-            
+            weath             
            */
         }
         private void ShowCities()
